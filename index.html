@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>JVL EPS-NMS Management</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -12,39 +12,77 @@
   <style>
     :root { --primary-color: #1e3a8a; --secondary-color: #2563eb; --accent-color: #d97706; --bg-light: #f3f4f6; --text-dark: #1f2937; }
     body { font-family: 'Sarabun', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-light); margin: 0; padding: 0; overflow-x: hidden; color: var(--text-dark); }
+    
+    /* --- Login Area --- */
     #login-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(rgba(30,58,138,0.8), rgba(30,58,138,0.9)), url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2053&auto=format&fit=crop') center/cover; padding: 1rem; }
-    .login-card { background: white; padding: 3rem 2.5rem; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); width: 100%; max-width: 450px; text-align: center; }
-    .login-logo { width: 100px; height: auto; margin-bottom: 1.5rem; }
-    .login-card h3 { color: var(--primary-color); font-weight: 700; font-size: 1.4rem; margin-bottom: 0.5rem; }
-    .login-card p { color: #6b7280; font-size: 0.95rem; margin-bottom: 2rem; }
-    .btn-primary-custom { background-color: var(--primary-color); border-color: var(--primary-color); color: white; padding: 0.8rem; font-weight: 600; border-radius: 8px; transition: all 0.3s; width: 100%; }
+    .login-card { background: white; padding: 2.5rem 2rem; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); width: 100%; max-width: 400px; text-align: center; }
+    .login-logo { width: 90px; height: auto; margin-bottom: 1.2rem; }
+    .login-card h3 { color: var(--primary-color); font-weight: 700; font-size: 1.3rem; margin-bottom: 0.5rem; }
+    .login-card p { color: #6b7280; font-size: 0.9rem; margin-bottom: 2rem; line-height: 1.4; }
+    .btn-primary-custom, .btn-guest { padding: 0.8rem; font-weight: 600; border-radius: 8px; transition: all 0.3s; width: 100%; font-size: 1rem; }
+    .btn-primary-custom { background-color: var(--primary-color); border-color: var(--primary-color); color: white; }
     .btn-primary-custom:hover { background-color: #152c69; transform: translateY(-2px); color: white;}
-    .btn-guest { background-color: transparent; border: 2px solid #cbd5e1; color: #64748b; padding: 0.8rem; font-weight: 600; border-radius: 8px; transition: all 0.3s; width: 100%; }
+    .btn-guest { background-color: transparent; border: 2px solid #cbd5e1; color: #64748b; }
     .btn-guest:hover { background-color: #f1f5f9; color: var(--primary-color); border-color: #94a3b8; }
-    #app-section { display: none; min-height: 100vh; }
+
+    /* --- Main App Layout --- */
+    #app-section { display: none; min-height: 100vh; position: relative; }
     .wrapper { display: flex; width: 100%; }
-    .sidebar { width: 260px; background: white; min-height: 100vh; box-shadow: 4px 0 15px rgba(0,0,0,0.05); transition: all 0.3s; z-index: 1000; display: flex; flex-direction: column; }
-    .sidebar-header { padding: 2rem 1.5rem; background: var(--primary-color); color: white; text-align: center; }
-    .sidebar-header img { width: 50px; margin-bottom: 10px; }
-    .sidebar-menu { list-style: none; padding: 0; margin: 1rem 0; flex-grow: 1; }
-    .sidebar-menu li a { display: block; padding: 1rem 1.5rem; color: #4b5563; text-decoration: none; font-weight: 500; border-left: 4px solid transparent; transition: 0.2s; }
+    
+    /* Sidebar */
+    .sidebar { width: 260px; background: white; min-height: 100vh; box-shadow: 4px 0 15px rgba(0,0,0,0.05); transition: all 0.3s ease-in-out; z-index: 1000; display: flex; flex-direction: column; position: fixed; height: 100%; overflow-y: auto; left: 0; }
+    .sidebar-header { padding: 1.5rem 1rem; background: var(--primary-color); color: white; text-align: center; position: sticky; top: 0; z-index: 10; }
+    .sidebar-header img { width: 45px; margin-bottom: 8px; }
+    .sidebar-header h6 { font-size: 1rem; line-height: 1.3; }
+    .sidebar-menu { list-style: none; padding: 0; margin: 0.5rem 0; flex-grow: 1; }
+    .sidebar-menu li a { display: block; padding: 1rem 1.5rem; color: #4b5563; text-decoration: none; font-weight: 500; border-left: 4px solid transparent; transition: 0.2s; font-size: 0.95rem; }
     .sidebar-menu li a:hover, .sidebar-menu li a.active { background: #eff6ff; color: var(--secondary-color); border-left: 4px solid var(--secondary-color); }
-    .sidebar-menu li a i { width: 30px; text-align: center; }
-    .main-content { flex: 1; padding: 2rem; width: calc(100% - 260px); transition: all 0.3s; }
-    .top-navbar { display: flex; justify-content: space-between; align-items: center; background: white; padding: 1rem 2rem; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); margin-bottom: 2rem; }
-    .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--primary-color); }
-    .view-section { display: none; background: white; border-radius: 12px; padding: 2.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.03); animation: fadeIn 0.4s ease; }
+    .sidebar-menu li a i { width: 30px; text-align: center; font-size: 1.1rem; }
+    
+    /* Mobile Overlay Backdrop */
+    .sidebar-backdrop { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; opacity: 0; transition: opacity 0.3s; }
+    .sidebar-backdrop.show { display: block; opacity: 1; }
+
+    /* Main Content */
+    .main-content { flex: 1; padding: 1.5rem; width: calc(100% - 260px); margin-left: 260px; transition: all 0.3s ease-in-out; min-height: 100vh; display: flex; flex-direction: column; }
+    .top-navbar { display: flex; justify-content: space-between; align-items: center; background: white; padding: 1rem 1.5rem; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); margin-bottom: 1.5rem; position: sticky; top: 1rem; z-index: 100; }
+    .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--primary-color); cursor: pointer; padding: 0.5rem; }
+    .view-section { display: none; background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.03); animation: fadeIn 0.4s ease; flex-grow: 1; margin-bottom: 1.5rem; }
     .view-section.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    .stat-card { border-radius: 12px; padding: 1.5rem; color: white; position: relative; overflow: hidden; }
-    .stat-card h3 { font-size: 2.5rem; font-weight: 700; margin: 10px 0 0 0; }
-    .stat-card i { position: absolute; right: -10px; bottom: -20px; font-size: 6rem; opacity: 0.15; }
+
+    /* Dashboard Cards */
+    .stat-card { border-radius: 12px; padding: 1.2rem; color: white; position: relative; overflow: hidden; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+    .stat-card p { font-size: 0.9rem; opacity: 0.9; }
+    .stat-card h3 { font-size: 2rem; font-weight: 700; margin: 5px 0 0 0; }
+    .stat-card i { position: absolute; right: -15px; bottom: -20px; font-size: 5rem; opacity: 0.15; transform: rotate(-10deg); }
     .bg-blue { background: linear-gradient(135deg, #2563eb, #1e3a8a); }
     .bg-orange { background: linear-gradient(135deg, #f59e0b, #d97706); }
     .bg-green { background: linear-gradient(135deg, #10b981, #059669); }
     .bg-purple { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
     .bg-teal { background: linear-gradient(135deg, #14b8a6, #0f766e); }
-    @media (max-width: 992px) { .sidebar { position: fixed; left: -260px; } .sidebar.show { left: 0; } .main-content { width: 100%; padding: 1rem; } .menu-toggle { display: block; } }
+
+    /* Responsive Adjustments */
+    @media (max-width: 992px) { 
+      .sidebar { left: -260px; } 
+      .sidebar.show { left: 0; } 
+      .main-content { width: 100%; margin-left: 0; padding: 1rem; } 
+      .top-navbar { top: 0; border-radius: 0; margin: -1rem -1rem 1rem -1rem; padding: 0.8rem 1rem; position: sticky; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+      .menu-toggle { display: block; }
+      .view-section { padding: 1rem; border-radius: 8px; }
+      .stat-card h3 { font-size: 1.8rem; }
+      .form-label { font-size: 0.9rem; }
+      .btn { font-size: 0.95rem; }
+      .table-responsive { border: 0; }
+    }
+    
+    @media (max-width: 576px) {
+      .top-navbar .badge { display: none; } /* ซ่อนป้าย Role บนจอมือถือเล็กมากๆ เพื่อประหยัดพื้นที่ */
+      .top-navbar strong { font-size: 0.9rem; }
+      .stat-card { padding: 1rem; }
+      h4 { font-size: 1.25rem; }
+      h6 { font-size: 1rem; }
+    }
   </style>
 </head>
 <body>
@@ -65,6 +103,8 @@
   </div>
 
   <div id="app-section">
+    <div id="sidebarBackdrop" class="sidebar-backdrop" onclick="toggleSidebar()"></div>
+    
     <div class="wrapper">
       <nav class="sidebar" id="sidebar">
         <div class="sidebar-header"><img src="https://www.rploei.go.th/ec2/wp-content/uploads/2017/08/cropped-cropped-cropped-3.png" alt="Logo"><h6 class="mb-0 mt-2">JVL EPS-NMS<br>Management</h6></div>
@@ -72,94 +112,61 @@
           <li><a href="#" class="active" onclick="switchView('dashboard', this)"><i class="fas fa-chart-pie"></i> ภาพรวมสถิติ</a></li>
           <li class="restricted-menu"><a href="#" onclick="switchView('patients', this)"><i class="fas fa-users"></i> ทะเบียนผู้ป่วย</a></li>
           <li class="restricted-menu"><a href="#" onclick="switchView('register', this)"><i class="fas fa-user-plus"></i> ลงทะเบียนผู้ป่วยใหม่</a></li>
-          <li style="margin-top: auto;"><a href="#" onclick="logout()" style="color:#dc2626;"><i class="fas fa-sign-out-alt"></i> ออกจากระบบ</a></li>
+          <li style="margin-top: 1rem;"><a href="#" onclick="logout()" style="color:#dc2626;"><i class="fas fa-sign-out-alt"></i> ออกจากระบบ</a></li>
         </ul>
       </nav>
 
       <div class="main-content">
         <div class="top-navbar">
           <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
-          <div class="d-flex align-items-center gap-3">
+          <div class="d-flex align-items-center gap-2 gap-md-3">
             <span class="badge bg-light text-dark border p-2" id="roleBadge">Pharmacist</span>
-            <div><span class="text-muted small d-block" style="line-height: 1;">ผู้ใช้งานระบบ</span><strong id="displayUserName" class="text-primary">ชื่อผู้ใช้</strong></div>
+            <div class="text-end text-md-start">
+              <span class="text-muted small d-block" style="line-height: 1;">ผู้ใช้งานระบบ</span>
+              <strong id="displayUserName" class="text-primary">ชื่อผู้ใช้</strong>
+            </div>
           </div>
         </div>
 
         <div id="dashboardView" class="view-section active">
           <h4 class="mb-4 text-primary"><i class="fas fa-chart-line"></i> Dashboard เชิงปริมาณและคุณภาพ</h4>
           
-          <div class="row mb-4 align-items-end bg-light p-3 rounded">
-            <div class="col-md-2 mb-2">
-              <label class="form-label small text-muted">จากวันที่ (ประเมิน)</label>
-              <input type="date" class="form-control border-0 shadow-sm" id="filterStartDate">
-            </div>
-            <div class="col-md-2 mb-2">
-              <label class="form-label small text-muted">ถึงวันที่ (ประเมิน)</label>
-              <input type="date" class="form-control border-0 shadow-sm" id="filterEndDate">
-            </div>
-            <div class="col-md-3 mb-2">
-              <label class="form-label small text-muted">หอผู้ป่วย</label>
-              <select class="form-select border-0 shadow-sm" id="filterWard">
-                <option value="">ทั้งหมด</option>
-                <option value="พุทธรักษา (ชาย1)">พุทธรักษา (ชาย1)</option>
-                <option value="จำปาทอง (ชาย2)">จำปาทอง (ชาย2)</option>
-                <option value="ราชาวดี (ชาย3)">ราชาวดี (ชาย3)</option>
-                <option value="ลีลาวดี (หญิง)">ลีลาวดี (หญิง)</option>
-                <option value="ฉัตรชบา (พิเศษ)">ฉัตรชบา (พิเศษ)</option>
-              </select>
-            </div>
-            <div class="col-md-2 mb-2">
-              <label class="form-label small text-muted">เพศ</label>
-              <select class="form-select border-0 shadow-sm" id="filterGender">
-                <option value="">ทั้งหมด</option>
-                <option value="ชาย">ชาย</option>
-                <option value="หญิง">หญิง</option>
-                <option value="LGBTQ">LGBTQ</option>
-              </select>
-            </div>
-            <div class="col-md-3 mb-2">
-              <button class="btn btn-primary w-100 shadow-sm" id="btnFilter" onclick="applyDashboardFilter()"><i class="fas fa-filter"></i> นำไปใช้ (Apply)</button>
-            </div>
+          <div class="row g-2 mb-4 align-items-end bg-light p-3 rounded mx-0">
+            <div class="col-12 col-md-2 mb-2"><label class="form-label small text-muted">จากวันที่ (ประเมิน)</label><input type="date" class="form-control border-0 shadow-sm" id="filterStartDate"></div>
+            <div class="col-12 col-md-2 mb-2"><label class="form-label small text-muted">ถึงวันที่ (ประเมิน)</label><input type="date" class="form-control border-0 shadow-sm" id="filterEndDate"></div>
+            <div class="col-12 col-md-3 mb-2"><label class="form-label small text-muted">หอผู้ป่วย</label><select class="form-select border-0 shadow-sm" id="filterWard"><option value="">ทั้งหมด</option><option value="พุทธรักษา (ชาย1)">พุทธรักษา (ชาย1)</option><option value="จำปาทอง (ชาย2)">จำปาทอง (ชาย2)</option><option value="ราชาวดี (ชาย3)">ราชาวดี (ชาย3)</option><option value="ลีลาวดี (หญิง)">ลีลาวดี (หญิง)</option><option value="ฉัตรชบา (พิเศษ)">ฉัตรชบา (พิเศษ)</option></select></div>
+            <div class="col-12 col-md-2 mb-2"><label class="form-label small text-muted">เพศ</label><select class="form-select border-0 shadow-sm" id="filterGender"><option value="">ทั้งหมด</option><option value="ชาย">ชาย</option><option value="หญิง">หญิง</option><option value="LGBTQ">LGBTQ</option></select></div>
+            <div class="col-12 col-md-3 mb-2"><button class="btn btn-primary w-100 shadow-sm" id="btnFilter" onclick="applyDashboardFilter()"><i class="fas fa-filter"></i> นำไปใช้</button></div>
           </div>
 
           <h6 class="fw-bold text-secondary mb-3"><i class="fas fa-users"></i> ข้อมูลภาพรวม (Overview)</h6>
-          <div class="row mb-4">
-            <div class="col-md-4 mb-3"><div class="stat-card bg-blue shadow-sm"><p class="mb-0">ผู้ป่วยในทะเบียน (Active)</p><h3 id="statActive"><span class="spinner-grow spinner-grow-sm"></span></h3><i class="fas fa-procedures"></i></div></div>
-            <div class="col-md-4 mb-3"><div class="stat-card bg-orange shadow-sm"><p class="mb-0">เข้าเกณฑ์ความเสี่ยงสูง</p><h3 id="statHighRisk"><span class="spinner-grow spinner-grow-sm"></span></h3><i class="fas fa-exclamation-triangle"></i></div></div>
-            <div class="col-md-4 mb-3"><div class="stat-card bg-green shadow-sm"><p class="mb-0">จำนวนการประเมินแรกรับ</p><h3 id="statAssessed"><span class="spinner-grow spinner-grow-sm"></span></h3><i class="fas fa-clipboard-check"></i></div></div>
+          <div class="row g-3 mb-4">
+            <div class="col-12 col-md-4"><div class="stat-card bg-blue shadow-sm"><p class="mb-0">ผู้ป่วยในทะเบียน (Active)</p><h3 id="statActive"><span class="spinner-grow spinner-grow-sm"></span></h3><i class="fas fa-procedures"></i></div></div>
+            <div class="col-12 col-md-4"><div class="stat-card bg-orange shadow-sm"><p class="mb-0">เข้าเกณฑ์ความเสี่ยงสูง</p><h3 id="statHighRisk"><span class="spinner-grow spinner-grow-sm"></span></h3><i class="fas fa-exclamation-triangle"></i></div></div>
+            <div class="col-12 col-md-4"><div class="stat-card bg-green shadow-sm"><p class="mb-0">จำนวนการประเมินแรกรับ</p><h3 id="statAssessed"><span class="spinner-grow spinner-grow-sm"></span></h3><i class="fas fa-clipboard-check"></i></div></div>
           </div>
 
           <h6 class="fw-bold text-secondary mb-3 mt-4"><i class="fas fa-chart-bar"></i> ข้อมูลเชิงคุณภาพ (Quality Metrics)</h6>
-          <div class="row mb-4">
-            <div class="col-md-6 mb-3"><div class="stat-card bg-purple shadow-sm"><p class="mb-0">อัตราการติดตามสำเร็จ (ของกลุ่มเสี่ยง)</p><h3 id="statFuRate"><span class="spinner-grow spinner-grow-sm"></span></h3><i class="fas fa-chart-line"></i></div></div>
-            <div class="col-md-6 mb-3"><div class="stat-card bg-teal shadow-sm"><p class="mb-0">ระยะเวลาเฉลี่ยก่อนติดตาม</p><h3 id="statAvgDays"><span class="spinner-grow spinner-grow-sm"></span></h3><i class="fas fa-clock"></i></div></div>
+          <div class="row g-3 mb-4">
+            <div class="col-12 col-md-6"><div class="stat-card bg-purple shadow-sm"><p class="mb-0">อัตราการติดตามสำเร็จ (ของกลุ่มเสี่ยง)</p><h3 id="statFuRate"><span class="spinner-grow spinner-grow-sm"></span></h3><i class="fas fa-chart-line"></i></div></div>
+            <div class="col-12 col-md-6"><div class="stat-card bg-teal shadow-sm"><p class="mb-0">ระยะเวลาเฉลี่ยก่อนติดตาม</p><h3 id="statAvgDays"><span class="spinner-grow spinner-grow-sm"></span></h3><i class="fas fa-clock"></i></div></div>
           </div>
 
-          <div class="row">
-            <div class="col-md-6 mb-4">
-              <div class="border rounded p-3 h-100 bg-white shadow-sm">
-                <h6 class="text-center mb-3 text-muted">จำนวนผู้มีปัจจัยเสี่ยงทางยา (เปรียบเทียบ)</h6>
-                <div style="position: relative; height: 300px; width: 100%;"><canvas id="riskChart"></canvas></div>
-              </div>
-            </div>
-            <div class="col-md-6 mb-4">
-              <div class="border rounded p-3 h-100 bg-white shadow-sm">
-                <h6 class="text-center mb-3 text-muted">แนวทางการจัดการ (Management)</h6>
-                <div style="position: relative; height: 300px; width: 100%;"><canvas id="mngChart"></canvas></div>
-              </div>
-            </div>
+          <div class="row g-3">
+            <div class="col-12 col-md-6"><div class="border rounded p-3 h-100 bg-white shadow-sm"><h6 class="text-center mb-3 text-muted">จำนวนผู้มีปัจจัยเสี่ยงทางยา (เปรียบเทียบ)</h6><div style="position: relative; height: 250px; width: 100%;"><canvas id="riskChart"></canvas></div></div></div>
+            <div class="col-12 col-md-6"><div class="border rounded p-3 h-100 bg-white shadow-sm"><h6 class="text-center mb-3 text-muted">แนวทางการจัดการ (Management)</h6><div style="position: relative; height: 250px; width: 100%;"><canvas id="mngChart"></canvas></div></div></div>
           </div>
         </div>
 
         <div id="patientsView" class="view-section">
-          <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 border-bottom pb-3 gap-3">
             <h4 class="text-primary m-0"><i class="fas fa-users"></i> ทะเบียนผู้ป่วยที่กำลัง Monitor</h4>
             <button class="btn btn-outline-primary btn-sm" onclick="loadPatients()"><i class="fas fa-sync-alt"></i> รีเฟรชข้อมูล</button>
           </div>
           <div class="table-responsive">
             <table class="table table-hover align-middle border text-nowrap">
               <thead class="table-light text-muted">
-                <tr><th>ID</th><th>HN</th><th>ชื่อ-สกุล</th><th>สถานะประเมิน</th><th class="text-center">การจัดการ</th></tr>
+                <tr><th>ID / HN</th><th>ชื่อ-สกุล</th><th>สถานะประเมิน</th><th class="text-center">การจัดการ</th></tr>
               </thead>
               <tbody id="patientTableBody"></tbody>
             </table>
@@ -170,82 +177,84 @@
           <h4 class="mb-4 text-primary border-bottom pb-3"><i class="fas fa-user-plus"></i> ลงทะเบียนผู้ป่วยใหม่</h4>
           <form id="registerForm">
             <h6 class="text-secondary fw-bold mb-3"><i class="fas fa-id-card"></i> ข้อมูลทั่วไป</h6>
-            <div class="row">
-              <div class="col-md-3 mb-3"><label class="form-label fw-bold">HN <span class="text-danger">*</span></label><input type="text" class="form-control" id="regHn" required></div>
-              <div class="col-md-3 mb-3"><label class="form-label fw-bold">AN</label><input type="text" class="form-control" id="regAn"></div>
-              <div class="col-md-6 mb-3"><label class="form-label fw-bold">ชื่อ-สกุล <span class="text-danger">*</span></label><input type="text" class="form-control" id="regName" required></div>
-              <div class="col-md-3 mb-3"><label class="form-label fw-bold">เพศ</label><select class="form-select" id="regGender"><option value="">-- เลือก --</option><option value="ชาย">ชาย</option><option value="หญิง">หญิง</option><option value="LGBTQ">LGBTQ</option></select></div>
-              <div class="col-md-3 mb-3"><label class="form-label fw-bold">อายุ (ปี)</label><input type="number" class="form-control" id="regAge"></div>
-              <div class="col-md-3 mb-3"><label class="form-label fw-bold">น้ำหนัก (kg)</label><input type="number" class="form-control" id="regWeight" step="0.1"></div>
-              <div class="col-md-3 mb-3"><label class="form-label fw-bold">ส่วนสูง (cm)</label><input type="number" class="form-control" id="regHeight" step="1"></div>
-              <div class="col-md-3 mb-3"><label class="form-label fw-bold text-success">BMI</label><input type="text" class="form-control bg-light text-success fw-bold" id="regBmi" readonly tabindex="-1"></div>
-              <div class="col-md-9 mb-3"><label class="form-label fw-bold">แนบภาพ (URL)</label><input type="text" class="form-control" id="regImageUrl" placeholder="https://..."></div>
+            <div class="row g-3 mb-3">
+              <div class="col-6 col-md-3"><label class="form-label fw-bold">HN <span class="text-danger">*</span></label><input type="text" class="form-control" id="regHn" required></div>
+              <div class="col-6 col-md-3"><label class="form-label fw-bold">AN</label><input type="text" class="form-control" id="regAn"></div>
+              <div class="col-12 col-md-6"><label class="form-label fw-bold">ชื่อ-สกุล <span class="text-danger">*</span></label><input type="text" class="form-control" id="regName" required></div>
+              <div class="col-6 col-md-3"><label class="form-label fw-bold">เพศ</label><select class="form-select" id="regGender"><option value="">-- เลือก --</option><option value="ชาย">ชาย</option><option value="หญิง">หญิง</option><option value="LGBTQ">LGBTQ</option></select></div>
+              <div class="col-6 col-md-3"><label class="form-label fw-bold">อายุ (ปี)</label><input type="number" class="form-control" id="regAge"></div>
+              <div class="col-4 col-md-2"><label class="form-label fw-bold">นน.(kg)</label><input type="number" class="form-control" id="regWeight" step="0.1"></div>
+              <div class="col-4 col-md-2"><label class="form-label fw-bold">สส.(cm)</label><input type="number" class="form-control" id="regHeight" step="1"></div>
+              <div class="col-4 col-md-2"><label class="form-label fw-bold text-success">BMI</label><input type="text" class="form-control bg-light text-success fw-bold px-1 text-center" id="regBmi" readonly tabindex="-1"></div>
+              <div class="col-12"><label class="form-label fw-bold">แนบภาพ (URL)</label><input type="text" class="form-control" id="regImageUrl" placeholder="https://..."></div>
             </div>
-            <h6 class="text-secondary fw-bold mt-3 mb-3"><i class="fas fa-hospital-user"></i> ข้อมูลทางคลินิก</h6>
-            <div class="row">
-              <div class="col-md-4 mb-3"><label class="form-label fw-bold">วันที่ Admit <span class="text-danger">*</span></label><input type="date" class="form-control" id="regDateAdmit" required></div>
-              <div class="col-md-4 mb-3"><label class="form-label fw-bold">หอผู้ป่วย <span class="text-danger">*</span></label><select class="form-select border-primary" id="regWard" required><option value="">-- เลือกหอผู้ป่วย --</option><option value="พุทธรักษา (ชาย1)">พุทธรักษา (ชาย1)</option><option value="จำปาทอง (ชาย2)">จำปาทอง (ชาย2)</option><option value="ราชาวดี (ชาย3)">ราชาวดี (ชาย3)</option><option value="ลีลาวดี (หญิง)">ลีลาวดี (หญิง)</option><option value="ฉัตรชบา (พิเศษ)">ฉัตรชบา (พิเศษ)</option></select></div>
-              <div class="col-md-4 mb-3"><label class="form-label fw-bold">แพทย์เจ้าของไข้</label><select class="form-select" id="regPhysician"><option value="">-- เลือกแพทย์ --</option><option value="พญ.จุฬาพันธุ์">พญ.จุฬาพันธุ์</option><option value="นพ.วรพงษ์">นพ.วรพงษ์</option><option value="นพ.ณัชพล">นพ.ณัชพล</option><option value="พญ.หทัยกาญจน์">พญ.หทัยกาญจน์</option><option value="นพ.กฤตวัฒน์">นพ.กฤตวัฒน์</option></select></div>
-              <div class="col-md-12 mb-3"><label class="form-label fw-bold">การวินิจฉัยโรค (Diagnosis)</label><input type="text" class="form-control" id="regDiagnosis"></div>
+            <h6 class="text-secondary fw-bold mt-4 mb-3"><i class="fas fa-hospital-user"></i> ข้อมูลทางคลินิก</h6>
+            <div class="row g-3 mb-3">
+              <div class="col-12 col-md-4"><label class="form-label fw-bold">วันที่ Admit <span class="text-danger">*</span></label><input type="date" class="form-control" id="regDateAdmit" required></div>
+              <div class="col-12 col-md-4"><label class="form-label fw-bold">หอผู้ป่วย <span class="text-danger">*</span></label><select class="form-select border-primary" id="regWard" required><option value="">-- เลือกหอผู้ป่วย --</option><option value="พุทธรักษา (ชาย1)">พุทธรักษา (ชาย1)</option><option value="จำปาทอง (ชาย2)">จำปาทอง (ชาย2)</option><option value="ราชาวดี (ชาย3)">ราชาวดี (ชาย3)</option><option value="ลีลาวดี (หญิง)">ลีลาวดี (หญิง)</option><option value="ฉัตรชบา (พิเศษ)">ฉัตรชบา (พิเศษ)</option></select></div>
+              <div class="col-12 col-md-4"><label class="form-label fw-bold">แพทย์เจ้าของไข้</label><select class="form-select" id="regPhysician"><option value="">-- เลือกแพทย์ --</option><option value="พญ.จุฬาพันธุ์">พญ.จุฬาพันธุ์</option><option value="นพ.วรพงษ์">นพ.วรพงษ์</option><option value="นพ.ณัชพล">นพ.ณัชพล</option><option value="พญ.หทัยกาญจน์">พญ.หทัยกาญจน์</option><option value="นพ.กฤตวัฒน์">นพ.กฤตวัฒน์</option></select></div>
+              <div class="col-12"><label class="form-label fw-bold">การวินิจฉัยโรค (Diagnosis)</label><input type="text" class="form-control" id="regDiagnosis"></div>
             </div>
-            <div class="mt-4 text-end border-top pt-3"><button type="button" class="btn btn-primary px-4 py-2" id="btnRegister" onclick="submitRegistration()"><i class="fas fa-save"></i> ลงทะเบียน</button></div>
+            <div class="mt-4 text-end border-top pt-3"><button type="button" class="btn btn-primary px-4 py-2 w-100" id="btnRegister" onclick="submitRegistration()"><i class="fas fa-save"></i> ลงทะเบียน</button></div>
           </form>
         </div>
 
         <div id="editPatientView" class="view-section">
           <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
-            <h4 class="text-warning m-0"><i class="fas fa-user-edit"></i> แก้ไขข้อมูลผู้ป่วย</h4>
-            <button class="btn btn-outline-secondary btn-sm" onclick="switchView('patients')"><i class="fas fa-arrow-left"></i> ยกเลิก/กลับ</button>
+            <h4 class="text-warning m-0"><i class="fas fa-user-edit"></i> แก้ไขข้อมูล</h4>
+            <button class="btn btn-outline-secondary btn-sm" onclick="switchView('patients')"><i class="fas fa-arrow-left"></i> กลับ</button>
           </div>
           <form id="editForm">
             <input type="hidden" id="editPatientId">
             <h6 class="text-secondary fw-bold mb-3"><i class="fas fa-id-card"></i> ข้อมูลทั่วไป</h6>
-            <div class="row">
-              <div class="col-md-3 mb-3"><label class="form-label fw-bold">HN <span class="text-danger">*</span></label><input type="text" class="form-control" id="editHn" required></div>
-              <div class="col-md-3 mb-3"><label class="form-label fw-bold">AN</label><input type="text" class="form-control" id="editAn"></div>
-              <div class="col-md-6 mb-3"><label class="form-label fw-bold">ชื่อ-สกุล <span class="text-danger">*</span></label><input type="text" class="form-control" id="editName" required></div>
-              <div class="col-md-3 mb-3"><label class="form-label fw-bold">เพศ</label><select class="form-select" id="editGender"><option value="">-- เลือก --</option><option value="ชาย">ชาย</option><option value="หญิง">หญิง</option><option value="LGBTQ">LGBTQ</option></select></div>
-              <div class="col-md-3 mb-3"><label class="form-label fw-bold">อายุ (ปี)</label><input type="number" class="form-control" id="editAge"></div>
-              <div class="col-md-3 mb-3"><label class="form-label fw-bold">น้ำหนัก (kg)</label><input type="number" class="form-control" id="editWeight" step="0.1"></div>
-              <div class="col-md-3 mb-3"><label class="form-label fw-bold">ส่วนสูง (cm)</label><input type="number" class="form-control" id="editHeight" step="1"></div>
-              <div class="col-md-3 mb-3"><label class="form-label fw-bold text-success">BMI</label><input type="text" class="form-control bg-light text-success fw-bold" id="editBmi" readonly tabindex="-1"></div>
-              <div class="col-md-9 mb-3"><label class="form-label fw-bold">แนบภาพ (URL)</label><input type="text" class="form-control" id="editImageUrl" placeholder="https://..."></div>
+            <div class="row g-3 mb-3">
+              <div class="col-6 col-md-3"><label class="form-label fw-bold">HN <span class="text-danger">*</span></label><input type="text" class="form-control" id="editHn" required></div>
+              <div class="col-6 col-md-3"><label class="form-label fw-bold">AN</label><input type="text" class="form-control" id="editAn"></div>
+              <div class="col-12 col-md-6"><label class="form-label fw-bold">ชื่อ-สกุล <span class="text-danger">*</span></label><input type="text" class="form-control" id="editName" required></div>
+              <div class="col-6 col-md-3"><label class="form-label fw-bold">เพศ</label><select class="form-select" id="editGender"><option value="">-- เลือก --</option><option value="ชาย">ชาย</option><option value="หญิง">หญิง</option><option value="LGBTQ">LGBTQ</option></select></div>
+              <div class="col-6 col-md-3"><label class="form-label fw-bold">อายุ (ปี)</label><input type="number" class="form-control" id="editAge"></div>
+              <div class="col-4 col-md-2"><label class="form-label fw-bold">นน.(kg)</label><input type="number" class="form-control" id="editWeight" step="0.1"></div>
+              <div class="col-4 col-md-2"><label class="form-label fw-bold">สส.(cm)</label><input type="number" class="form-control" id="editHeight" step="1"></div>
+              <div class="col-4 col-md-2"><label class="form-label fw-bold text-success">BMI</label><input type="text" class="form-control bg-light text-success fw-bold px-1 text-center" id="editBmi" readonly tabindex="-1"></div>
+              <div class="col-12"><label class="form-label fw-bold">แนบภาพ (URL)</label><input type="text" class="form-control" id="editImageUrl" placeholder="https://..."></div>
             </div>
-            <h6 class="text-secondary fw-bold mt-3 mb-3"><i class="fas fa-hospital-user"></i> ข้อมูลทางคลินิก</h6>
-            <div class="row">
-              <div class="col-md-4 mb-3"><label class="form-label fw-bold">วันที่ Admit <span class="text-danger">*</span></label><input type="date" class="form-control" id="editDateAdmit" required></div>
-              <div class="col-md-4 mb-3"><label class="form-label fw-bold">หอผู้ป่วย <span class="text-danger">*</span></label><select class="form-select border-primary" id="editWard" required><option value="">-- เลือกหอผู้ป่วย --</option><option value="พุทธรักษา (ชาย1)">พุทธรักษา (ชาย1)</option><option value="จำปาทอง (ชาย2)">จำปาทอง (ชาย2)</option><option value="ราชาวดี (ชาย3)">ราชาวดี (ชาย3)</option><option value="ลีลาวดี (หญิง)">ลีลาวดี (หญิง)</option><option value="ฉัตรชบา (พิเศษ)">ฉัตรชบา (พิเศษ)</option></select></div>
-              <div class="col-md-4 mb-3"><label class="form-label fw-bold">แพทย์เจ้าของไข้</label><select class="form-select" id="editPhysician"><option value="">-- เลือกแพทย์ --</option><option value="พญ.จุฬาพันธุ์">พญ.จุฬาพันธุ์</option><option value="นพ.วรพงษ์">นพ.วรพงษ์</option><option value="นพ.ณัชพล">นพ.ณัชพล</option><option value="พญ.หทัยกาญจน์">พญ.หทัยกาญจน์</option><option value="นพ.กฤตวัฒน์">นพ.กฤตวัฒน์</option></select></div>
-              <div class="col-md-12 mb-3"><label class="form-label fw-bold">การวินิจฉัยโรค (Diagnosis)</label><input type="text" class="form-control" id="editDiagnosis"></div>
+            <h6 class="text-secondary fw-bold mt-4 mb-3"><i class="fas fa-hospital-user"></i> ข้อมูลทางคลินิก</h6>
+            <div class="row g-3 mb-3">
+              <div class="col-12 col-md-4"><label class="form-label fw-bold">วันที่ Admit <span class="text-danger">*</span></label><input type="date" class="form-control" id="editDateAdmit" required></div>
+              <div class="col-12 col-md-4"><label class="form-label fw-bold">หอผู้ป่วย <span class="text-danger">*</span></label><select class="form-select border-primary" id="editWard" required><option value="">-- เลือกหอผู้ป่วย --</option><option value="พุทธรักษา (ชาย1)">พุทธรักษา (ชาย1)</option><option value="จำปาทอง (ชาย2)">จำปาทอง (ชาย2)</option><option value="ราชาวดี (ชาย3)">ราชาวดี (ชาย3)</option><option value="ลีลาวดี (หญิง)">ลีลาวดี (หญิง)</option><option value="ฉัตรชบา (พิเศษ)">ฉัตรชบา (พิเศษ)</option></select></div>
+              <div class="col-12 col-md-4"><label class="form-label fw-bold">แพทย์เจ้าของไข้</label><select class="form-select" id="editPhysician"><option value="">-- เลือกแพทย์ --</option><option value="พญ.จุฬาพันธุ์">พญ.จุฬาพันธุ์</option><option value="นพ.วรพงษ์">นพ.วรพงษ์</option><option value="นพ.ณัชพล">นพ.ณัชพล</option><option value="พญ.หทัยกาญจน์">พญ.หทัยกาญจน์</option><option value="นพ.กฤตวัฒน์">นพ.กฤตวัฒน์</option></select></div>
+              <div class="col-12"><label class="form-label fw-bold">การวินิจฉัยโรค (Diagnosis)</label><input type="text" class="form-control" id="editDiagnosis"></div>
             </div>
-            <div class="mt-4 text-end border-top pt-3"><button type="button" class="btn btn-warning px-4 py-2" id="btnEditSave" onclick="submitEditPatient()"><i class="fas fa-save"></i> บันทึกการแก้ไข</button></div>
+            <div class="mt-4 text-end border-top pt-3"><button type="button" class="btn btn-warning px-4 py-2 w-100" id="btnEditSave" onclick="submitEditPatient()"><i class="fas fa-save"></i> บันทึกการแก้ไข</button></div>
           </form>
         </div>
 
         <div id="assessmentView" class="view-section">
           <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
-            <h4 class="text-primary m-0"><i class="fas fa-notes-medical"></i> แบบประเมินความเสี่ยง EPS/NMS</h4>
+            <h4 class="text-primary m-0"><i class="fas fa-notes-medical"></i> แบบประเมิน EPS/NMS</h4>
             <button class="btn btn-outline-secondary btn-sm" onclick="switchView('patients')"><i class="fas fa-arrow-left"></i> กลับ</button>
           </div>
-          <div class="alert alert-secondary border-0 shadow-sm d-flex align-items-center gap-3">
-            <i class="fas fa-user-circle fa-2x text-primary"></i>
-            <div><div class="small text-muted">กำลังประเมินผู้ป่วย ID: <span id="assessPatientId" class="fw-bold text-dark">-</span></div><div class="fw-bold fs-5" id="assessPatientName">-</div></div>
+          <div class="alert alert-secondary border-0 shadow-sm d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
+            <div class="d-flex align-items-center gap-3">
+              <i class="fas fa-user-circle fa-2x text-primary"></i>
+              <div><div class="small text-muted">ID: <span id="assessPatientId" class="fw-bold text-dark">-</span></div><div class="fw-bold fs-5" id="assessPatientName">-</div></div>
+            </div>
           </div>
           <form id="epsForm">
-            <div class="card border-0 bg-light p-4 mb-4">
-              <h6 class="fw-bold text-primary mb-3"><i class="fas fa-pills"></i> ปัจจัยเสี่ยงที่ตรวจพบ (เช็คเกณฑ์อัตโนมัติ)</h6>
-              <div class="row">
-                <div class="col-md-6 border-end">
+            <div class="card border-0 bg-light p-3 p-md-4 mb-4">
+              <h6 class="fw-bold text-primary mb-3"><i class="fas fa-pills"></i> ปัจจัยเสี่ยงที่ตรวจพบ</h6>
+              <div class="row g-3">
+                <div class="col-12 col-md-6 border-end-md">
                   <div class="form-check mb-2"><input class="form-check-input risk-factor" type="checkbox" id="rf1"><label class="form-check-label" for="rf1">ไม่มียา Anticholinergic</label></div>
                   <div class="form-check mb-2"><input class="form-check-input risk-factor" type="checkbox" id="rf2"><label class="form-check-label" for="rf2">Risperidone ≥ 6 mg/day</label></div>
                   <div class="form-check mb-2"><input class="form-check-input risk-factor" type="checkbox" id="rf3"><label class="form-check-label" for="rf3">Haloperidol ≥ 15 mg/day</label></div>
                   <div class="form-check mb-2"><input class="form-check-input risk-factor" type="checkbox" id="rf4"><label class="form-check-label" for="rf4">Perphenazine ≥ 32 mg/day</label></div>
                   <div class="form-check mb-2"><input class="form-check-input risk-factor" type="checkbox" id="rf5"><label class="form-check-label" for="rf5">Haloperidol inj prn ≥ 15 mg/day</label></div>
                 </div>
-                <div class="col-md-6 ps-4">
+                <div class="col-12 col-md-6">
                    <label class="form-label small fw-bold text-muted">ยา LAI</label>
                    <select class="form-select mb-2 risk-factor-select" id="laiMed"><option value="">-- เลือกยา LAI --</option><option value="Fluphenazine Decanoate 25 mg">Fluphenazine Decanoate 25 mg</option><option value="Fluphenazine Decanoate 50 mg">Fluphenazine Decanoate 50 mg</option><option value="Haloperidol Decanoate 50 mg">Haloperidol Decanoate 50 mg</option><option value="Haloperidol Decanoate 100 mg">Haloperidol Decanoate 100 mg</option></select>
-                   <div class="row mb-2">
+                   <div class="row g-2 mb-2">
                      <div class="col-6"><select class="form-select" id="laiDose"><option value="">-- ปริมาณ (Amp) --</option><option value="0.5">0.5 Amp</option><option value="1">1 Amp</option><option value="1.5">1.5 Amp</option><option value="2">2 Amp</option></select></div>
                      <div class="col-6"><select class="form-select" id="laiTiming"><option value="">-- ช่วงเวลา --</option><option value="7 days PTA">ภายใน 7 วัน PTA</option><option value="3 days Admit">ภายใน 3 วันหลัง Admit</option></select></div>
                    </div>
@@ -254,9 +263,9 @@
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-8 mb-3"><label class="form-label fw-bold">โรคทางกาย / ยาที่ใช้ร่วม (NCDs)</label><textarea class="form-control" id="comorbidities" rows="2" placeholder="เช่น เบาหวาน, ความดัน, ไขมัน..."></textarea></div>
-              <div class="col-md-4 mb-3">
+            <div class="row g-3">
+              <div class="col-12 col-md-8 mb-3"><label class="form-label fw-bold">โรคทางกาย / ยาที่ใช้ร่วม (NCDs)</label><textarea class="form-control" id="comorbidities" rows="2" placeholder="เช่น เบาหวาน, ความดัน..."></textarea></div>
+              <div class="col-12 col-md-4 mb-3">
                 <label class="form-label fw-bold text-primary">ระบบสรุปเกณฑ์ Monitor</label>
                 <div class="p-3 rounded border text-center bg-white" id="autoCalculateBox">
                   <span id="scoreText" class="d-block fs-3 fw-bold text-success">0</span>
@@ -271,45 +280,47 @@
 
         <div id="followUpView" class="view-section">
           <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
-            <h4 class="text-primary m-0"><i class="fas fa-heartbeat"></i> บันทึกติดตามอาการ (Follow-up)</h4>
+            <h4 class="text-primary m-0"><i class="fas fa-heartbeat"></i> บันทึกติดตามอาการ</h4>
             <button class="btn btn-outline-secondary btn-sm" onclick="switchView('patients')"><i class="fas fa-arrow-left"></i> กลับ</button>
           </div>
-          <div class="alert alert-warning border-0 shadow-sm d-flex align-items-center gap-3">
-            <i class="fas fa-exclamation-triangle fa-2x"></i>
-            <div><div class="small text-muted">กำลังติดตามอาการผู้ป่วย ID: <span id="fuPatientId" class="fw-bold text-dark">-</span></div><div class="fw-bold fs-5 text-dark" id="fuPatientName">-</div></div>
+          <div class="alert alert-warning border-0 shadow-sm d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
+            <div class="d-flex align-items-center gap-3">
+              <i class="fas fa-exclamation-triangle fa-2x"></i>
+              <div><div class="small text-muted">ID: <span id="fuPatientId" class="fw-bold text-dark">-</span></div><div class="fw-bold fs-5 text-dark" id="fuPatientName">-</div></div>
+            </div>
           </div>
           <form id="fuForm">
-            <div class="row">
-              <div class="col-md-4 mb-3"><label class="form-label fw-bold">วันที่ติดตาม <span class="text-danger">*</span></label><input type="date" class="form-control" id="fuDate" required></div>
-              <div class="col-md-4 mb-3"><label class="form-label fw-bold">สถานะการติดตาม</label><select class="form-select" id="fuStatus"><option value="ยังไม่ติดตาม" selected>ยังไม่ติดตาม</option><option value="กำลังติดตาม">กำลังติดตาม</option><option value="ติดตามครบ">ติดตามครบ</option><option value="หายแล้ว">หายแล้ว</option></select></div>
-              <div class="col-md-4 mb-3"><label class="form-label fw-bold">เภสัชกรผู้ติดตาม</label><select class="form-select" id="fuPharmacist"></select></div>
+            <div class="row g-3 mb-3">
+              <div class="col-12 col-md-4"><label class="form-label fw-bold">วันที่ติดตาม <span class="text-danger">*</span></label><input type="date" class="form-control" id="fuDate" required></div>
+              <div class="col-12 col-md-4"><label class="form-label fw-bold">สถานะการติดตาม</label><select class="form-select" id="fuStatus"><option value="ยังไม่ติดตาม" selected>ยังไม่ติดตาม</option><option value="กำลังติดตาม">กำลังติดตาม</option><option value="ติดตามครบ">ติดตามครบ</option><option value="หายแล้ว">หายแล้ว</option></select></div>
+              <div class="col-12 col-md-4"><label class="form-label fw-bold">เภสัชกรผู้ติดตาม</label><select class="form-select" id="fuPharmacist"></select></div>
             </div>
-            <h6 class="text-primary fw-bold mt-3 mb-2"><i class="fas fa-clipboard-check"></i> อาการที่พบ (เลือกได้หลายข้อ)</h6>
+            <h6 class="text-primary fw-bold mt-4 mb-2"><i class="fas fa-clipboard-check"></i> อาการที่พบ (เลือกได้หลายข้อ)</h6>
             <div class="card bg-light p-3 border-0 mb-3">
               <div class="form-check mb-2"><input class="form-check-input symp-cb" type="checkbox" id="symp0" value="ไม่พบอาการ EPS/NMS" onchange="toggleSymptoms(this)"><label class="form-check-label fw-bold text-success" for="symp0">ไม่พบอาการ EPS/NMS</label></div>
               <hr class="my-2">
-              <div class="row">
-                <div class="col-md-4"><div class="form-check"><input class="form-check-input symp-cb" type="checkbox" value="คอบิด"><label class="form-check-label">คอบิด</label></div><div class="form-check"><input class="form-check-input symp-cb" type="checkbox" value="ตาเหลือกค้าง"><label class="form-check-label">ตาเหลือกค้าง</label></div><div class="form-check"><input class="form-check-input symp-cb" type="checkbox" value="มือสั่น"><label class="form-check-label">มือสั่น</label></div><div class="form-check"><input class="form-check-input symp-cb" type="checkbox" value="ตัวเกร็ง"><label class="form-check-label">ตัวเกร็ง</label></div></div>
-                <div class="col-md-4"><div class="form-check"><input class="form-check-input symp-cb" type="checkbox" value="ลิ้นแข็ง"><label class="form-check-label">ลิ้นแข็ง</label></div><div class="form-check"><input class="form-check-input symp-cb" type="checkbox" value="ผุดลุกผุดนั่ง"><label class="form-check-label">ผุดลุกผุดนั่ง</label></div><div class="form-check"><input class="form-check-input symp-cb" type="checkbox" value="กระสับกระส่าย"><label class="form-check-label">กระสับกระส่าย</label></div><div class="form-check"><input class="form-check-input symp-cb" type="checkbox" value="ปากขมุบขมิบ"><label class="form-check-label">ปากขมุบขมิบ</label></div></div>
-                <div class="col-md-4"><div class="form-check"><input class="form-check-input symp-cb" type="checkbox" value="BT> 37.8 องศา C"><label class="form-check-label">BT > 37.8 องศา C</label></div><div class="form-check"><input class="form-check-input symp-cb" type="checkbox" value="Lead pipe Rigidity"><label class="form-check-label">Lead pipe Rigidity</label></div><div class="form-check"><input class="form-check-input symp-cb" type="checkbox" value="V/S Swing"><label class="form-check-label">V/S Swing</label></div><div class="form-check"><input class="form-check-input symp-cb" type="checkbox" value="CPK > 1000"><label class="form-check-label">CPK > 1000</label></div><div class="form-check"><input class="form-check-input symp-cb" type="checkbox" value="WBC > 12000"><label class="form-check-label">WBC > 12000</label></div></div>
+              <div class="row g-2">
+                <div class="col-12 col-sm-6 col-md-4"><div class="form-check"><input class="form-check-input symp-cb" type="checkbox" value="คอบิด"><label class="form-check-label">คอบิด</label></div><div class="form-check"><input class="form-check-input symp-cb" type="checkbox" value="ตาเหลือกค้าง"><label class="form-check-label">ตาเหลือกค้าง</label></div><div class="form-check"><input class="form-check-input symp-cb" type="checkbox" value="มือสั่น"><label class="form-check-label">มือสั่น</label></div><div class="form-check"><input class="form-check-input symp-cb" type="checkbox" value="ตัวเกร็ง"><label class="form-check-label">ตัวเกร็ง</label></div></div>
+                <div class="col-12 col-sm-6 col-md-4"><div class="form-check"><input class="form-check-input symp-cb" type="checkbox" value="ลิ้นแข็ง"><label class="form-check-label">ลิ้นแข็ง</label></div><div class="form-check"><input class="form-check-input symp-cb" type="checkbox" value="ผุดลุกผุดนั่ง"><label class="form-check-label">ผุดลุกผุดนั่ง</label></div><div class="form-check"><input class="form-check-input symp-cb" type="checkbox" value="กระสับกระส่าย"><label class="form-check-label">กระสับกระส่าย</label></div><div class="form-check"><input class="form-check-input symp-cb" type="checkbox" value="ปากขมุบขมิบ"><label class="form-check-label">ปากขมุบขมิบ</label></div></div>
+                <div class="col-12 col-sm-12 col-md-4"><div class="form-check"><input class="form-check-input symp-cb" type="checkbox" value="BT> 37.8 องศา C"><label class="form-check-label">BT > 37.8 องศา C</label></div><div class="form-check"><input class="form-check-input symp-cb" type="checkbox" value="Lead pipe Rigidity"><label class="form-check-label">Lead pipe Rigidity</label></div><div class="form-check"><input class="form-check-input symp-cb" type="checkbox" value="V/S Swing"><label class="form-check-label">V/S Swing</label></div><div class="form-check"><input class="form-check-input symp-cb" type="checkbox" value="CPK > 1000"><label class="form-check-label">CPK > 1000</label></div><div class="form-check"><input class="form-check-input symp-cb" type="checkbox" value="WBC > 12000"><label class="form-check-label">WBC > 12000</label></div></div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-6 mb-3">
+            <div class="row g-3 mb-3">
+              <div class="col-12 col-md-6">
                 <label class="form-label fw-bold">ผลการประเมิน <span class="text-danger">*</span></label>
                 <select class="form-select border-primary" id="fuResult" onchange="toggleDateSymptom(this.value)" required><option value="">-- เลือกผล --</option><option value="ยังไม่พบอาการ">ยังไม่พบอาการ</option><option value="ปกติ">ปกติ</option><option value="ผิดปกติ">ผิดปกติ</option></select>
               </div>
-              <div class="col-md-6 mb-3" id="divDateSymptom" style="display: none;"><label class="form-label fw-bold text-danger">วันที่พบอาการ</label><input type="date" class="form-control" id="fuDateSymptom"></div>
+              <div class="col-12 col-md-6" id="divDateSymptom" style="display: none;"><label class="form-label fw-bold text-danger">วันที่พบอาการ</label><input type="date" class="form-control" id="fuDateSymptom"></div>
             </div>
-            <h6 class="text-primary fw-bold mt-3 mb-2"><i class="fas fa-medkit"></i> แนวทางการดูแล/แก้ไข (เลือกได้หลายข้อ)</h6>
+            <h6 class="text-primary fw-bold mt-4 mb-2"><i class="fas fa-medkit"></i> แนวทางการดูแล/แก้ไข (เลือกได้หลายข้อ)</h6>
             <div class="card bg-light p-3 border-0 mb-4">
-              <div class="row">
-                <div class="col-md-4"><div class="form-check"><input class="form-check-input mng-cb" type="checkbox" value="ลด Dose AP"><label class="form-check-label">ลด Dose AP</label></div></div>
-                <div class="col-md-4"><div class="form-check"><input class="form-check-input mng-cb" type="checkbox" value="หยุดยา"><label class="form-check-label">หยุดยา</label></div></div>
-                <div class="col-md-4"><div class="form-check"><input class="form-check-input mng-cb" type="checkbox" value="เพิ่ม Anticholinergics"><label class="form-check-label">เพิ่ม Anticholinergics</label></div></div>
-                <div class="col-md-4"><div class="form-check"><input class="form-check-input mng-cb" type="checkbox" value="ปรึกษาแพทย์"><label class="form-check-label">ปรึกษาแพทย์</label></div></div>
-                <div class="col-md-4"><div class="form-check"><input class="form-check-input mng-cb" type="checkbox" value="Supportive care"><label class="form-check-label">Supportive care</label></div></div>
-                <div class="col-md-4"><div class="form-check"><input class="form-check-input mng-cb" type="checkbox" value="Refer"><label class="form-check-label">Refer</label></div></div>
+              <div class="row g-2">
+                <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input mng-cb" type="checkbox" value="ลด Dose AP"><label class="form-check-label">ลด Dose AP</label></div></div>
+                <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input mng-cb" type="checkbox" value="หยุดยา"><label class="form-check-label">หยุดยา</label></div></div>
+                <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input mng-cb" type="checkbox" value="เพิ่ม Anticholinergics"><label class="form-check-label">เพิ่ม Anticholi...</label></div></div>
+                <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input mng-cb" type="checkbox" value="ปรึกษาแพทย์"><label class="form-check-label">ปรึกษาแพทย์</label></div></div>
+                <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input mng-cb" type="checkbox" value="Supportive care"><label class="form-check-label">Supportive care</label></div></div>
+                <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input mng-cb" type="checkbox" value="Refer"><label class="form-check-label">Refer</label></div></div>
               </div>
             </div>
             <button type="button" class="btn btn-warning w-100 py-3 shadow-sm fs-5" id="btnSubmitFu" onclick="submitFollowUp()"><i class="fas fa-save"></i> บันทึกข้อมูลติดตามอาการ</button>
@@ -363,26 +374,32 @@
     function switchView(viewId, el = null) {
       document.querySelectorAll('.view-section').forEach(e => e.classList.remove('active')); document.getElementById(viewId + 'View').classList.add('active');
       if (el) { document.querySelectorAll('.sidebar-menu a').forEach(e => e.classList.remove('active')); el.classList.add('active'); }
+      if(window.innerWidth <= 992) { document.getElementById('sidebar').classList.remove('show'); document.getElementById('sidebarBackdrop').classList.remove('show'); }
     }
-    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('show'); }
+    function toggleSidebar() { 
+      document.getElementById('sidebar').classList.toggle('show'); 
+      document.getElementById('sidebarBackdrop').classList.toggle('show');
+    }
 
     // --- Patient Operations ---
     function loadPatients() {
-      const tbody = document.getElementById('patientTableBody'); tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4"><span class="spinner-border text-primary"></span> กำลังโหลด...</td></tr>';
+      const tbody = document.getElementById('patientTableBody'); tbody.innerHTML = '<tr><td colspan="4" class="text-center py-4"><span class="spinner-border text-primary"></span> กำลังโหลด...</td></tr>';
       fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'getPatients' }) }).then(res => res.json()).then(res => {
         tbody.innerHTML = '';
         if(res.status === 'success') {
-          if(res.data.length === 0) return tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted py-4">ไม่มีผู้ป่วยในระบบ</td></tr>';
+          if(res.data.length === 0) return tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-4">ไม่มีผู้ป่วยในระบบ</td></tr>';
           res.data.forEach(p => {
             let assessBadge = '';
             if(p.assessStatus === 'ยังไม่ได้ประเมิน') assessBadge = '<span class="badge bg-secondary text-white fw-normal"><i class="fas fa-clock"></i> ยังไม่ประเมิน</span>';
-            else if(p.assessStatus === 'เข้าเกณฑ์') assessBadge = '<span class="badge bg-danger fw-normal"><i class="fas fa-exclamation-circle"></i> ประเมินแล้ว: เข้าเกณฑ์</span>';
-            else assessBadge = '<span class="badge bg-success fw-normal"><i class="fas fa-check-circle"></i> ประเมินแล้ว: ไม่เข้าเกณฑ์</span>';
+            else if(p.assessStatus === 'เข้าเกณฑ์') assessBadge = '<span class="badge bg-danger fw-normal"><i class="fas fa-exclamation-circle"></i> เข้าเกณฑ์</span>';
+            else assessBadge = '<span class="badge bg-success fw-normal"><i class="fas fa-check-circle"></i> ไม่เข้าเกณฑ์</span>';
             let followUpBtn = p.assessStatus === 'เข้าเกณฑ์' ? `<button class="btn btn-sm btn-warning shadow-sm ms-1 mb-1" onclick="openFollowUpForm('${p.id}', '${p.name}')" title="ติดตามอาการ"><i class="fas fa-heartbeat"></i></button>` : '';
 
             tbody.innerHTML += `<tr>
-              <td><span class="text-secondary fw-bold">${p.id}</span></td><td>${p.hn}</td><td>${p.name}<br><small class="text-muted"><i class="fas fa-bed"></i> ${p.ward || '-'}</small></td><td>${assessBadge}</td>
-              <td class="text-center">
+              <td><span class="text-secondary fw-bold">${p.id}</span><br><small class="text-muted">${p.hn}</small></td>
+              <td class="text-wrap" style="min-width: 150px;">${p.name}<br><small class="text-muted"><i class="fas fa-bed"></i> ${p.ward || '-'}</small></td>
+              <td>${assessBadge}</td>
+              <td class="text-center text-nowrap">
                 <button class="btn btn-sm btn-primary shadow-sm mb-1" onclick="openAssessmentForm('${p.id}', '${p.name}')" title="ประเมิน"><i class="fas fa-stethoscope"></i></button>
                 ${followUpBtn}
                 <button class="btn btn-sm btn-outline-secondary shadow-sm ms-1 mb-1" onclick="editPatient('${p.id}')" title="แก้ไข"><i class="fas fa-edit"></i></button>
@@ -452,8 +469,7 @@
 
     function applyDashboardFilter() {
       const btn = document.getElementById('btnFilter'); const text = btn.innerHTML;
-      btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> กำลังกรอง...';
-      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>...'; btn.disabled = true;
       loadDashboardStats(() => {
         btn.innerHTML = text; btn.disabled = false;
         Swal.fire({ title: 'กรองข้อมูลสำเร็จ', icon: 'success', timer: 1000, showConfirmButton: false });
@@ -477,26 +493,14 @@
           document.getElementById('statFuRate').innerText = data.stats.fuRate + ' %';
           document.getElementById('statAvgDays').innerText = data.stats.avgDays + ' วัน';
 
-          // กราฟแท่งแนวนอน (Horizontal Bar Chart)
           if(myChart) myChart.destroy();
           myChart = new Chart(document.getElementById('riskChart').getContext('2d'), {
-            type: 'bar', // เปลี่ยนเป็น Bar
+            type: 'bar',
             data: { 
               labels: ['Haloperidol', 'Risperidone', 'Perphenazine', 'No Anticholinergic', 'LAI'], 
-              datasets: [{ 
-                label: 'จำนวน (เคส)', 
-                data: data.stats.chartData, 
-                backgroundColor: ['#1e3a8a', '#2563eb', '#3b82f6', '#14b8a6', '#d97706'],
-                borderRadius: 4
-              }] 
+              datasets: [{ label: 'จำนวน (เคส)', data: data.stats.chartData, backgroundColor: ['#1e3a8a', '#2563eb', '#3b82f6', '#14b8a6', '#d97706'], borderRadius: 4 }] 
             },
-            options: { 
-              indexAxis: 'y', // ทำให้เป็นแนวนอน
-              responsive: true, 
-              maintainAspectRatio: false, 
-              plugins: { legend: { display: false } },
-              scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } }
-            }
+            options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } } }
           });
 
           if(mngChartObj) mngChartObj.destroy();
@@ -511,10 +515,7 @@
           Swal.fire('ข้อผิดพลาด Dashboard', data.message, 'error');
         }
         if(callback) callback();
-      }).catch(err => {
-        console.error("Fetch Error:", err);
-        if(callback) callback();
-      });
+      }).catch(err => { console.error("Fetch Error:", err); if(callback) callback(); });
     }
   </script>
 </body>
