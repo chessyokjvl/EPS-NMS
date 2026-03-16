@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>ระบบบริหารจัดการผู้ป่วยกลุ่มเสี่ยง EPS/NMS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <style>
+    :root {
+      --primary-color: #4a5568;
+      --secondary-color: #667eea;
+      --accent-color: #764ba2;
+      --bg-light: #f7fafc;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-light);
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    /* --- ระบบ Login --- */
+    #login-section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--secondary-color) 0%, var(--accent-color) 100%);
+    }
+    .login-box {
+      background: white;
+      padding: 3rem 2rem;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+    .login-box h2 {
+      color: var(--primary-color);
+      font-weight: 600;
+      margin-bottom: 2rem;
+    }
+    .login-box .form-control {
+      border-radius: 10px;
+      padding: 0.8rem 1rem;
+      margin-bottom: 1rem;
+      border: 2px solid #e2e8f0;
+    }
+    .login-box .form-control:focus {
+      border-color: var(--secondary-color);
+      box-shadow: none;
+    }
+    .btn-login {
+      background: linear-gradient(135deg, var(--secondary-color) 0%, var(--accent-color) 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 0.8rem;
+      width: 100%;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: transform 0.2s;
+    }
+    .btn-login:hover {
+      transform: translateY(-2px);
+      color: white;
+    }
+
+    /* --- Layout หลัก (Sidebar + Content) --- */
+    #app-section {
+      display: none;
+      min-height: 100vh;
+    }
+    .wrapper {
+      display: flex;
+      width: 100%;
+    }
+    
+    /* Sidebar */
+    .sidebar {
+      width: 250px;
+      background: white;
+      min-height: 100vh;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+      transition: all 0.3s;
+      z-index: 1000;
+    }
+    .sidebar-header {
+      padding: 1.5rem 1rem;
+      background: linear-gradient(135deg, var(--secondary-color) 0%, var(--accent-color) 100%);
+      color: white;
+      text-align: center;
+    }
+    .sidebar-header h5 { margin: 0; font-weight: 600; font-size: 1.1rem;}
+    .sidebar-menu {
+      list-style: none;
+      padding: 0;
+      margin: 1rem 0;
+    }
+    .sidebar-menu li a {
+      display: block;
+      padding: 1rem 1.5rem;
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.2s;
+    }
+    .sidebar-menu li a:hover, .sidebar-menu li a.active {
+      background: var(--bg-light);
+      color: var(--secondary-color);
+      border-right: 4px solid var(--secondary-color);
+    }
+    .sidebar-menu li a i {
+      width: 25px;
+    }
+
+    /* Content Area */
+    .main-content {
+      flex: 1;
+      padding: 2rem;
+      width: calc(100% - 250px);
+      transition: all 0.3s;
+    }
+    .top-navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      background: white;
+      padding: 1rem 2rem;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    }
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--primary-color);
+    }
+
+    /* Views */
+    .view-section {
+      display: none;
+      background: white;
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+      animation: fadeIn 0.4s;
+    }
+    .view-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .sidebar {
+        position: fixed;
+        left: -250px;
+      }
+      .sidebar.show {
+        left: 0;
+      }
+      .main-content {
+        width: 100%;
+        padding: 1rem;
+      }
+      .menu-toggle {
+        display: block;
+      }
+    }
+
+    /* Card Stats */
+    .stat-card {
+      background: linear-gradient(135deg, var(--secondary-color) 0%, var(--accent-color) 100%);
+      color: white;
+      border-radius: 15px;
+      padding: 1.5rem;
+      text-align: center;
+      height: 100%;
+    }
+    .stat-card h3 { font-size: 2.5rem; margin: 10px 0; }
+  </style>
+</head>
+<body>
+
+  <div id="login-section">
+    <div class="login-box">
+      <h2><i class="fas fa-notes-medical"></i> EPS/NMS<br><span style="font-size:1.2rem; color:#718096;">Clinical Monitoring</span></h2>
+      <div class="mb-3">
+        <input type="text" id="username" class="form-control" placeholder="Username" autocomplete="off">
+      </div>
+      <div class="mb-4">
+        <input type="password" id="password" class="form-control" placeholder="Password">
+      </div>
+      <button class="btn-login" id="btnLogin" onclick="login()">เข้าสู่ระบบ</button>
+      <div id="loginSpinner" class="spinner-border text-light mt-3" style="display:none;" role="status"></div>
+    </div>
+  </div>
+
+  <div id="app-section">
+    <div class="wrapper">
+      
+      <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <h5><i class="fas fa-hospital-user"></i> EPS/NMS System</h5>
+        </div>
+        <ul class="sidebar-menu">
+          <li><a href="#" class="active" onclick="switchView('dashboard', this)"><i class="fas fa-chart-pie"></i> Dashboard</a></li>
+          <li><a href="#" onclick="switchView('patients', this)"><i class="fas fa-users"></i> ทะเบียนผู้ป่วย</a></li>
+          <li><a href="#" onclick="switchView('register', this)"><i class="fas fa-user-plus"></i> ลงทะเบียนผู้ป่วยใหม่</a></li>
+          <li style="margin-top: 2rem;"><a href="#" onclick="logout()" style="color:#e53e3e;"><i class="fas fa-sign-out-alt"></i> ออกจากระบบ</a></li>
+        </ul>
+      </nav>
+
+      <div class="main-content">
+        <div class="top-navbar">
+          <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+          <div class="user-info">
+            <span class="text-muted">ผู้ใช้งาน: </span>
+            <strong id="displayUserName">Pharmacist</strong>
+          </div>
+        </div>
+
+        <div id="dashboardView" class="view-section active">
+          <h4 class="mb-4"><i class="fas fa-chart-line"></i> ภาพรวมสถิติทางคลินิก (Dashboard)</h4>
+          
+          <div class="row mb-4">
+            <div class="col-md-3">
+              <select class="form-select">
+                <option>ปีงบประมาณ 2568</option>
+                <option>ปีงบประมาณ 2567</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <input type="date" class="form-control" title="จากวันที่">
+            </div>
+            <div class="col-md-3">
+              <input type="date" class="form-control" title="ถึงวันที่">
+            </div>
+            <div class="col-md-3">
+              <button class="btn btn-outline-primary w-100"><i class="fas fa-filter"></i> กรองข้อมูล</button>
+            </div>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col-md-4 mb-3">
+              <div class="stat-card">
+                <i class="fas fa-users" style="font-size: 2rem; opacity: 0.8;"></i>
+                <p class="mb-0 mt-2">ผู้ป่วยในทะเบียน (Active)</p>
+                <h3>142</h3>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="stat-card" style="background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);">
+                <i class="fas fa-exclamation-triangle" style="font-size: 2rem; opacity: 0.8;"></i>
+                <p class="mb-0 mt-2">ประเมินพบความเสี่ยงสูง</p>
+                <h3>28</h3>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="stat-card" style="background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);">
+                <i class="fas fa-check-circle" style="font-size: 2rem; opacity: 0.8;"></i>
+                <p class="mb-0 mt-2">ติดตามอาการแล้ว (เดือนนี้)</p>
+                <h3>115</h3>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-4">
+              <div class="card border-0 shadow-sm p-3">
+                <h6 class="text-center">สัดส่วนปัจจัยเสี่ยงทางยา</h6>
+                <canvas id="riskChart"></canvas>
+              </div>
+            </div>
+            <div class="col-md-6 mb-4">
+              <div class="card border-0 shadow-sm p-3">
+                <h6 class="text-center">สถิติการเกิด EPS แยกตามเดือน</h6>
+                <canvas id="trendChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="patientsView" class="view-section">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4><i class="fas fa-users"></i> ทะเบียนผู้ป่วย (Active)</h4>
+            <input type="text" class="form-control w-25" placeholder="ค้นหา HN หรือ ชื่อ...">
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>ID ผู้ป่วย</th>
+                  <th>HN</th>
+                  <th>ชื่อ-สกุล</th>
+                  <th>วันที่ Admit</th>
+                  <th>สถานะประเมิน</th>
+                  <th>การจัดการ</th>
+                </tr>
+              </thead>
+              <tbody id="patientTableBody">
+                <tr>
+                  <td>P-2568001</td>
+                  <td>12345/68</td>
+                  <td>นายทดสอบ ระบบดี</td>
+                  <td>01/12/2568</td>
+                  <td><span class="badge bg-warning text-dark">รอประเมิน EPS</span></td>
+                  <td>
+                    <button class="btn btn-sm btn-primary" onclick="openAssessmentForm('P-2568001', 'นายทดสอบ ระบบดี')"><i class="fas fa-file-medical"></i> ประเมิน</button>
+                    <button class="btn btn-sm btn-success"><i class="fas fa-stethoscope"></i> ติดตาม</button>
+                    <button class="btn btn-sm btn-outline-danger"><i class="fas fa-sign-out-alt"></i> D/C</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="registerView" class="view-section">
+          <h4 class="mb-4"><i class="fas fa-user-plus"></i> ลงทะเบียนผู้ป่วยใหม่เข้าสู่ระบบ Monitor</h4>
+          <form id="registerForm">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label class="form-label">HN <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">AN</label>
+                <input type="text" class="form-control">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">ชื่อ-สกุล <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">วันที่ Admit <span class="text-danger">*</span></label>
+                <input type="date" class="form-control" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">ตึก/หอผู้ป่วย</label>
+                <input type="text" class="form-control">
+              </div>
+            </div>
+            <hr class="my-4">
+            <button type="button" class="btn btn-primary" onclick="submitRegistration()"><i class="fas fa-save"></i> บันทึกข้อมูลเข้าระบบ (เข้ารหัส PII)</button>
+          </form>
+        </div>
+
+        <div id="assessmentView" class="view-section">
+          <button class="btn btn-sm btn-outline-secondary mb-3" onclick="switchView('patients')"><i class="fas fa-arrow-left"></i> กลับไปหน้าทะเบียน</button>
+          <h4 class="mb-4"><i class="fas fa-notes-medical"></i> แบบประเมิน EPS/NMS</h4>
+          <div class="alert alert-info">
+            <strong>กำลังประเมินผู้ป่วย: </strong> <span id="assessPatientName">-</span> (ID: <span id="assessPatientId">-</span>)
+          </div>
+          
+          <form id="epsForm">
+            <h6 class="border-bottom pb-2 mt-4 text-primary"><i class="fas fa-pills"></i> ข้อมูลการได้รับยา / ปัจจัยเสี่ยง</h6>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <div class="form-check mb-2">
+                  <input class="form-check-input" type="checkbox" id="med1">
+                  <label class="form-check-label" for="med1">ไม่มียา Anticholinergic (เช่น Trihexyphenidyl)</label>
+                </div>
+                <div class="form-check mb-2">
+                  <input class="form-check-input" type="checkbox" id="med2">
+                  <label class="form-check-label" for="med2">Risperidone ≥ 6 mg/day</label>
+                </div>
+                <div class="form-check mb-2">
+                  <input class="form-check-input" type="checkbox" id="med3">
+                  <label class="form-check-label" for="med3">Haloperidol ≥ 15 mg/day</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                 <label class="form-label">LAI (Long-Acting Injectable)</label>
+                 <select class="form-select mb-2">
+                   <option value="">-- เลือกยา LAI --</option>
+                   <option>Fluphenazine Decanoate</option>
+                   <option>Haloperidol Decanoate</option>
+                 </select>
+                 <select class="form-select">
+                   <option value="">-- เลือกช่วงเวลา --</option>
+                   <option>ภายใน 7 วัน PTA</option>
+                   <option>ภายใน 3 วันหลัง Admit</option>
+                 </select>
+              </div>
+            </div>
+
+            <h6 class="border-bottom pb-2 mt-4 text-primary"><i class="fas fa-clipboard-list"></i> ประวัติและข้อมูลเพิ่มเติม</h6>
+            <div class="row mb-3">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">ประวัติการเกิด EPS/NMS</label>
+                <select class="form-select">
+                  <option value="ไม่มี">ไม่มี</option>
+                  <option value="มี">มี</option>
+                </select>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">ผลการประเมินการเข้าเกณฑ์ Monitor</label>
+                <select class="form-select border-primary">
+                  <option value="เข้าเกณฑ์">เข้าเกณฑ์ Monitor</option>
+                  <option value="ยังไม่เข้าเกณฑ์">ยังไม่เข้าเกณฑ์</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-primary mt-3" onclick="submitAssessment()"><i class="fas fa-save"></i> บันทึกผลการประเมิน</button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // URL ของ Google Apps Script ที่ Deploy เป็น Web App
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwLGWUVfpMkTv5aUogeb1usvOjpr9ApWxqR5wYbybjwUF2_R0CK4rixBGJug6Z4Yfgrig/exec'; 
+
+    // --- ระบบ Login (กด Enter ได้) ---
+    document.getElementById('password').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        login();
+      }
+    });
+    document.getElementById('username').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        document.getElementById('password').focus();
+      }
+    });
+
+    function login() {
+      const user = document.getElementById('username').value;
+      const pass = document.getElementById('password').value;
+      const btn = document.getElementById('btnLogin');
+      const spinner = document.getElementById('loginSpinner');
+
+      if(!user || !pass) {
+        Swal.fire('แจ้งเตือน', 'กรุณากรอก Username และ Password', 'warning');
+        return;
+      }
+
+      // จำลองการโหลดหน้า UI
+      btn.style.display = 'none';
+      spinner.style.display = 'inline-block';
+
+      // **ส่วนนี้คือโค้ดจริงสำหรับยิง API ไปยัง Google Apps Script**
+      /*
+      fetch(scriptURL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'login', username: user, password: pass })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if(data.status === 'success') {
+          document.getElementById('displayUserName').innerText = data.user.name;
+          document.getElementById('login-section').style.display = 'none';
+          document.getElementById('app-section').style.display = 'block';
+          renderCharts(); // โหลดกราฟเมื่อเข้าสู่ระบบ
+        } else {
+          Swal.fire('ข้อผิดพลาด', data.message, 'error');
+          btn.style.display = 'block';
+          spinner.style.display = 'none';
+        }
+      });
+      */
+
+      // **โค้ดจำลอง (Mock) สำหรับทดสอบ UI โดยไม่ต้องต่อ Backend**
+      setTimeout(() => {
+        document.getElementById('displayUserName').innerText = "ภก. พิชญ์พงศ์ (Admin)";
+        document.getElementById('login-section').style.display = 'none';
+        document.getElementById('app-section').style.display = 'block';
+        renderCharts();
+      }, 800);
+    }
+
+    function logout() {
+      Swal.fire({
+        title: 'ยืนยันการออกจากระบบ?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'ออกจากระบบ',
+        cancelButtonText: 'ยกเลิก'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.getElementById('username').value = '';
+          document.getElementById('password').value = '';
+          document.getElementById('btnLogin').style.display = 'block';
+          document.getElementById('loginSpinner').style.display = 'none';
+          document.getElementById('app-section').style.display = 'none';
+          document.getElementById('login-section').style.display = 'flex';
+          switchView('dashboard'); // Reset view
+        }
+      });
+    }
+
+    // --- ระบบ นำทาง (Navigation / SPA) ---
+    function switchView(viewId, element = null) {
+      // ซ่อนทุกหน้า
+      document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+      // แสดงหน้าที่เลือก
+      document.getElementById(viewId + 'View').classList.add('active');
+
+      // จัดการแถบเมนู
+      if (element) {
+        document.querySelectorAll('.sidebar-menu a').forEach(el => el.classList.remove('active'));
+        element.classList.add('active');
+      }
+
+      // ปิด sidebar ในมือถือเมื่อกดเมนู
+      if(window.innerWidth <= 768) {
+        document.getElementById('sidebar').classList.remove('show');
+      }
+    }
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('show');
+    }
+
+    // --- การทำงานของฟอร์มผู้ป่วย ---
+    function openAssessmentForm(id, name) {
+      document.getElementById('assessPatientId').innerText = id;
+      document.getElementById('assessPatientName').innerText = name;
+      switchView('assessment');
+    }
+
+    function submitRegistration() {
+      Swal.fire({
+        title: 'บันทึกสำเร็จ!',
+        text: 'ระบบได้สร้างรหัสและเข้ารหัสข้อมูลผู้ป่วยเรียบร้อยแล้ว',
+        icon: 'success',
+        timer: 2000,
+        showConfirmButton: false
+      });
+      document.getElementById('registerForm').reset();
+      setTimeout(() => switchView('patients'), 2000);
+    }
+
+    function submitAssessment() {
+      Swal.fire({
+        title: 'บันทึกการประเมินสำเร็จ!',
+        icon: 'success',
+        timer: 1500,
+        showConfirmButton: false
+      });
+      setTimeout(() => switchView('patients'), 1500);
+    }
+
+    // --- ระบบ Dashboard (Chart.js) ---
+    let chartRendered = false;
+    function renderCharts() {
+      if(chartRendered) return;
+      
+      const ctxRisk = document.getElementById('riskChart').getContext('2d');
+      new Chart(ctxRisk, {
+        type: 'doughnut',
+        data: {
+          labels: ['Haloperidol High Dose', 'Risperidone High Dose', 'ไม่มียา Anticholinergic', 'อื่นๆ'],
+          datasets: [{
+            data: [45, 25, 20, 10],
+            backgroundColor: ['#667eea', '#764ba2', '#ed8936', '#cbd5e0']
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+      });
+
+      const ctxTrend = document.getElementById('trendChart').getContext('2d');
+      new Chart(ctxTrend, {
+        type: 'line',
+        data: {
+          labels: ['ต.ค.', 'พ.ย.', 'ธ.ค.', 'ม.ค.', 'ก.พ.', 'มี.ค.'],
+          datasets: [{
+            label: 'จำนวนเคสที่พบ EPS',
+            data: [12, 19, 15, 8, 22, 14],
+            borderColor: '#e53e3e',
+            tension: 0.3,
+            fill: true,
+            backgroundColor: 'rgba(229, 62, 62, 0.1)'
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+      });
+      
+      chartRendered = true;
+    }
+  </script>
+</body>
+</html>
