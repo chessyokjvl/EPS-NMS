@@ -277,7 +277,7 @@
   </div>
 
   <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyF3TKw6QgKJugMDUhm76RcpY8DVvPsm3U641icCaQZpgKBydI5KP9whJtxkofRZviG3w/exec'; 
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbx60HM0g6IGNAU2y7e4lSMaz7jmfR-OI3Y2tCI4VnN5iGBTI5a-uTyPfDtVlayBBFSU0A/exec'; 
     let currentPharmacist = ''; let pharmacistList = [];
 
     // --- Login & Initialize ---
@@ -416,9 +416,12 @@
     // --- Dashboard Data & Charts ---
     let myChart = null; let mngChartObj = null;
     function loadDashboardStats() {
-      fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'getDashboardStats' }) }).then(res => res.json()).then(data => {
+      fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'getDashboardStats' }) })
+      .then(res => res.json()).then(data => {
         if(data.status === 'success') {
-          document.getElementById('statActive').innerText = data.stats.active; document.getElementById('statHighRisk').innerText = data.stats.highRisk; document.getElementById('statAssessed').innerText = data.stats.assessed;
+          document.getElementById('statActive').innerText = data.stats.active; 
+          document.getElementById('statHighRisk').innerText = data.stats.highRisk; 
+          document.getElementById('statAssessed').innerText = data.stats.assessed;
           document.getElementById('statFuRate').innerText = data.stats.fuRate + ' %';
           document.getElementById('statAvgDays').innerText = data.stats.avgDays + ' วัน';
 
@@ -435,7 +438,16 @@
             data: { labels: data.stats.mngLabels, datasets: [{ label: 'จำนวนครั้ง (การจัดการ)', data: data.stats.mngData, backgroundColor: '#14b8a6', borderRadius: 4 }] },
             options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
           });
+        } else {
+          // หาก Backend มีปัญหา ให้แสดงข้อความแจ้งเตือนแทน '...'
+          console.error("Dashboard Error:", data.message);
+          document.getElementById('statActive').innerText = "Error";
+          document.getElementById('statHighRisk').innerText = "Error";
+          document.getElementById('statAssessed').innerText = "Error";
+          Swal.fire('ข้อผิดพลาด Dashboard', data.message, 'error');
         }
+      }).catch(err => {
+        console.error("Fetch Error:", err);
       });
     }
   </script>
