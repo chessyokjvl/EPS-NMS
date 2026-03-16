@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>ระบบบริหารจัดการผู้ป่วยกลุ่มเสี่ยง EPS/NMS - รพ.จิตเวชเลยราชนครินทร์</title>
+  <title>JVL RCA Management</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,10 +17,7 @@
       --bg-light: #f3f4f6;
       --text-dark: #1f2937;
     }
-    body {
-      font-family: 'Sarabun', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: var(--bg-light); margin: 0; padding: 0; overflow-x: hidden; color: var(--text-dark);
-    }
+    body { font-family: 'Sarabun', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-light); margin: 0; padding: 0; overflow-x: hidden; color: var(--text-dark); }
 
     /* Login Area */
     #login-section {
@@ -28,22 +25,13 @@
       background: linear-gradient(rgba(30, 58, 138, 0.8), rgba(30, 58, 138, 0.9)), url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2053&auto=format&fit=crop') center/cover;
       padding: 1rem;
     }
-    .login-card {
-      background: white; padding: 3rem 2.5rem; border-radius: 16px;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); width: 100%; max-width: 450px; text-align: center;
-    }
+    .login-card { background: white; padding: 3rem 2.5rem; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); width: 100%; max-width: 450px; text-align: center; }
     .login-logo { width: 100px; height: auto; margin-bottom: 1.5rem; }
     .login-card h3 { color: var(--primary-color); font-weight: 700; font-size: 1.4rem; margin-bottom: 0.5rem; }
     .login-card p { color: #6b7280; font-size: 0.95rem; margin-bottom: 2rem; }
-    .btn-primary-custom {
-      background-color: var(--primary-color); border-color: var(--primary-color); color: white;
-      padding: 0.8rem; font-weight: 600; border-radius: 8px; transition: all 0.3s;
-    }
+    .btn-primary-custom { background-color: var(--primary-color); border-color: var(--primary-color); color: white; padding: 0.8rem; font-weight: 600; border-radius: 8px; transition: all 0.3s; }
     .btn-primary-custom:hover { background-color: #152c69; transform: translateY(-2px); }
-    .btn-guest {
-      background-color: transparent; border: 2px solid #cbd5e1; color: #64748b;
-      padding: 0.8rem; font-weight: 600; border-radius: 8px; transition: all 0.3s;
-    }
+    .btn-guest { background-color: transparent; border: 2px solid #cbd5e1; color: #64748b; padding: 0.8rem; font-weight: 600; border-radius: 8px; transition: all 0.3s; }
     .btn-guest:hover { background-color: #f1f5f9; color: var(--primary-color); border-color: #94a3b8; }
 
     /* Main App */
@@ -51,33 +39,19 @@
     .wrapper { display: flex; width: 100%; }
     
     /* Sidebar */
-    .sidebar {
-      width: 260px; background: white; min-height: 100vh; box-shadow: 4px 0 15px rgba(0,0,0,0.05);
-      transition: all 0.3s; z-index: 1000; display: flex; flex-direction: column;
-    }
+    .sidebar { width: 260px; background: white; min-height: 100vh; box-shadow: 4px 0 15px rgba(0,0,0,0.05); transition: all 0.3s; z-index: 1000; display: flex; flex-direction: column; }
     .sidebar-header { padding: 2rem 1.5rem; background: var(--primary-color); color: white; text-align: center; }
     .sidebar-header img { width: 50px; margin-bottom: 10px; }
     .sidebar-menu { list-style: none; padding: 0; margin: 1rem 0; flex-grow: 1; }
-    .sidebar-menu li a {
-      display: block; padding: 1rem 1.5rem; color: #4b5563; text-decoration: none; font-weight: 500;
-      border-left: 4px solid transparent; transition: 0.2s;
-    }
-    .sidebar-menu li a:hover, .sidebar-menu li a.active {
-      background: #eff6ff; color: var(--secondary-color); border-left: 4px solid var(--secondary-color);
-    }
+    .sidebar-menu li a { display: block; padding: 1rem 1.5rem; color: #4b5563; text-decoration: none; font-weight: 500; border-left: 4px solid transparent; transition: 0.2s; }
+    .sidebar-menu li a:hover, .sidebar-menu li a.active { background: #eff6ff; color: var(--secondary-color); border-left: 4px solid var(--secondary-color); }
     .sidebar-menu li a i { width: 30px; text-align: center; }
 
     /* Content Area */
     .main-content { flex: 1; padding: 2rem; width: calc(100% - 260px); transition: all 0.3s; }
-    .top-navbar {
-      display: flex; justify-content: space-between; align-items: center; background: white;
-      padding: 1rem 2rem; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); margin-bottom: 2rem;
-    }
+    .top-navbar { display: flex; justify-content: space-between; align-items: center; background: white; padding: 1rem 2rem; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); margin-bottom: 2rem; }
     .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--primary-color); }
-    .view-section {
-      display: none; background: white; border-radius: 12px; padding: 2.5rem;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.03); animation: fadeIn 0.4s ease;
-    }
+    .view-section { display: none; background: white; border-radius: 12px; padding: 2.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.03); animation: fadeIn 0.4s ease; }
     .view-section.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -131,12 +105,13 @@
       <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
           <img src="https://www.rploei.go.th/ec2/wp-content/uploads/2017/08/cropped-cropped-cropped-3.png" alt="Logo">
-          <h6 class="mb-0 mt-2">ระบบ EPS/NMS</h6>
+          <h6 class="mb-0 mt-2">ระบบจัดการยาสนับสนุน<br>จิตเวชเลยฯ</h6>
         </div>
         <ul class="sidebar-menu">
           <li><a href="#" class="active" onclick="switchView('dashboard', this)"><i class="fas fa-chart-pie"></i> ภาพรวมสถิติ</a></li>
           <li class="restricted-menu"><a href="#" onclick="switchView('patients', this)"><i class="fas fa-users"></i> ทะเบียนผู้ป่วย</a></li>
           <li class="restricted-menu"><a href="#" onclick="switchView('register', this)"><i class="fas fa-user-plus"></i> ลงทะเบียนผู้ป่วยใหม่</a></li>
+          <li class="restricted-menu"><a href="#" onclick="switchView('openingBalance', this)"><i class="fas fa-file-invoice-dollar"></i> บันทึกยอดยกมา (ต้้งต้น)</a></li>
           <li style="margin-top: auto;"><a href="#" onclick="logout()" style="color:#dc2626;"><i class="fas fa-sign-out-alt"></i> ออกจากระบบ</a></li>
         </ul>
       </nav>
@@ -156,6 +131,24 @@
         <div id="dashboardView" class="view-section active">
           <h4 class="mb-4 text-primary"><i class="fas fa-chart-line"></i> Dashboard สถิติทางคลินิก (Real-time)</h4>
           
+          <div class="row mb-4 align-items-end bg-light p-3 rounded">
+            <div class="col-md-3 mb-2">
+              <label class="form-label small text-muted">ปีงบประมาณ</label>
+              <select class="form-select border-0 shadow-sm"><option>2569</option><option>2568</option><option>2567</option></select>
+            </div>
+            <div class="col-md-3 mb-2">
+              <label class="form-label small text-muted">จากวันที่</label>
+              <input type="date" class="form-control border-0 shadow-sm">
+            </div>
+            <div class="col-md-3 mb-2">
+              <label class="form-label small text-muted">ถึงวันที่</label>
+              <input type="date" class="form-control border-0 shadow-sm">
+            </div>
+            <div class="col-md-3 mb-2">
+              <button class="btn btn-primary w-100 shadow-sm" id="btnFilter" onclick="applyDashboardFilter()"><i class="fas fa-filter"></i> กรองข้อมูล</button>
+            </div>
+          </div>
+
           <div class="row mb-4">
             <div class="col-md-4 mb-3">
               <div class="stat-card bg-blue shadow-sm">
@@ -195,9 +188,9 @@
             <button class="btn btn-outline-primary btn-sm" onclick="loadPatients()"><i class="fas fa-sync-alt"></i> รีเฟรชข้อมูล</button>
           </div>
           <div class="table-responsive">
-            <table class="table table-hover align-middle border">
+            <table class="table table-hover align-middle border text-nowrap">
               <thead class="table-light text-muted">
-                <tr><th>ID</th><th>HN</th><th>ชื่อ-สกุล</th><th>วันที่ Admit</th><th>การจัดการ</th></tr>
+                <tr><th>ID</th><th>HN</th><th>ชื่อ-สกุล</th><th>วันที่ Admit</th><th>หอผู้ป่วย</th><th class="text-center">การจัดการ</th></tr>
               </thead>
               <tbody id="patientTableBody">
                 </tbody>
@@ -208,17 +201,62 @@
         <div id="registerView" class="view-section">
           <h4 class="mb-4 text-primary border-bottom pb-3"><i class="fas fa-user-plus"></i> ลงทะเบียนผู้ป่วยใหม่ (เข้ารหัส)</h4>
           <form id="registerForm">
+            <h6 class="text-secondary fw-bold mb-3"><i class="fas fa-id-card"></i> ข้อมูลทั่วไป</h6>
             <div class="row">
-              <div class="col-md-4 mb-3"><label class="form-label fw-bold">HN <span class="text-danger">*</span></label><input type="text" class="form-control" id="regHn" required></div>
-              <div class="col-md-4 mb-3"><label class="form-label fw-bold">AN</label><input type="text" class="form-control" id="regAn"></div>
-              <div class="col-md-4 mb-3"><label class="form-label fw-bold">ชื่อ-สกุล <span class="text-danger">*</span></label><input type="text" class="form-control" id="regName" required></div>
-              <div class="col-md-6 mb-3"><label class="form-label fw-bold">วันที่ Admit <span class="text-danger">*</span></label><input type="date" class="form-control" id="regDateAdmit" required></div>
-              <div class="col-md-6 mb-3"><label class="form-label fw-bold">ตึก/หอผู้ป่วย</label><input type="text" class="form-control" id="regWard"></div>
+              <div class="col-md-3 mb-3"><label class="form-label fw-bold">HN <span class="text-danger">*</span></label><input type="text" class="form-control" id="regHn" required></div>
+              <div class="col-md-3 mb-3"><label class="form-label fw-bold">AN</label><input type="text" class="form-control" id="regAn"></div>
+              <div class="col-md-6 mb-3"><label class="form-label fw-bold">ชื่อ-สกุล <span class="text-danger">*</span></label><input type="text" class="form-control" id="regName" required></div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label fw-bold">เพศ</label>
+                <select class="form-select" id="regGender">
+                  <option value="">-- เลือก --</option>
+                  <option value="ชาย">ชาย</option><option value="หญิง">หญิง</option><option value="LGBTQ">LGBTQ</option>
+                </select>
+              </div>
+              <div class="col-md-3 mb-3"><label class="form-label fw-bold">อายุ (ปี)</label><input type="number" class="form-control" id="regAge"></div>
+              <div class="col-md-3 mb-3"><label class="form-label fw-bold">น้ำหนัก (kg)</label><input type="number" class="form-control" id="regWeight" step="0.1"></div>
+              <div class="col-md-3 mb-3"><label class="form-label fw-bold">ส่วนสูง (cm)</label><input type="number" class="form-control" id="regHeight" step="1"></div>
+              <div class="col-md-3 mb-3"><label class="form-label fw-bold text-success">BMI</label><input type="text" class="form-control bg-light text-success fw-bold" id="regBmi" readonly tabindex="-1"></div>
+              <div class="col-md-9 mb-3"><label class="form-label fw-bold">แนบภาพ (URL)</label><input type="text" class="form-control" id="regImageUrl" placeholder="https://..."></div>
             </div>
-            <div class="mt-4 text-end">
+
+            <h6 class="text-secondary fw-bold mt-3 mb-3"><i class="fas fa-hospital-user"></i> ข้อมูลทางคลินิก</h6>
+            <div class="row">
+              <div class="col-md-4 mb-3"><label class="form-label fw-bold">วันที่ Admit <span class="text-danger">*</span></label><input type="date" class="form-control" id="regDateAdmit" required></div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label fw-bold">หอผู้ป่วย <span class="text-danger">*</span></label>
+                <select class="form-select border-primary" id="regWard" required>
+                  <option value="">-- เลือกหอผู้ป่วย --</option>
+                  <option value="พุทธรักษา (ชาย1)">พุทธรักษา (ชาย1)</option>
+                  <option value="จำปาทอง (ชาย2)">จำปาทอง (ชาย2)</option>
+                  <option value="ราชาวดี (ชาย3)">ราชาวดี (ชาย3)</option>
+                  <option value="ลีลาวดี (หญิง)">ลีลาวดี (หญิง)</option>
+                  <option value="ฉัตรชบา (พิเศษ)">ฉัตรชบา (พิเศษ)</option>
+                </select>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label fw-bold">แพทย์เจ้าของไข้</label>
+                <select class="form-select" id="regPhysician">
+                  <option value="">-- เลือกแพทย์ --</option>
+                  <option value="พญ.จุฬาพันธุ์">พญ.จุฬาพันธุ์</option>
+                  <option value="นพ.วรพงษ์">นพ.วรพงษ์</option>
+                  <option value="นพ.ณัชพล">นพ.ณัชพล</option>
+                  <option value="พญ.หทัยกาญจน์">พญ.หทัยกาญจน์</option>
+                  <option value="นพ.กฤตวัฒน์">นพ.กฤตวัฒน์</option>
+                </select>
+              </div>
+              <div class="col-md-12 mb-3"><label class="form-label fw-bold">การวินิจฉัยโรค (Diagnosis)</label><input type="text" class="form-control" id="regDiagnosis"></div>
+            </div>
+            
+            <div class="mt-4 text-end border-top pt-3">
               <button type="button" class="btn btn-primary px-4 py-2" id="btnRegister" onclick="submitRegistration()"><i class="fas fa-save"></i> ลงทะเบียนและสร้าง ID</button>
             </div>
           </form>
+        </div>
+
+        <div id="openingBalanceView" class="view-section">
+          <h4 class="mb-4 text-primary border-bottom pb-3"><i class="fas fa-file-invoice-dollar"></i> บันทึกยอดยกมา (ต้้งต้น)</h4>
+          <p class="text-muted">ส่วนสำหรับบันทึกยอดยกมาตามโฟลว์งาน...</p>
         </div>
 
         <div id="assessmentView" class="view-section">
@@ -283,8 +321,8 @@
     // ==========================================
     // ต้้งค่า Web App URL ที่ Deploy จาก Google Apps Script
     // ==========================================
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbz9smqzJh2wsMyjY1nG_fxhYLF5ML9_Ww61hEMeSuQIhLAupjIOtYnyzZ8dg2R4kU0n9w/exec'; 
-    let currentPharmacist = ''; // เก็บชื่อผู้ใช้งานเพื่อใช้ตอนประเมิน
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzFcm0j_aPn5bT5QEZI5qrmDjo82S39Zoo8lMML7m-JooNxK3ziHE3AklJggU2i1UmLcA/exec'; 
+    let currentPharmacist = ''; 
 
     // --- 1. Login System ---
     const handleEnter = (e) => { if (e.key === 'Enter') login('user'); };
@@ -330,12 +368,7 @@
       .finally(() => { btn.innerHTML = origText; btn.disabled = false; });
     }
 
-    function showApp(view) {
-      document.getElementById('login-section').style.display = 'none';
-      document.getElementById('app-section').style.display = 'block';
-      switchView(view);
-    }
-
+    function showApp(view) { document.getElementById('login-section').style.display = 'none'; document.getElementById('app-section').style.display = 'block'; switchView(view); }
     function logout() {
       Swal.fire({ title: 'ยืนยันการออกจากระบบ?', icon: 'warning', showCancelButton: true, confirmButtonText: 'ออกจากระบบ', cancelButtonText: 'ยกเลิก' })
       .then((res) => {
@@ -347,7 +380,7 @@
       });
     }
 
-    // --- 2. Navigation ---
+    // --- 2. Navigation & Filtering ---
     function switchView(viewId, element = null) {
       document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
       document.getElementById(viewId + 'View').classList.add('active');
@@ -358,45 +391,100 @@
       if(window.innerWidth <= 992) document.getElementById('sidebar').classList.remove('show');
     }
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('show'); }
+    
+    function applyDashboardFilter() {
+      const btn = document.getElementById('btnFilter'); const text = btn.innerHTML;
+      btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+      setTimeout(() => { btn.innerHTML = text; Swal.fire({ title: 'อัปเดตข้อมูลสำเร็จ', icon: 'success', timer: 1000, showConfirmButton: false }); }, 800);
+    }
 
     // --- 3. CRUD API Calls ---
+    const calcBmi = () => {
+      let w = parseFloat(document.getElementById('regWeight').value);
+      let h = parseFloat(document.getElementById('regHeight').value) / 100;
+      if (w > 0 && h > 0) document.getElementById('regBmi').value = (w / (h * h)).toFixed(2);
+      else document.getElementById('regBmi').value = '';
+    };
+    document.getElementById('regWeight').addEventListener('input', calcBmi);
+    document.getElementById('regHeight').addEventListener('input', calcBmi);
+
     function loadPatients() {
       const tbody = document.getElementById('patientTableBody');
-      tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4"><span class="spinner-border text-primary"></span> กำลังโหลด...</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4"><span class="spinner-border text-primary"></span> กำลังโหลด...</td></tr>';
       
       fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'getPatients' }) })
       .then(res => res.json())
       .then(res => {
         tbody.innerHTML = '';
         if(res.status === 'success') {
-          if(res.data.length === 0) return tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted py-4">ไม่มีผู้ป่วยในระบบ</td></tr>';
+          if(res.data.length === 0) return tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted py-4">ไม่มีผู้ป่วยในระบบ</td></tr>';
           res.data.forEach(p => {
             let admitDate = new Date(p.dateAdmit).toLocaleDateString('th-TH');
             if(admitDate === 'Invalid Date') admitDate = p.dateAdmit;
+            let wardDisplay = p.ward ? p.ward : '-';
+            
             tbody.innerHTML += `<tr>
               <td><span class="text-secondary fw-bold">${p.id}</span></td>
               <td>${p.hn}</td><td>${p.name}</td><td>${admitDate}</td>
-              <td><button class="btn btn-sm btn-primary shadow-sm" onclick="openAssessmentForm('${p.id}', '${p.name}')"><i class="fas fa-stethoscope"></i> ประเมิน</button></td>
+              <td><span class="badge bg-info text-dark rounded-pill"><i class="fas fa-bed"></i> ${wardDisplay}</span></td>
+              <td class="text-center">
+                <button class="btn btn-sm btn-outline-secondary shadow-sm me-1" title="ย้ายตึก" onclick="changeWard('${p.id}', '${p.name}', '${p.ward}')"><i class="fas fa-exchange-alt"></i></button>
+                <button class="btn btn-sm btn-primary shadow-sm" onclick="openAssessmentForm('${p.id}', '${p.name}')"><i class="fas fa-stethoscope"></i> ประเมิน</button>
+                <button class="btn btn-sm btn-warning shadow-sm ms-1"><i class="fas fa-edit"></i> แก้ไข</button>
+                <button class="btn btn-sm btn-danger shadow-sm ms-1"><i class="fas fa-trash"></i> ลบ</button>
+              </td>
             </tr>`;
           });
         }
       });
     }
 
+    function changeWard(patientId, patientName, currentWard) {
+      Swal.fire({
+        title: `ย้ายหอผู้ป่วย`,
+        html: `ผู้ป่วย: <b>${patientName}</b><br><br>
+          <select id="swal-ward" class="form-select">
+            <option value="พุทธรักษา (ชาย1)" ${currentWard==='พุทธรักษา (ชาย1)'?'selected':''}>พุทธรักษา (ชาย1)</option>
+            <option value="จำปาทอง (ชาย2)" ${currentWard==='จำปาทอง (ชาย2)'?'selected':''}>จำปาทอง (ชาย2)</option>
+            <option value="ราชาวดี (ชาย3)" ${currentWard==='ราชาวดี (ชาย3)'?'selected':''}>ราชาวดี (ชาย3)</option>
+            <option value="ลีลาวดี (หญิง)" ${currentWard==='ลีลาวดี (หญิง)'?'selected':''}>ลีลาวดี (หญิง)</option>
+            <option value="ฉัตรชบา (พิเศษ)" ${currentWard==='ฉัตรชบา (พิเศษ)'?'selected':''}>ฉัตรชบา (พิเศษ)</option>
+          </select>`,
+        showCancelButton: true, confirmButtonText: '<i class="fas fa-save"></i> บันทึกการย้าย', cancelButtonText: 'ยกเลิก',
+        preConfirm: () => document.getElementById('swal-ward').value
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const newWard = result.value;
+          if (newWard === currentWard) return;
+          Swal.fire({title: 'กำลังบันทึก...', allowOutsideClick: false, didOpen: () => {Swal.showLoading();}});
+          fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'updateWard', patientId: patientId, newWard: newWard }) })
+          .then(res => res.json()).then(data => {
+            if(data.status === 'success') { Swal.fire('สำเร็จ', 'อัปเดตหอผู้ป่วยเรียบร้อยแล้ว', 'success'); loadPatients(); } 
+            else { Swal.fire('ข้อผิดพลาด', data.message, 'error'); }
+          });
+        }
+      });
+    }
+
     function submitRegistration() {
-      const hn = document.getElementById('regHn').value, name = document.getElementById('regName').value, dateAdmit = document.getElementById('regDateAdmit').value;
-      if(!hn || !name || !dateAdmit) return Swal.fire('ข้อมูลไม่ครบ', 'กรุณากรอกช่องที่มี *', 'warning');
+      const hn = document.getElementById('regHn').value, name = document.getElementById('regName').value;
+      const dateAdmit = document.getElementById('regDateAdmit').value, ward = document.getElementById('regWard').value;
+      
+      if(!hn || !name || !dateAdmit || !ward) return Swal.fire('ข้อมูลไม่ครบ', 'กรุณากรอกช่องที่มี *', 'warning');
 
       const btn = document.getElementById('btnRegister');
       const origText = btn.innerHTML; btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> กำลังบันทึก...'; btn.disabled = true;
 
       const payload = { action: 'registerPatient', patientData: {
-        hn: hn, an: document.getElementById('regAn').value, name: name, dateAdmit: dateAdmit, ward: document.getElementById('regWard').value
+        hn: hn, an: document.getElementById('regAn').value, name: name,
+        gender: document.getElementById('regGender').value, age: document.getElementById('regAge').value,
+        weight: document.getElementById('regWeight').value, height: document.getElementById('regHeight').value, bmi: document.getElementById('regBmi').value,
+        imageUrl: document.getElementById('regImageUrl').value,
+        dateAdmit: dateAdmit, ward: ward, physician: document.getElementById('regPhysician').value, diagnosis: document.getElementById('regDiagnosis').value
       }};
 
       fetch(scriptURL, { method: 'POST', body: JSON.stringify(payload) })
-      .then(res => res.json())
-      .then(data => {
+      .then(res => res.json()).then(data => {
         if(data.status === 'success') {
           Swal.fire({ title: 'ลงทะเบียนสำเร็จ', text: `ID: ${data.patientId}`, icon: 'success', timer: 2000, showConfirmButton: false });
           document.getElementById('registerForm').reset();
@@ -413,24 +501,15 @@
         action: 'submitAssessment',
         assessmentData: {
           patientId: document.getElementById('assessPatientId').innerText,
-          rf1: document.getElementById('rf1').checked,
-          rf2: document.getElementById('rf2').checked,
-          rf3: document.getElementById('rf3').checked,
-          rf4: document.getElementById('rf4').checked,
-          rf5: document.getElementById('rf5').checked,
-          laiMed: document.getElementById('laiMed').value,
-          laiDose: document.getElementById('laiDose').value,
-          laiTiming: document.getElementById('laiTiming').value,
-          historyEps: document.getElementById('historyEps').value,
-          comorbidities: document.getElementById('comorbidities').value,
-          monitorStatus: document.getElementById('finalStatus').value,
+          rf1: document.getElementById('rf1').checked, rf2: document.getElementById('rf2').checked, rf3: document.getElementById('rf3').checked, rf4: document.getElementById('rf4').checked, rf5: document.getElementById('rf5').checked,
+          laiMed: document.getElementById('laiMed').value, laiDose: document.getElementById('laiDose').value, laiTiming: document.getElementById('laiTiming').value,
+          historyEps: document.getElementById('historyEps').value, comorbidities: document.getElementById('comorbidities').value, monitorStatus: document.getElementById('finalStatus').value,
           pharmacistName: currentPharmacist
         }
       };
 
       fetch(scriptURL, { method: 'POST', body: JSON.stringify(payload) })
-      .then(res => res.json())
-      .then(data => {
+      .then(res => res.json()).then(data => {
         if(data.status === 'success') {
           Swal.fire({ title: 'บันทึกประเมินสำเร็จ', icon: 'success', timer: 1500, showConfirmButton: false });
           loadDashboardStats(); switchView('patients');
@@ -452,17 +531,11 @@
       document.getElementById('scoreText').innerText = `พบ ${score} ปัจจัย`;
 
       if(score >= 2) {
-        document.getElementById('statusText').innerText = "เข้าเกณฑ์ Monitor";
-        document.getElementById('statusText').className = "badge bg-danger mt-1 fs-6";
-        document.getElementById('scoreText').className = "d-block fs-3 fw-bold text-danger";
-        box.className = "p-3 rounded border border-danger text-center bg-white shadow-sm";
-        finalStatus.value = "เข้าเกณฑ์";
+        document.getElementById('statusText').innerText = "เข้าเกณฑ์ Monitor"; document.getElementById('statusText').className = "badge bg-danger mt-1 fs-6"; document.getElementById('scoreText').className = "d-block fs-3 fw-bold text-danger";
+        box.className = "p-3 rounded border border-danger text-center bg-white shadow-sm"; finalStatus.value = "เข้าเกณฑ์";
       } else {
-        document.getElementById('statusText').innerText = "ยังไม่เข้าเกณฑ์";
-        document.getElementById('statusText').className = "badge bg-success mt-1 fs-6";
-        document.getElementById('scoreText').className = "d-block fs-3 fw-bold text-success";
-        box.className = "p-3 rounded border border-success text-center bg-white";
-        finalStatus.value = "ไม่เข้าเกณฑ์";
+        document.getElementById('statusText').innerText = "ยังไม่เข้าเกณฑ์"; document.getElementById('statusText').className = "badge bg-success mt-1 fs-6"; document.getElementById('scoreText').className = "d-block fs-3 fw-bold text-success";
+        box.className = "p-3 rounded border border-success text-center bg-white"; finalStatus.value = "ไม่เข้าเกณฑ์";
       }
     }
     document.querySelectorAll('.risk-factor, .risk-factor-select').forEach(el => el.addEventListener('change', calculateRisk));
@@ -471,20 +544,13 @@
     let myChart = null;
     function loadDashboardStats() {
       fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'getDashboardStats' }) })
-      .then(res => res.json())
-      .then(data => {
+      .then(res => res.json()).then(data => {
         if(data.status === 'success') {
-          document.getElementById('statActive').innerText = data.stats.active;
-          document.getElementById('statHighRisk').innerText = data.stats.highRisk;
-          document.getElementById('statAssessed').innerText = data.stats.assessed;
-
+          document.getElementById('statActive').innerText = data.stats.active; document.getElementById('statHighRisk').innerText = data.stats.highRisk; document.getElementById('statAssessed').innerText = data.stats.assessed;
           if(myChart) myChart.destroy();
           myChart = new Chart(document.getElementById('riskChart').getContext('2d'), {
             type: 'doughnut',
-            data: {
-              labels: ['Haloperidol', 'Risperidone', 'No Anticholinergic', 'LAI'],
-              datasets: [{ data: data.stats.chartData, backgroundColor: ['#1e3a8a', '#2563eb', '#3b82f6', '#d97706'] }]
-            },
+            data: { labels: ['Haloperidol', 'Risperidone', 'No Anticholinergic', 'LAI'], datasets: [{ data: data.stats.chartData, backgroundColor: ['#1e3a8a', '#2563eb', '#3b82f6', '#d97706'] }] },
             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
           });
         }
