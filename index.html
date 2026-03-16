@@ -372,32 +372,77 @@
             <div class="row mb-3">
               <div class="col-md-6">
                 <div class="form-check mb-2">
-                  <input class="form-check-input" type="checkbox" id="med1">
+                  <input class="form-check-input" type="checkbox" id="med1" value="ไม่มี Anticholinergic">
                   <label class="form-check-label" for="med1">ไม่มียา Anticholinergic (เช่น Trihexyphenidyl)</label>
                 </div>
                 <div class="form-check mb-2">
-                  <input class="form-check-input" type="checkbox" id="med2">
-                  <label class="form-check-label" for="med2">Risperidone ≥ 6 mg/day</label>
+                  <input class="form-check-input" type="checkbox" id="med2" value="Risperidone >= 6 mg/day">
+                  <label class="form-check-label" for="med2">Risperidone >= 6 mg/day</label>
                 </div>
                 <div class="form-check mb-2">
-                  <input class="form-check-input" type="checkbox" id="med3">
-                  <label class="form-check-label" for="med3">Haloperidol ≥ 15 mg/day</label>
+                  <input class="form-check-input" type="checkbox" id="med3" value="Haloperidol >= 15 mg/day">
+                  <label class="form-check-label" for="med3">Haloperidol >= 15 mg/day</label>
+                </div>
+                <div class="form-check mb-2">
+                  <input class="form-check-input" type="checkbox" id="med4" value="Perphenazine >= 32 mg/day">
+                  <label class="form-check-label" for="med4">Perphenazine >= 32 mg/day</label>
+                </div>
+                <div class="form-check mb-2">
+                  <input class="form-check-input" type="checkbox" id="med5" value="Haloperidol inj prn >= 15 mg/day">
+                  <label class="form-check-label" for="med5">Haloperidol inj prn >= 15 mg/day</label>
                 </div>
               </div>
               <div class="col-md-6">
-                 <label class="form-label">LAI (Long-Acting Injectable)</label>
-                 <select class="form-select mb-2">
-                   <option value="">-- เลือกยา LAI --</option>
-                   <option>Fluphenazine Decanoate</option>
-                   <option>Haloperidol Decanoate</option>
+                 <label class="form-label text-secondary fw-bold">LAI (Long-Acting Injectable)</label>
+                 <select class="form-select mb-2" id="laiMed">
+                   <option value="">-- เลือกชนิดและความแรงยา LAI --</option>
+                   <option value="Fluphenazine Decanoate 25 mg">Fluphenazine Decanoate 25 mg</option>
+                   <option value="Fluphenazine Decanoate 50 mg">Fluphenazine Decanoate 50 mg</option>
+                   <option value="Haloperidol Decanoate 50 mg">Haloperidol Decanoate 50 mg</option>
+                   <option value="Haloperidol Decanoate 100 mg">Haloperidol Decanoate 100 mg</option>
                  </select>
-                 <select class="form-select">
-                   <option value="">-- เลือกช่วงเวลา --</option>
-                   <option>ภายใน 7 วัน PTA</option>
-                   <option>ภายใน 3 วันหลัง Admit</option>
+                 <select class="form-select mb-2" id="laiDose">
+                   <option value="">-- เลือกปริมาณยา (Amp) --</option>
+                   <option value="0.5 Amp">0.5 Amp (ครึ่ง Amp)</option>
+                   <option value="1 Amp">1 Amp</option>
+                   <option value="1.5 Amp">1.5 Amp</option>
+                   <option value="2 Amp">2 Amp</option>
+                 </select>
+                 <select class="form-select" id="laiTiming">
+                   <option value="">-- เลือกช่วงเวลาที่ได้รับ --</option>
+                   <option value="ภายใน 7 วัน PTA">ภายใน 7 วัน PTA</option>
+                   <option value="ภายใน 3 วันหลัง Admit">ภายใน 3 วันหลัง Admit</option>
                  </select>
               </div>
             </div>
+
+            <h6 class="border-bottom pb-2 mt-4 text-primary"><i class="fas fa-clipboard-list"></i> ประวัติและข้อมูลเพิ่มเติม</h6>
+            
+            <div class="row mb-3">
+              <div class="col-md-12 mb-3">
+                <label class="form-label">โรคทางกาย / ยาที่ใช้ร่วม (NCDs เช่น เบาหวาน ความดัน ไขมัน หัวใจ ฯลฯ)</label>
+                <textarea class="form-control" id="comorbidities" rows="2" placeholder="ระบุโรคประจำตัว หรือ ยาที่ใช้ร่วม..."></textarea>
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label class="form-label">ประวัติการเกิด EPS/NMS เดิม</label>
+                <select class="form-select" id="historyEps">
+                  <option value="ไม่มี">ไม่มี</option>
+                  <option value="มี">มี</option>
+                </select>
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label class="form-label">ผลการพิจารณาเข้าเกณฑ์ Monitor</label>
+                <select class="form-select border-primary" id="monitorStatus">
+                  <option value="เข้าเกณฑ์">เข้าเกณฑ์ Monitor</option>
+                  <option value="ยังไม่เข้าเกณฑ์">ยังไม่เข้าเกณฑ์</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-primary mt-3 w-100" onclick="submitAssessment()"><i class="fas fa-save"></i> บันทึกผลการประเมินลงฐานข้อมูล</button>
+          </form>
 
             <h6 class="border-bottom pb-2 mt-4 text-primary"><i class="fas fa-clipboard-list"></i> ประวัติและข้อมูลเพิ่มเติม</h6>
             <div class="row mb-3">
@@ -427,7 +472,7 @@
 
   <script>
     // URL ของ Google Apps Script ที่ Deploy เป็น Web App
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwLGWUVfpMkTv5aUogeb1usvOjpr9ApWxqR5wYbybjwUF2_R0CK4rixBGJug6Z4Yfgrig/exec'; 
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyWgRF2Ovsw-lGvJ565jVoi7S2U95fm_fWX5-5ElX8rsyu0RdAnq9Z3RjKb6l6Keul5hw/exec'; 
 
     // --- ระบบ Login (กด Enter ได้) ---
     document.getElementById('password').addEventListener('keypress', function (e) {
