@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>JVL EPS-NMS Management</title>
+  <title>JVL Pharmacotherapy (บริบาลเภสัชกรรมผู้ป่วยจิตเวช)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -13,6 +13,7 @@
     :root { --primary-color: #1e3a8a; --secondary-color: #2563eb; --accent-color: #d97706; --bg-light: #f3f4f6; --text-dark: #1f2937; }
     body { font-family: 'Sarabun', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-light); margin: 0; padding: 0; overflow-x: hidden; color: var(--text-dark); }
     
+    /* --- Login Area --- */
     #login-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(rgba(30,58,138,0.8), rgba(30,58,138,0.9)), url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2053&auto=format&fit=crop') center/cover; padding: 1rem; }
     .login-card { background: white; padding: 2.5rem 2rem; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); width: 100%; max-width: 400px; text-align: center; }
     .login-logo { width: 90px; height: auto; margin-bottom: 1.2rem; }
@@ -24,9 +25,11 @@
     .btn-guest { background-color: transparent; border: 2px solid #cbd5e1; color: #64748b; }
     .btn-guest:hover { background-color: #f1f5f9; color: var(--primary-color); border-color: #94a3b8; }
 
+    /* --- Main App Layout --- */
     #app-section { display: none; min-height: 100vh; position: relative; }
     .wrapper { display: flex; width: 100%; }
     
+    /* Sidebar */
     .sidebar { width: 260px; background: white; min-height: 100vh; box-shadow: 4px 0 15px rgba(0,0,0,0.05); transition: all 0.3s ease-in-out; z-index: 1000; display: flex; flex-direction: column; position: fixed; height: 100%; overflow-y: auto; left: 0; }
     .sidebar-header { padding: 1.5rem 1rem; background: var(--primary-color); color: white; text-align: center; position: sticky; top: 0; z-index: 10; }
     .sidebar-header img { width: 45px; margin-bottom: 8px; }
@@ -36,9 +39,11 @@
     .sidebar-menu li a:hover, .sidebar-menu li a.active { background: #eff6ff; color: var(--secondary-color); border-left: 4px solid var(--secondary-color); }
     .sidebar-menu li a i { width: 30px; text-align: center; font-size: 1.1rem; }
     
+    /* Mobile Overlay Backdrop */
     .sidebar-backdrop { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; opacity: 0; transition: opacity 0.3s; }
     .sidebar-backdrop.show { display: block; opacity: 1; }
 
+    /* Main Content */
     .main-content { flex: 1; padding: 1.5rem; width: calc(100% - 260px); margin-left: 260px; transition: all 0.3s ease-in-out; min-height: 100vh; display: flex; flex-direction: column; }
     .top-navbar { display: flex; justify-content: space-between; align-items: center; background: white; padding: 1rem 1.5rem; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); margin-bottom: 1.5rem; position: sticky; top: 1rem; z-index: 100; }
     .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--primary-color); cursor: pointer; padding: 0.5rem; }
@@ -46,6 +51,7 @@
     .view-section.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+    /* Dashboard Cards */
     .stat-card { border-radius: 12px; padding: 1.2rem; color: white; position: relative; overflow: hidden; height: 100%; display: flex; flex-direction: column; justify-content: center; }
     .stat-card p { font-size: 0.9rem; opacity: 0.9; }
     .stat-card h3 { font-size: 2rem; font-weight: 700; margin: 5px 0 0 0; }
@@ -55,15 +61,23 @@
     .bg-green { background: linear-gradient(135deg, #10b981, #059669); }
     .bg-purple { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
     .bg-teal { background: linear-gradient(135deg, #14b8a6, #0f766e); }
-    
-    .sas-select {
-        font-size: 0.9rem;
-        white-space: normal; /* เพื่อให้ text wrap ได้บนมือถือ */
-    }
-    .sas-select option {
-        white-space: normal;
-    }
+    .sas-select { font-size: 0.9rem; white-space: normal; }
+    .sas-select option { white-space: normal; }
 
+    /* Timeline & Profile CSS */
+    .timeline { position: relative; padding-left: 2rem; margin-top: 1rem; }
+    .timeline::before { content: ''; position: absolute; left: 0.5rem; top: 0; bottom: 0; width: 2px; background: #cbd5e0; }
+    .timeline-item { position: relative; margin-bottom: 1.5rem; }
+    .timeline-item::before { content: ''; position: absolute; left: -1.85rem; top: 0.2rem; width: 12px; height: 12px; border-radius: 50%; background: var(--secondary-color); border: 2px solid white; box-shadow: 0 0 0 2px var(--secondary-color); }
+    .timeline-date { font-size: 0.85rem; color: #64748b; font-weight: 600; margin-bottom: 0.2rem; }
+    .timeline-card { background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+    
+    .action-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-top: 1rem; }
+    .btn-action { padding: 1rem; border-radius: 12px; font-weight: 600; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; border: none; color: white; text-align: center; line-height: 1.2; font-size: 0.9rem; }
+    .btn-action:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); color: white; }
+    .btn-action i { font-size: 1.5rem; }
+
+    /* Responsive Adjustments */
     @media (max-width: 992px) { 
       .sidebar { left: -260px; } 
       .sidebar.show { left: 0; } 
@@ -91,7 +105,7 @@
     <div class="login-card">
       <img src="https://www.rploei.go.th/ec2/wp-content/uploads/2017/08/cropped-cropped-cropped-3.png" alt="Logo" class="login-logo">
       <h3>กลุ่มงานเภสัชกรรม</h3>
-      <p>โรงพยาบาลจิตเวชเลยราชนครินทร์<br>JVL EPS-NMS Management</p>
+      <p>โรงพยาบาลจิตเวชเลยราชนครินทร์<br>JVL Pharmacotherapy</p>
       <div class="form-floating mb-3 text-start"><input type="text" class="form-control" id="username" placeholder="Username" autocomplete="off"><label for="username"><i class="fas fa-user"></i> ชื่อผู้ใช้งาน</label></div>
       <div class="form-floating mb-4 text-start"><input type="password" class="form-control" id="password" placeholder="Password"><label for="password"><i class="fas fa-lock"></i> รหัสผ่าน</label></div>
       <div class="d-grid gap-3">
@@ -104,9 +118,13 @@
 
   <div id="app-section">
     <div id="sidebarBackdrop" class="sidebar-backdrop" onclick="toggleSidebar()"></div>
+    
     <div class="wrapper">
       <nav class="sidebar" id="sidebar">
-        <div class="sidebar-header"><img src="https://www.rploei.go.th/ec2/wp-content/uploads/2017/08/cropped-cropped-cropped-3.png" alt="Logo"><h6 class="mb-0 mt-2">JVL EPS-NMS<br>Management</h6></div>
+        <div class="sidebar-header">
+          <img src="https://www.rploei.go.th/ec2/wp-content/uploads/2017/08/cropped-cropped-cropped-3.png" alt="Logo">
+          <h6 class="mb-0 mt-2">JVL<br>Pharmacotherapy</h6>
+        </div>
         <ul class="sidebar-menu">
           <li><a href="#" class="active" onclick="switchView('dashboard', this)"><i class="fas fa-chart-pie"></i> ภาพรวมสถิติ</a></li>
           <li class="restricted-menu"><a href="#" onclick="switchView('patients', this)"><i class="fas fa-users"></i> ทะเบียนผู้ป่วย</a></li>
@@ -120,48 +138,112 @@
           <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
           <div class="d-flex align-items-center gap-2 gap-md-3">
             <span class="badge bg-light text-dark border p-2" id="roleBadge">Pharmacist</span>
-            <div class="text-end text-md-start"><span class="text-muted small d-block" style="line-height: 1;">ผู้ใช้งานระบบ</span><strong id="displayUserName" class="text-primary">ชื่อผู้ใช้</strong></div>
+            <div class="text-end text-md-start">
+              <span class="text-muted small d-block" style="line-height: 1;">ผู้ใช้งานระบบ</span>
+              <strong id="displayUserName" class="text-primary">ชื่อผู้ใช้</strong>
+            </div>
           </div>
         </div>
 
         <div id="dashboardView" class="view-section active">
           <h4 class="mb-4 text-primary"><i class="fas fa-chart-line"></i> Dashboard เชิงปริมาณและคุณภาพ</h4>
+          
           <div class="row g-2 mb-4 align-items-end bg-light p-3 rounded mx-0">
-            <div class="col-12 col-md-2 mb-2"><label class="form-label small text-muted">จากวันที่</label><input type="date" class="form-control border-0 shadow-sm" id="filterStartDate"></div>
-            <div class="col-12 col-md-2 mb-2"><label class="form-label small text-muted">ถึงวันที่</label><input type="date" class="form-control border-0 shadow-sm" id="filterEndDate"></div>
+            <div class="col-12 col-md-2 mb-2"><label class="form-label small text-muted">จากวันที่ (ประเมิน)</label><input type="date" class="form-control border-0 shadow-sm" id="filterStartDate"></div>
+            <div class="col-12 col-md-2 mb-2"><label class="form-label small text-muted">ถึงวันที่ (ประเมิน)</label><input type="date" class="form-control border-0 shadow-sm" id="filterEndDate"></div>
             <div class="col-12 col-md-3 mb-2"><label class="form-label small text-muted">หอผู้ป่วย</label><select class="form-select border-0 shadow-sm" id="filterWard"><option value="">ทั้งหมด</option><option value="พุทธรักษา (ชาย1)">พุทธรักษา (ชาย1)</option><option value="จำปาทอง (ชาย2)">จำปาทอง (ชาย2)</option><option value="ราชาวดี (ชาย3)">ราชาวดี (ชาย3)</option><option value="ลีลาวดี (หญิง)">ลีลาวดี (หญิง)</option><option value="ฉัตรชบา (พิเศษ)">ฉัตรชบา (พิเศษ)</option></select></div>
             <div class="col-12 col-md-2 mb-2"><label class="form-label small text-muted">เพศ</label><select class="form-select border-0 shadow-sm" id="filterGender"><option value="">ทั้งหมด</option><option value="ชาย">ชาย</option><option value="หญิง">หญิง</option><option value="LGBTQ">LGBTQ</option></select></div>
             <div class="col-12 col-md-3 mb-2"><button class="btn btn-primary w-100 shadow-sm" id="btnFilter" onclick="applyDashboardFilter()"><i class="fas fa-filter"></i> นำไปใช้</button></div>
           </div>
+
           <h6 class="fw-bold text-secondary mb-3"><i class="fas fa-users"></i> ข้อมูลภาพรวม (Overview)</h6>
           <div class="row g-3 mb-4">
             <div class="col-12 col-md-4"><div class="stat-card bg-blue shadow-sm"><p class="mb-0">ผู้ป่วยในทะเบียน (Active)</p><h3 id="statActive"><span class="spinner-grow spinner-grow-sm"></span></h3><i class="fas fa-procedures"></i></div></div>
             <div class="col-12 col-md-4"><div class="stat-card bg-orange shadow-sm"><p class="mb-0">เข้าเกณฑ์ความเสี่ยงสูง</p><h3 id="statHighRisk"><span class="spinner-grow spinner-grow-sm"></span></h3><i class="fas fa-exclamation-triangle"></i></div></div>
             <div class="col-12 col-md-4"><div class="stat-card bg-green shadow-sm"><p class="mb-0">จำนวนการประเมินแรกรับ</p><h3 id="statAssessed"><span class="spinner-grow spinner-grow-sm"></span></h3><i class="fas fa-clipboard-check"></i></div></div>
           </div>
+
           <h6 class="fw-bold text-secondary mb-3 mt-4"><i class="fas fa-chart-bar"></i> ข้อมูลเชิงคุณภาพ (Quality Metrics)</h6>
           <div class="row g-3 mb-4">
             <div class="col-12 col-md-6"><div class="stat-card bg-purple shadow-sm"><p class="mb-0">อัตราการติดตามสำเร็จ (ของกลุ่มเสี่ยง)</p><h3 id="statFuRate"><span class="spinner-grow spinner-grow-sm"></span></h3><i class="fas fa-chart-line"></i></div></div>
             <div class="col-12 col-md-6"><div class="stat-card bg-teal shadow-sm"><p class="mb-0">ระยะเวลาเฉลี่ยก่อนติดตาม</p><h3 id="statAvgDays"><span class="spinner-grow spinner-grow-sm"></span></h3><i class="fas fa-clock"></i></div></div>
           </div>
+
           <div class="row g-3">
-            <div class="col-12 col-md-6"><div class="border rounded p-3 h-100 bg-white shadow-sm"><h6 class="text-center mb-3 text-muted">จำนวนผู้มีปัจจัยเสี่ยงทางยา</h6><div style="position: relative; height: 250px; width: 100%;"><canvas id="riskChart"></canvas></div></div></div>
+            <div class="col-12 col-md-6"><div class="border rounded p-3 h-100 bg-white shadow-sm"><h6 class="text-center mb-3 text-muted">จำนวนผู้มีปัจจัยเสี่ยงทางยา (เปรียบเทียบ)</h6><div style="position: relative; height: 250px; width: 100%;"><canvas id="riskChart"></canvas></div></div></div>
             <div class="col-12 col-md-6"><div class="border rounded p-3 h-100 bg-white shadow-sm"><h6 class="text-center mb-3 text-muted">แนวทางการจัดการ (Management)</h6><div style="position: relative; height: 250px; width: 100%;"><canvas id="mngChart"></canvas></div></div></div>
           </div>
         </div>
 
         <div id="patientsView" class="view-section">
           <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 border-bottom pb-3 gap-3">
-            <h4 class="text-primary m-0"><i class="fas fa-users"></i> ทะเบียนผู้ป่วยที่กำลัง Monitor</h4>
+            <h4 class="text-primary m-0"><i class="fas fa-users"></i> ทะเบียนผู้ป่วย</h4>
             <button class="btn btn-outline-primary btn-sm" onclick="loadPatients()"><i class="fas fa-sync-alt"></i> รีเฟรชข้อมูล</button>
           </div>
           <div class="table-responsive">
             <table class="table table-hover align-middle border text-nowrap">
               <thead class="table-light text-muted">
-                <tr><th>ID / HN</th><th>ชื่อ-สกุล</th><th>สถานะประเมิน</th><th class="text-center">การจัดการ</th></tr>
+                <tr><th>ID / HN</th><th>ชื่อ-สกุล</th><th>สถานะความเสี่ยง</th><th class="text-center">เข้าสู่หน้าบริบาล (Profile)</th></tr>
               </thead>
               <tbody id="patientTableBody"></tbody>
             </table>
+          </div>
+        </div>
+
+        <div id="profileView" class="view-section">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 border-bottom pb-3 gap-3">
+            <h4 class="text-primary m-0"><i class="fas fa-id-badge"></i> Patient Profile & Timeline</h4>
+            <div class="d-flex gap-2">
+              <button class="btn btn-outline-dark btn-sm" onclick="editPatient(document.getElementById('profilePatientId').value)"><i class="fas fa-edit"></i> แก้ไขข้อมูล</button>
+              <button class="btn btn-outline-danger btn-sm" onclick="dischargePatientData(document.getElementById('profilePatientId').value, document.getElementById('profileName').innerText)"><i class="fas fa-sign-out-alt"></i> จำหน่าย</button>
+              <button class="btn btn-outline-secondary btn-sm" onclick="switchView('patients')"><i class="fas fa-arrow-left"></i> กลับตาราง</button>
+            </div>
+          </div>
+          
+          <input type="hidden" id="profilePatientId">
+          <input type="hidden" id="profileWeight">
+          
+          <div class="row g-4">
+            <div class="col-md-5 col-lg-4">
+              <div class="card border-0 bg-light p-4 text-center shadow-sm">
+                <i class="fas fa-user-circle fa-5x text-primary mb-3"></i>
+                <h4 id="profileName" class="fw-bold text-dark mb-1">-</h4>
+                <p class="text-muted small mb-0"><i class="fas fa-id-card"></i> ID: <span id="profileDisplayId">-</span></p>
+                <hr>
+                <div class="d-flex justify-content-around">
+                  <div><small class="text-muted d-block">น้ำหนัก</small><strong class="fs-5" id="profileWeightDisplay">-</strong> kg</div>
+                  <div><small class="text-muted d-block">ส่วนสูง</small><strong class="fs-5" id="profileHeightDisplay">-</strong> cm</div>
+                </div>
+              </div>
+              
+              <h6 class="fw-bold text-secondary mt-4 mb-2"><i class="fas fa-plus-circle"></i> แบบประเมินทางเภสัชกรรม</h6>
+              <div class="action-grid">
+                <button class="btn-action bg-primary" onclick="openAssessmentForm(document.getElementById('profilePatientId').value, document.getElementById('profileName').innerText)">
+                  <i class="fas fa-stethoscope"></i><span>EPS/NMS<br>(แรกรับ)</span>
+                </button>
+                <button class="btn-action bg-info" onclick="openSASForm(document.getElementById('profilePatientId').value, document.getElementById('profileName').innerText)">
+                  <i class="fas fa-walking"></i><span>Mod-SAS<br>(ประเมิน EPS)</span>
+                </button>
+                <button class="btn-action bg-warning text-dark" onclick="openFollowUpForm(document.getElementById('profilePatientId').value, document.getElementById('profileName').innerText)">
+                  <i class="fas fa-heartbeat"></i><span>Follow-up<br>ติดตามอาการ</span>
+                </button>
+                <button class="btn-action bg-danger" onclick="openHADForm()">
+                  <i class="fas fa-pills"></i><span>High Alert<br>Drug (HAD)</span>
+                </button>
+                <button class="btn-action bg-secondary" onclick="Swal.fire('Coming Soon', 'ระบบประเมิน ADE (Schumock), Early Detection NMS, Mod-BARS, Mod-AIMS จะเปิดให้ใช้งานในเฟสถัดไป', 'info')">
+                  <i class="fas fa-clipboard-list"></i><span>แบบประเมิน<br>อื่นๆ...</span>
+                </button>
+              </div>
+            </div>
+            
+            <div class="col-md-7 col-lg-8">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h6 class="fw-bold text-primary mb-3"><i class="fas fa-history"></i> ประวัติการบริบาลเภสัชกรรม (Timeline)</h6>
+                <div id="timelineContainer" class="timeline">
+                  <p class="text-muted">กำลังโหลดประวัติ...</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -219,7 +301,7 @@
         </div>
 
         <div id="assessmentView" class="view-section">
-          <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3"><h4 class="text-primary m-0"><i class="fas fa-stethoscope"></i> ประเมินปัจจัยเสี่ยง (แรกรับ)</h4><button class="btn btn-outline-secondary btn-sm" onclick="switchView('patients')"><i class="fas fa-arrow-left"></i> กลับ</button></div>
+          <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3"><h4 class="text-primary m-0"><i class="fas fa-stethoscope"></i> ประเมิน EPS/NMS (แรกรับ)</h4><button class="btn btn-outline-secondary btn-sm" onclick="switchView('profile')"><i class="fas fa-arrow-left"></i> กลับหน้า Profile</button></div>
           <div class="alert alert-secondary border-0 shadow-sm d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
             <div class="d-flex align-items-center gap-3"><i class="fas fa-user-circle fa-2x text-primary"></i><div><div class="small text-muted">ID: <span id="assessPatientId" class="fw-bold text-dark">-</span></div><div class="fw-bold fs-5" id="assessPatientName">-</div></div></div>
           </div>
@@ -252,7 +334,7 @@
         </div>
 
         <div id="followUpView" class="view-section">
-          <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3"><h4 class="text-warning m-0"><i class="fas fa-heartbeat"></i> บันทึกติดตามอาการ</h4><button class="btn btn-outline-secondary btn-sm" onclick="switchView('patients')"><i class="fas fa-arrow-left"></i> กลับ</button></div>
+          <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3"><h4 class="text-warning m-0"><i class="fas fa-heartbeat"></i> ติดตามอาการ (Follow-up)</h4><button class="btn btn-outline-secondary btn-sm" onclick="switchView('profile')"><i class="fas fa-arrow-left"></i> กลับหน้า Profile</button></div>
           <div class="alert alert-warning border-0 shadow-sm d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
             <div class="d-flex align-items-center gap-3"><i class="fas fa-exclamation-triangle fa-2x"></i><div><div class="small text-muted">ID: <span id="fuPatientId" class="fw-bold text-dark">-</span></div><div class="fw-bold fs-5 text-dark" id="fuPatientName">-</div></div></div>
           </div>
@@ -294,7 +376,7 @@
         <div id="sasView" class="view-section">
           <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
             <h4 class="text-info m-0"><i class="fas fa-walking"></i> ประเมิน Mod-SAS</h4>
-            <button class="btn btn-outline-secondary btn-sm" onclick="switchView('patients')"><i class="fas fa-arrow-left"></i> กลับ</button>
+            <button class="btn btn-outline-secondary btn-sm" onclick="switchView('profile')"><i class="fas fa-arrow-left"></i> กลับหน้า Profile</button>
           </div>
           <div class="alert alert-info border-0 shadow-sm d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3 mb-4">
             <div class="d-flex align-items-center gap-3"><i class="fas fa-user-circle fa-2x text-info"></i><div><div class="small text-muted">ID: <span id="sasPatientId" class="fw-bold text-dark">-</span></div><div class="fw-bold fs-5" id="sasPatientName">-</div></div></div>
@@ -302,92 +384,76 @@
           
           <form id="sasForm">
             <div class="card border-0 bg-light p-3 p-md-4 mb-4">
-              <h6 class="fw-bold text-info mb-3"><i class="fas fa-list-ol"></i> Modified Simpson-Angus Rating Scale (6 ข้อ)</h6>
-              <p class="text-muted small mb-4">เกณฑ์การแปลผล: จะยึดตามข้อที่มีคะแนน "มากที่สุด" เพียงข้อเดียว</p>
-              
+              <h6 class="fw-bold text-info mb-3"><i class="fas fa-list-ol"></i> Modified Simpson-Angus Rating Scale</h6>
               <div class="row g-4">
-                <div class="col-12">
-                  <label class="form-label fw-bold">1. การเดิน (Gait)</label>
-                  <select class="form-select sas-select border-info" id="sasQ1" onchange="calcModSAS()">
-                    <option value="0">0 - ปกติ</option>
-                    <option value="1">1 - การแกว่งแขนลดลง ขณะที่ผู้ป่วยกำลังเดิน</option>
-                    <option value="2">2 - การแกว่งแขนลดลงชัดเจน ร่วมกับมีการเกร็งที่แขนอย่างชัดเจน</option>
-                    <option value="3">3 - ท่าเดินแข็งทื่อ ร่วมกับแขนเกร็งค้างอยู่หน้าลำตัว</option>
-                    <option value="4">4 - โน้มตัวไปข้างหน้า เดินลากขา ร่วมกับเดินเด้งไปด้านหลัง</option>
-                  </select>
-                </div>
-                <div class="col-12">
-                  <label class="form-label fw-bold">2. การปล่อยให้แขนตกลงข้างลำตัว (Arm Dropping)</label>
-                  <select class="form-select sas-select border-info" id="sasQ2" onchange="calcModSAS()">
-                    <option value="0">0 - ปกติ แขนตกลงมาอย่างอิสระ กระทบกับข้างลำตัวเสียงดังและมีเด้งกลับ</option>
-                    <option value="1">1 - แขนตกช้าลงเล็กน้อย ได้ยินเสียงกระทบกับข้างลำตัวนิดหน่อย มีเด้งกลับเล็กน้อย</option>
-                    <option value="2">2 - แขนตกช้า ไม่มีการเด้งกลับ</option>
-                    <option value="3">3 - แขนตกช้ามาก ไม่มีเสียงกระทบกับลำตัวเลย</option>
-                    <option value="4">4 - แขนตกช้าเหมือนผ่านแรงต้าน หรือเหมือนผ่านกาวเหนียวๆ</option>
-                  </select>
-                </div>
-                <div class="col-12">
-                  <label class="form-label fw-bold">3. การเกร็งของข้อศอก (Elbow Rigidity)</label>
-                  <select class="form-select sas-select border-info" id="sasQ3" onchange="calcModSAS()">
-                    <option value="0">0 - ปกติ</option>
-                    <option value="1">1 - มีความแข็งเกร็งและความต้านทานเล็กน้อย</option>
-                    <option value="2">2 - มีความแข็งเกร็งและความต้านทานปานกลาง</option>
-                    <option value="3">3 - แข็งเกร็งมากอย่างเห็นได้ชัดและเคลื่อนไหวลำบาก</option>
-                    <option value="4">4 - มีการแข็งเกร็งมากที่สุดจนแทบจะเป็นข้อติดแข็ง</option>
-                  </select>
-                </div>
-                <div class="col-12">
-                  <label class="form-label fw-bold">4. การเกร็งของข้อมือ (Wrist Rigidity)</label>
-                  <select class="form-select sas-select border-info" id="sasQ4" onchange="calcModSAS()">
-                    <option value="0">0 - ปกติ</option>
-                    <option value="1">1 - มีความแข็งเกร็งและความต้านทานเล็กน้อย</option>
-                    <option value="2">2 - มีความแข็งเกร็งและความต้านทานปานกลาง</option>
-                    <option value="3">3 - แข็งเกร็งมากอย่างเห็นได้ชัดและเคลื่อนไหวลำบาก</option>
-                    <option value="4">4 - มีการแข็งเกร็งมากที่สุดจนแทบจะเป็นข้อติดแข็ง</option>
-                  </select>
-                </div>
-                <div class="col-12">
-                  <label class="form-label fw-bold">5. การสั่น (Tremor)</label>
-                  <select class="form-select sas-select border-info" id="sasQ5" onchange="calcModSAS()">
-                    <option value="0">0 - ปกติ</option>
-                    <option value="1">1 - นิ้วมือสั่นเล็กน้อย มองเห็นและสัมผัสได้อย่างชัดเจน</option>
-                    <option value="2">2 - มีการสั่นของมือหรือแขนเป็นพักๆ</option>
-                    <option value="3">3 - มีการสั่นตลอดเวลาของแขน หรือ ขา อย่างน้อย 1 อย่าง</option>
-                    <option value="4">4 - มีการสั่นทั้งตัว รวมทั้งศีรษะ</option>
-                  </select>
-                </div>
-                <div class="col-12">
-                  <label class="form-label fw-bold">6. น้ำลายไหล (Salivation)</label>
-                  <select class="form-select sas-select border-info" id="sasQ6" onchange="calcModSAS()">
-                    <option value="0">0 - ปกติ</option>
-                    <option value="1">1 - มีน้ำลายเป็นแอ่งอยู่ในปาก ถ้าอ้าปากและกระดกลิ้นขึ้น ไม่มีพูดลำบาก</option>
-                    <option value="2">2 - แสดงให้เห็นว่ามีน้ำลายมากและอาจทำให้พูดได้ลำบากบางครั้ง</option>
-                    <option value="3">3 - พูดได้ลำบากเพราะมีน้ำลายอยู่จำนวนมาก</option>
-                    <option value="4">4 - น้ำลายไหลยืดอย่างชัดเจน</option>
-                  </select>
-                </div>
+                <div class="col-12"><label class="form-label fw-bold">1. การเดิน (Gait)</label><select class="form-select sas-select border-info" id="sasQ1" onchange="calcModSAS()"><option value="0">0 - ปกติ</option><option value="1">1 - การแกว่งแขนลดลง ขณะที่ผู้ป่วยกำลังเดิน</option><option value="2">2 - การแกว่งแขนลดลงชัดเจน ร่วมกับมีการเกร็งที่แขนอย่างชัดเจน</option><option value="3">3 - ท่าเดินแข็งทื่อ ร่วมกับแขนเกร็งค้างอยู่หน้าลำตัว</option><option value="4">4 - โน้มตัวไปข้างหน้า เดินลากขา ร่วมกับเดินเด้งไปด้านหลัง</option></select></div>
+                <div class="col-12"><label class="form-label fw-bold">2. การปล่อยให้แขนตกลงข้างลำตัว (Arm Dropping)</label><select class="form-select sas-select border-info" id="sasQ2" onchange="calcModSAS()"><option value="0">0 - ปกติ แขนตกลงมาอย่างอิสระ</option><option value="1">1 - แขนตกช้าลงเล็กน้อย ได้ยินเสียงกระทบนิดหน่อย</option><option value="2">2 - แขนตกช้า ไม่มีการเด้งกลับ</option><option value="3">3 - แขนตกช้ามาก ไม่มีเสียงกระทบกับลำตัวเลย</option><option value="4">4 - แขนตกช้าเหมือนผ่านแรงต้าน หรือผ่านกาวเหนียวๆ</option></select></div>
+                <div class="col-12"><label class="form-label fw-bold">3. การเกร็งของข้อศอก (Elbow Rigidity)</label><select class="form-select sas-select border-info" id="sasQ3" onchange="calcModSAS()"><option value="0">0 - ปกติ</option><option value="1">1 - มีความแข็งเกร็งและความต้านทานเล็กน้อย</option><option value="2">2 - มีความแข็งเกร็งและความต้านทานปานกลาง</option><option value="3">3 - แข็งเกร็งมากอย่างเห็นได้ชัดและเคลื่อนไหวลำบาก</option><option value="4">4 - มีการแข็งเกร็งมากที่สุดจนแทบจะเป็นข้อติดแข็ง</option></select></div>
+                <div class="col-12"><label class="form-label fw-bold">4. การเกร็งของข้อมือ (Wrist Rigidity)</label><select class="form-select sas-select border-info" id="sasQ4" onchange="calcModSAS()"><option value="0">0 - ปกติ</option><option value="1">1 - มีความแข็งเกร็งและความต้านทานเล็กน้อย</option><option value="2">2 - มีความแข็งเกร็งและความต้านทานปานกลาง</option><option value="3">3 - แข็งเกร็งมากอย่างเห็นได้ชัดและเคลื่อนไหวลำบาก</option><option value="4">4 - มีการแข็งเกร็งมากที่สุดจนแทบจะเป็นข้อติดแข็ง</option></select></div>
+                <div class="col-12"><label class="form-label fw-bold">5. การสั่น (Tremor)</label><select class="form-select sas-select border-info" id="sasQ5" onchange="calcModSAS()"><option value="0">0 - ปกติ</option><option value="1">1 - นิ้วมือสั่นเล็กน้อย</option><option value="2">2 - มีการสั่นของมือหรือแขนเป็นพักๆ</option><option value="3">3 - มีการสั่นตลอดเวลาของแขน หรือ ขา อย่างน้อย 1 อย่าง</option><option value="4">4 - มีการสั่นทั้งตัว รวมทั้งศีรษะ</option></select></div>
+                <div class="col-12"><label class="form-label fw-bold">6. น้ำลายไหล (Salivation)</label><select class="form-select sas-select border-info" id="sasQ6" onchange="calcModSAS()"><option value="0">0 - ปกติ</option><option value="1">1 - มีน้ำลายเป็นแอ่งอยู่ในปาก ไม่มีพูดลำบาก</option><option value="2">2 - มีน้ำลายมากและอาจทำให้พูดได้ลำบากบางครั้ง</option><option value="3">3 - พูดได้ลำบากเพราะมีน้ำลายอยู่จำนวนมาก</option><option value="4">4 - น้ำลายไหลยืดอย่างชัดเจน</option></select></div>
               </div>
             </div>
-
             <div class="row g-3">
               <div class="col-12">
                 <div class="p-3 rounded border text-center bg-white shadow-sm">
                   <p class="text-muted small mb-1">คะแนนสูงสุดที่พบ (Max Score)</p>
                   <span id="sasMaxScore" class="d-block fs-1 fw-bold text-success mb-2">0</span>
                   <span id="sasResultText" class="badge bg-success fs-6 mb-3">ปกติ (Normal)</span>
-                  
-                  <div class="text-start bg-light p-3 rounded mt-2 border">
-                    <strong class="text-secondary"><i class="fas fa-lightbulb"></i> แนวทางปฏิบัติ:</strong>
-                    <p id="sasRecommendation" class="mb-0 mt-1 fw-bold">-</p>
-                  </div>
-                  
-                  <input type="hidden" id="sasFinalSeverity" value="Normal">
-                  <input type="hidden" id="sasFinalRec" value="-">
+                  <div class="text-start bg-light p-3 rounded mt-2 border"><strong class="text-secondary"><i class="fas fa-lightbulb"></i> แนวทางปฏิบัติ:</strong><p id="sasRecommendation" class="mb-0 mt-1 fw-bold">-</p></div>
+                  <input type="hidden" id="sasFinalSeverity" value="Normal"><input type="hidden" id="sasFinalRec" value="-">
                 </div>
               </div>
             </div>
-            
             <button type="button" class="btn btn-info text-white w-100 py-3 mt-4 shadow-sm fs-5" id="btnSubmitSas" onclick="submitModSAS()"><i class="fas fa-save"></i> บันทึกประเมิน Mod-SAS</button>
+          </form>
+        </div>
+
+        <div id="hadView" class="view-section">
+          <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+            <h4 class="text-danger m-0"><i class="fas fa-pills"></i> ประเมิน High Alert Drug</h4>
+            <button class="btn btn-outline-secondary btn-sm" onclick="switchView('profile')"><i class="fas fa-arrow-left"></i> กลับหน้า Profile</button>
+          </div>
+          <form id="hadForm">
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <label class="form-label fw-bold">เลือกกลุ่มยา High Alert</label>
+                <select class="form-select border-danger" id="hadDrugName" onchange="checkHADType()">
+                  <option value="">-- เลือกยา --</option>
+                  <option value="Sodium Valproate">Sodium Valproate</option>
+                  <option value="Lithium Carbonate">Lithium Carbonate</option>
+                  <option value="Clozapine">Clozapine</option>
+                  <option value="Carbamazepine">Carbamazepine</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-bold">Dose ที่ได้รับ (mg/day) <span class="text-danger">*</span></label>
+                <input type="number" class="form-control" id="hadDose" required oninput="calcCss()">
+              </div>
+            </div>
+
+            <div id="valproateCalcSection" class="card bg-light border-0 p-3 mb-4" style="display: none;">
+              <h6 class="text-success fw-bold"><i class="fas fa-calculator"></i> คำนวณระดับยา Sodium Valproate ในเลือด (Steady State)</h6>
+              <div class="row align-items-center g-3">
+                <div class="col-12 col-md-4">
+                  <small class="text-muted">น้ำหนักผู้ป่วย</small>
+                  <div class="input-group"><input type="text" class="form-control" id="hadWeight" readonly><span class="input-group-text">kg</span></div>
+                </div>
+                <div class="col-12 col-md-8 text-md-end text-start mt-3 mt-md-0">
+                  <small class="text-muted d-block mb-1">สูตร: {Dose x 1000} / {192 x น้ำหนัก}</small>
+                  <span class="fs-5 fw-bold text-dark">Calculated Css = </span>
+                  <span id="hadCssDisplay" class="fs-2 fw-bold text-success">0.00</span>
+                  <input type="hidden" id="hadCssValue">
+                </div>
+              </div>
+              <p class="text-danger small mt-2 mb-0" id="hadCssAlert"></p>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-bold">บันทึกเพิ่มเติม / ADR ที่ตรวจพบ</label>
+              <textarea class="form-control" id="hadNote" rows="3" placeholder="ระบุอาการไม่พึงประสงค์ หรือผล Lab ที่เกี่ยวข้อง..."></textarea>
+            </div>
+            <button type="button" class="btn btn-danger w-100 py-3 shadow-sm fs-5" id="btnSubmitHad" onclick="submitHAD()"><i class="fas fa-save"></i> บันทึกข้อมูล HAD</button>
           </form>
         </div>
 
@@ -396,10 +462,11 @@
   </div>
 
   <script>
+    // --- ตั้งค่า Script URL ---
     const scriptURL = 'https://script.google.com/macros/s/AKfycby7n2BWeH0Lv7-bNRXjA_-oYhSMoPIbkdA3PmAd7QV_FfA8VGyUf_gud8-3tdnRTz4/exec'; 
     let currentPharmacist = ''; let pharmacistList = [];
 
-    // --- Login & Initialize ---
+    // --- Login & General Navigation ---
     const handleEnter = (e) => { if (e.key === 'Enter') login('user'); };
     document.getElementById('username').addEventListener('keypress', (e) => { if (e.key === 'Enter') document.getElementById('password').focus(); });
     document.getElementById('password').addEventListener('keypress', handleEnter);
@@ -424,15 +491,7 @@
       }).finally(() => { btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ (เภสัชกร)'; btn.disabled = false; });
     }
 
-    function fetchPharmacists() {
-      fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'getPharmacists' }) }).then(res => res.json()).then(data => {
-        if(data.status === 'success') {
-          pharmacistList = data.data; let sel = document.getElementById('fuPharmacist'); sel.innerHTML = '';
-          pharmacistList.forEach(ph => { let opt = document.createElement('option'); opt.value = ph; opt.text = ph; if(ph === currentPharmacist) opt.selected = true; sel.appendChild(opt); });
-        }
-      });
-    }
-
+    function fetchPharmacists() { fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'getPharmacists' }) }).then(res => res.json()).then(data => { if(data.status === 'success') { pharmacistList = data.data; let sel = document.getElementById('fuPharmacist'); sel.innerHTML = ''; pharmacistList.forEach(ph => { let opt = document.createElement('option'); opt.value = ph; opt.text = ph; if(ph === currentPharmacist) opt.selected = true; sel.appendChild(opt); }); } }); }
     function showApp(view) { document.getElementById('login-section').style.display = 'none'; document.getElementById('app-section').style.display = 'block'; switchView(view); }
     function logout() { location.reload(); }
     function switchView(viewId, el = null) {
@@ -442,7 +501,7 @@
     }
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('show'); document.getElementById('sidebarBackdrop').classList.toggle('show'); }
 
-    // --- Patient Operations ---
+    // --- Load Patient Table ---
     function loadPatients() {
       const tbody = document.getElementById('patientTableBody'); tbody.innerHTML = '<tr><td colspan="4" class="text-center py-4"><span class="spinner-border text-primary"></span> กำลังโหลด...</td></tr>';
       fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'getPatients' }) }).then(res => res.json()).then(res => {
@@ -450,24 +509,15 @@
         if(res.status === 'success') {
           if(res.data.length === 0) return tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-4">ไม่มีผู้ป่วยในระบบ</td></tr>';
           res.data.forEach(p => {
-            let assessBadge = '';
-            if(p.assessStatus === 'ยังไม่ได้ประเมิน') assessBadge = '<span class="badge bg-secondary text-white fw-normal"><i class="fas fa-clock"></i> ยังไม่ประเมิน</span>';
-            else if(p.assessStatus === 'เข้าเกณฑ์') assessBadge = '<span class="badge bg-danger fw-normal"><i class="fas fa-exclamation-circle"></i> เข้าเกณฑ์</span>';
-            else assessBadge = '<span class="badge bg-success fw-normal"><i class="fas fa-check-circle"></i> ไม่เข้าเกณฑ์</span>';
+            let assessBadge = p.assessStatus === 'เข้าเกณฑ์' ? '<span class="badge bg-danger fw-normal">เสี่ยงสูง (Monitor)</span>' : '<span class="badge bg-success fw-normal">ปกติ</span>';
+            if(p.assessStatus === 'ยังไม่ได้ประเมิน') assessBadge = '<span class="badge bg-secondary fw-normal">ยังไม่ประเมิน</span>';
             
-            let followUpBtn = p.assessStatus === 'เข้าเกณฑ์' ? `<button class="btn btn-sm btn-warning shadow-sm ms-1 mb-1" onclick="openFollowUpForm('${p.id}', '${p.name}')" title="ติดตามอาการ"><i class="fas fa-heartbeat"></i></button>` : '';
-
             tbody.innerHTML += `<tr>
               <td><span class="text-secondary fw-bold">${p.id}</span><br><small class="text-muted">${p.hn}</small></td>
               <td class="text-wrap" style="min-width: 150px;">${p.name}<br><small class="text-muted"><i class="fas fa-bed"></i> ${p.ward || '-'}</small></td>
               <td>${assessBadge}</td>
-              <td class="text-center text-nowrap">
-                <button class="btn btn-sm btn-primary shadow-sm mb-1" onclick="openAssessmentForm('${p.id}', '${p.name}')" title="ประเมินความเสี่ยง"><i class="fas fa-stethoscope"></i></button>
-                <button class="btn btn-sm btn-info text-white shadow-sm ms-1 mb-1" onclick="openSASForm('${p.id}', '${p.name}')" title="ประเมิน Mod-SAS"><i class="fas fa-walking"></i></button>
-                ${followUpBtn}
-                <button class="btn btn-sm btn-outline-secondary shadow-sm ms-1 mb-1" onclick="editPatient('${p.id}')" title="แก้ไข"><i class="fas fa-edit"></i></button>
-                <button class="btn btn-sm btn-outline-danger shadow-sm ms-1 mb-1" onclick="dischargePatientData('${p.id}', '${p.name}')" title="จำหน่าย"><i class="fas fa-sign-out-alt"></i></button>
-                <button class="btn btn-sm btn-outline-dark shadow-sm ms-1 mb-1" onclick="deletePatientData('${p.id}', '${p.name}')" title="ลบ"><i class="fas fa-trash"></i></button>
+              <td class="text-center">
+                <button class="btn btn-primary shadow-sm w-100" onclick="openPatientProfile('${p.id}')"><i class="fas fa-folder-open"></i> เปิด Profile & Timeline</button>
               </td>
             </tr>`;
           });
@@ -475,6 +525,42 @@
       });
     }
 
+    // --- Profile & Timeline (Central Hub) ---
+    function openPatientProfile(patientId) {
+      document.getElementById('profilePatientId').value = patientId;
+      document.getElementById('profileDisplayId').innerText = patientId;
+      document.getElementById('timelineContainer').innerHTML = '<p class="text-center"><span class="spinner-border text-primary"></span> กำลังโหลดประวัติ...</p>';
+      switchView('profile');
+
+      fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'getPatientTimeline', patientId: patientId }) })
+      .then(res => res.json()).then(data => {
+        if(data.status === 'success') {
+          document.getElementById('profileName').innerText = data.data.name;
+          document.getElementById('profileWeight').value = data.data.weight || 0;
+          document.getElementById('profileWeightDisplay').innerText = data.data.weight || '-';
+          document.getElementById('profileHeightDisplay').innerText = data.data.height || '-';
+          
+          let tlHtml = '';
+          if(data.data.timeline.length === 0) tlHtml = '<p class="text-muted text-center py-3">ยังไม่มีประวัติการบริบาลทางเภสัชกรรม</p>';
+          data.data.timeline.forEach(t => {
+            let dateObj = new Date(t.date); let dStr = isNaN(dateObj) ? t.date : dateObj.toLocaleDateString('th-TH');
+            let badgeColor = t.type.includes('EPS') || t.type.includes('High Alert') ? 'text-danger' : 'text-primary';
+            tlHtml += `
+              <div class="timeline-item">
+                <div class="timeline-date">${dStr}</div>
+                <div class="timeline-card border-start border-3 border-primary">
+                  <h6 class="fw-bold ${badgeColor} mb-1">${t.type}</h6>
+                  <p class="mb-1 small">${t.detail}</p>
+                  <small class="text-muted"><i class="fas fa-user-md"></i> เภสัชกร: ${t.pharmacist}</small>
+                </div>
+              </div>`;
+          });
+          document.getElementById('timelineContainer').innerHTML = tlHtml;
+        }
+      });
+    }
+
+    // --- Edit, Discharge, Delete ---
     function editPatient(id) {
       Swal.fire({title: 'กำลังดึงข้อมูล...', allowOutsideClick: false, didOpen: () => Swal.showLoading()});
       fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'getPatientDetails', patientId: id }) }).then(res => res.json()).then(res => {
@@ -490,125 +576,43 @@
       if(!hn || !name || !document.getElementById('editDateAdmit').value || !document.getElementById('editWard').value) return Swal.fire('ข้อมูลไม่ครบ', 'กรุณากรอกช่องที่มี *', 'warning');
       const btn = document.getElementById('btnEditSave'); const origText = btn.innerHTML; btn.innerHTML = 'กำลังบันทึก...'; btn.disabled = true;
       const payload = { action: 'updatePatient', patientData: { patientId: document.getElementById('editPatientId').value, hn: hn, an: document.getElementById('editAn').value, name: name, gender: document.getElementById('editGender').value, age: document.getElementById('editAge').value, weight: document.getElementById('editWeight').value, height: document.getElementById('editHeight').value, bmi: document.getElementById('editBmi').value, imageUrl: document.getElementById('editImageUrl').value, dateAdmit: document.getElementById('editDateAdmit').value, ward: document.getElementById('editWard').value, physician: document.getElementById('editPhysician').value, diagnosis: document.getElementById('editDiagnosis').value }};
-      fetch(scriptURL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(data => { if(data.status === 'success') { Swal.fire('สำเร็จ', 'อัปเดตข้อมูลแล้ว', 'success'); switchView('patients'); loadPatients(); } else { Swal.fire('Error', data.message, 'error'); } }).finally(() => { btn.innerHTML = origText; btn.disabled = false; });
+      fetch(scriptURL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(data => { if(data.status === 'success') { Swal.fire('สำเร็จ', 'อัปเดตข้อมูลแล้ว', 'success'); openPatientProfile(payload.patientData.patientId); loadPatients(); } else { Swal.fire('Error', data.message, 'error'); } }).finally(() => { btn.innerHTML = origText; btn.disabled = false; });
     }
-    function dischargePatientData(id, name) { Swal.fire({ title: 'ยืนยันการจำหน่าย?', text: `ต้องการจำหน่ายผู้ป่วย: ${name} ใช่หรือไม่?`, icon: 'info', showCancelButton: true, confirmButtonColor: '#3085d6', confirmButtonText: 'ใช่, จำหน่าย', cancelButtonText: 'ยกเลิก' }).then((result) => { if (result.isConfirmed) { Swal.fire({title: 'กำลังบันทึก...', allowOutsideClick: false, didOpen: () => Swal.showLoading()}); fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'dischargePatient', patientId: id }) }).then(res => res.json()).then(data => { if(data.status === 'success') { Swal.fire('สำเร็จ', 'จำหน่ายผู้ป่วยเรียบร้อย', 'success'); loadPatients(); loadDashboardStats(); } }); } }); }
-    function deletePatientData(id, name) { Swal.fire({ title: 'ยืนยันการลบถาวร?', text: `ต้องการลบข้อมูลผู้ป่วย: ${name} ใช่หรือไม่?`, icon: 'warning', showCancelButton: true, confirmButtonColor: '#d33', confirmButtonText: 'ใช่, ลบเลย', cancelButtonText: 'ยกเลิก' }).then((result) => { if (result.isConfirmed) { Swal.fire({title: 'กำลังลบ...', allowOutsideClick: false, didOpen: () => Swal.showLoading()}); fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'deletePatient', patientId: id }) }).then(res => res.json()).then(data => { if(data.status === 'success') { Swal.fire('สำเร็จ', 'ลบผู้ป่วยแล้ว', 'success'); loadPatients(); loadDashboardStats(); } }); } }); }
+    function dischargePatientData(id, name) { Swal.fire({ title: 'ยืนยันการจำหน่าย?', text: `ต้องการจำหน่ายผู้ป่วย: ${name} ใช่หรือไม่?`, icon: 'info', showCancelButton: true, confirmButtonColor: '#3085d6', confirmButtonText: 'ใช่, จำหน่าย', cancelButtonText: 'ยกเลิก' }).then((result) => { if (result.isConfirmed) { Swal.fire({title: 'กำลังบันทึก...', allowOutsideClick: false, didOpen: () => Swal.showLoading()}); fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'dischargePatient', patientId: id }) }).then(res => res.json()).then(data => { if(data.status === 'success') { Swal.fire('สำเร็จ', 'จำหน่ายผู้ป่วยเรียบร้อย', 'success'); loadPatients(); loadDashboardStats(); switchView('patients'); } }); } }); }
 
-    // --- Assessment Logic ---
+    // --- Assessments (EPS แรกรับ) ---
     function openAssessmentForm(id, name) { document.getElementById('assessPatientId').innerText = id; document.getElementById('assessPatientName').innerText = name; document.getElementById('epsForm').reset(); calculateRisk(); switchView('assessment'); }
     function calculateRisk() { let score = Array.from(document.querySelectorAll('.risk-factor')).filter(cb=>cb.checked).length; if(document.getElementById('laiMed').value !== "") score++; if(document.getElementById('historyEps').value === "มี") score++; const box = document.getElementById('autoCalculateBox'), finalStatus = document.getElementById('finalStatus'); document.getElementById('scoreText').innerText = `พบ ${score} ปัจจัย`; if(score >= 2) { document.getElementById('statusText').innerText = "เข้าเกณฑ์ Monitor"; document.getElementById('statusText').className = "badge bg-danger mt-1 fs-6"; document.getElementById('scoreText').className = "d-block fs-3 fw-bold text-danger"; box.className = "p-3 rounded border border-danger text-center bg-white shadow-sm"; finalStatus.value = "เข้าเกณฑ์"; } else { document.getElementById('statusText').innerText = "ยังไม่เข้าเกณฑ์"; document.getElementById('statusText').className = "badge bg-success mt-1 fs-6"; document.getElementById('scoreText').className = "d-block fs-3 fw-bold text-success"; box.className = "p-3 rounded border border-success text-center bg-white"; finalStatus.value = "ไม่เข้าเกณฑ์"; } }
     document.querySelectorAll('.risk-factor, .risk-factor-select').forEach(el => el.addEventListener('change', calculateRisk));
-    function submitAssessment() { const btn = document.getElementById('btnSubmitAssess'); const orig = btn.innerHTML; btn.innerHTML = 'กำลังบันทึก...'; btn.disabled = true; fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'submitAssessment', assessmentData: { patientId: document.getElementById('assessPatientId').innerText, rf1: document.getElementById('rf1').checked, rf2: document.getElementById('rf2').checked, rf3: document.getElementById('rf3').checked, rf4: document.getElementById('rf4').checked, rf5: document.getElementById('rf5').checked, laiMed: document.getElementById('laiMed').value, laiDose: document.getElementById('laiDose').value, laiTiming: document.getElementById('laiTiming').value, historyEps: document.getElementById('historyEps').value, comorbidities: document.getElementById('comorbidities').value, monitorStatus: document.getElementById('finalStatus').value, pharmacistName: currentPharmacist }})}).then(res => res.json()).then(data => { if(data.status === 'success') { Swal.fire({ title: 'บันทึกสำเร็จ', icon: 'success', timer: 1500, showConfirmButton: false }); loadDashboardStats(); loadPatients(); switchView('patients'); } }).finally(() => { btn.innerHTML = orig; btn.disabled = false; }); }
+    function submitAssessment() { const btn = document.getElementById('btnSubmitAssess'); const orig = btn.innerHTML; btn.innerHTML = 'กำลังบันทึก...'; btn.disabled = true; fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'submitAssessment', assessmentData: { patientId: document.getElementById('assessPatientId').innerText, rf1: document.getElementById('rf1').checked, rf2: document.getElementById('rf2').checked, rf3: document.getElementById('rf3').checked, rf4: document.getElementById('rf4').checked, rf5: document.getElementById('rf5').checked, laiMed: document.getElementById('laiMed').value, laiDose: document.getElementById('laiDose').value, laiTiming: document.getElementById('laiTiming').value, historyEps: document.getElementById('historyEps').value, comorbidities: document.getElementById('comorbidities').value, monitorStatus: document.getElementById('finalStatus').value, pharmacistName: currentPharmacist }})}).then(res => res.json()).then(data => { if(data.status === 'success') { Swal.fire({ title: 'บันทึกสำเร็จ', icon: 'success', timer: 1500, showConfirmButton: false }); openPatientProfile(document.getElementById('assessPatientId').innerText); } }).finally(() => { btn.innerHTML = orig; btn.disabled = false; }); }
 
-    // --- Mod-SAS Logic ---
-    function openSASForm(id, name) { 
-      document.getElementById('sasPatientId').innerText = id; 
-      document.getElementById('sasPatientName').innerText = name; 
-      document.getElementById('sasForm').reset(); 
-      calcModSAS(); 
-      switchView('sas'); 
-    }
-    
-    function calcModSAS() {
-      let scores = [
-        parseInt(document.getElementById('sasQ1').value || 0),
-        parseInt(document.getElementById('sasQ2').value || 0),
-        parseInt(document.getElementById('sasQ3').value || 0),
-        parseInt(document.getElementById('sasQ4').value || 0),
-        parseInt(document.getElementById('sasQ5').value || 0),
-        parseInt(document.getElementById('sasQ6').value || 0)
-      ];
-      
-      let maxScore = Math.max(...scores); // ดึงค่ามากที่สุดเพียงข้อเดียว
-      document.getElementById('sasMaxScore').innerText = maxScore;
-      
-      let resText = document.getElementById('sasResultText');
-      let recText = document.getElementById('sasRecommendation');
-      let finalSev = document.getElementById('sasFinalSeverity');
-      let finalRec = document.getElementById('sasFinalRec');
-      let scoreElement = document.getElementById('sasMaxScore');
-      
-      if(maxScore === 0) {
-        scoreElement.className = "d-block fs-1 fw-bold text-success mb-2";
-        resText.innerText = "ปกติ (Normal)";
-        resText.className = "badge bg-success fs-6 mb-3";
-        recText.innerText = "-";
-        finalSev.value = "Normal";
-        finalRec.value = "-";
-      } else if (maxScore === 1) {
-        scoreElement.className = "d-block fs-1 fw-bold text-info mb-2";
-        resText.innerText = "ระดับ Mild";
-        resText.className = "badge bg-info text-dark fs-6 mb-3";
-        recText.innerText = "สังเกตอาการต่ออีก 1-2 สัปดาห์ หากมีอาการเพิ่มขึ้น ควร consult แพทย์ (กรณีผู้ป่วย/ญาติมีความกังวล หรือรู้สึกทุกข์ทรมาน ไม่ต้องรอสังเกตอาการ สามารถ consult แพทย์ เพื่อปรับแผนการรักษาได้)";
-        finalSev.value = "Mild";
-        finalRec.value = "สังเกตอาการต่อ 1-2 สัปดาห์ / consult แพทย์หากกังวล";
-      } else if (maxScore === 2) {
-        scoreElement.className = "d-block fs-1 fw-bold text-warning mb-2";
-        resText.innerText = "ระดับ Moderate";
-        resText.className = "badge bg-warning text-dark fs-6 mb-3";
-        recText.innerText = "ควร consult แพทย์เพื่อปรับแผนการรักษา";
-        finalSev.value = "Moderate";
-        finalRec.value = "ควร consult แพทย์เพื่อปรับแผนการรักษา";
-      } else if (maxScore >= 3) {
-        scoreElement.className = "d-block fs-1 fw-bold text-danger mb-2";
-        resText.innerText = "ระดับ Severe";
-        resText.className = "badge bg-danger fs-6 mb-3";
-        recText.innerText = "ควร consult แพทย์เพื่อปรับแผนการรักษาทันที";
-        finalSev.value = "Severe";
-        finalRec.value = "ควร consult แพทย์เพื่อปรับแผนการรักษาทันที";
-      }
-    }
+    // --- Mod-SAS ---
+    function openSASForm(id, name) { document.getElementById('sasPatientId').innerText = id; document.getElementById('sasPatientName').innerText = name; document.getElementById('sasForm').reset(); calcModSAS(); switchView('sas'); }
+    function calcModSAS() { let scores = [ parseInt(document.getElementById('sasQ1').value || 0), parseInt(document.getElementById('sasQ2').value || 0), parseInt(document.getElementById('sasQ3').value || 0), parseInt(document.getElementById('sasQ4').value || 0), parseInt(document.getElementById('sasQ5').value || 0), parseInt(document.getElementById('sasQ6').value || 0) ]; let maxScore = Math.max(...scores); document.getElementById('sasMaxScore').innerText = maxScore; let resText = document.getElementById('sasResultText'); let recText = document.getElementById('sasRecommendation'); let finalSev = document.getElementById('sasFinalSeverity'); let finalRec = document.getElementById('sasFinalRec'); let scoreElement = document.getElementById('sasMaxScore'); if(maxScore === 0) { scoreElement.className = "d-block fs-1 fw-bold text-success mb-2"; resText.innerText = "ปกติ (Normal)"; resText.className = "badge bg-success fs-6 mb-3"; recText.innerText = "-"; finalSev.value = "Normal"; finalRec.value = "-"; } else if (maxScore === 1) { scoreElement.className = "d-block fs-1 fw-bold text-info mb-2"; resText.innerText = "ระดับ Mild"; resText.className = "badge bg-info text-dark fs-6 mb-3"; recText.innerText = "สังเกตอาการต่ออีก 1-2 สัปดาห์ หากมีอาการเพิ่มขึ้น ควร consult แพทย์"; finalSev.value = "Mild"; finalRec.value = "สังเกตอาการต่อ 1-2 สัปดาห์ / consult แพทย์หากกังวล"; } else if (maxScore === 2) { scoreElement.className = "d-block fs-1 fw-bold text-warning mb-2"; resText.innerText = "ระดับ Moderate"; resText.className = "badge bg-warning text-dark fs-6 mb-3"; recText.innerText = "ควร consult แพทย์เพื่อปรับแผนการรักษา"; finalSev.value = "Moderate"; finalRec.value = "ควร consult แพทย์เพื่อปรับแผนการรักษา"; } else if (maxScore >= 3) { scoreElement.className = "d-block fs-1 fw-bold text-danger mb-2"; resText.innerText = "ระดับ Severe"; resText.className = "badge bg-danger fs-6 mb-3"; recText.innerText = "ควร consult แพทย์เพื่อปรับแผนการรักษาทันที"; finalSev.value = "Severe"; finalRec.value = "ควร consult แพทย์เพื่อปรับแผนการรักษาทันที"; } }
+    function submitModSAS() { const btn = document.getElementById('btnSubmitSas'); const orig = btn.innerHTML; btn.innerHTML = 'กำลังบันทึก...'; btn.disabled = true; let sasData = { patientId: document.getElementById('sasPatientId').innerText, q1: document.getElementById('sasQ1').value, q2: document.getElementById('sasQ2').value, q3: document.getElementById('sasQ3').value, q4: document.getElementById('sasQ4').value, q5: document.getElementById('sasQ5').value, q6: document.getElementById('sasQ6').value, maxScore: document.getElementById('sasMaxScore').innerText, severity: document.getElementById('sasFinalSeverity').value, recommendation: document.getElementById('sasFinalRec').value, pharmacistName: currentPharmacist }; fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'submitModSAS', sasData: sasData })}).then(r => r.json()).then(data => { if(data.status === 'success') { Swal.fire('สำเร็จ', 'บันทึกประเมิน Mod-SAS เรียบร้อย', 'success'); openPatientProfile(sasData.patientId); } else Swal.fire('Error', data.message, 'error'); }).finally(() => { btn.innerHTML = orig; btn.disabled = false; }); }
 
-    function submitModSAS() {
-      const btn = document.getElementById('btnSubmitSas'); const orig = btn.innerHTML; btn.innerHTML = 'กำลังบันทึก...'; btn.disabled = true;
-      let sasData = {
-        patientId: document.getElementById('sasPatientId').innerText,
-        q1: document.getElementById('sasQ1').value, q2: document.getElementById('sasQ2').value,
-        q3: document.getElementById('sasQ3').value, q4: document.getElementById('sasQ4').value,
-        q5: document.getElementById('sasQ5').value, q6: document.getElementById('sasQ6').value,
-        maxScore: document.getElementById('sasMaxScore').innerText,
-        severity: document.getElementById('sasFinalSeverity').value,
-        recommendation: document.getElementById('sasFinalRec').value,
-        pharmacistName: currentPharmacist
-      };
-      fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'submitModSAS', sasData: sasData })})
-      .then(r => r.json()).then(data => { if(data.status === 'success') { Swal.fire('สำเร็จ', 'บันทึกประเมิน Mod-SAS เรียบร้อย', 'success'); switchView('patients'); } else Swal.fire('Error', data.message, 'error'); }).finally(() => { btn.innerHTML = orig; btn.disabled = false; });
-    }
+    // --- High Alert Drug (HAD) ---
+    function openHADForm() { document.getElementById('hadForm').reset(); document.getElementById('hadWeight').value = document.getElementById('profileWeight').value; checkHADType(); switchView('had'); }
+    function checkHADType() { let drug = document.getElementById('hadDrugName').value; let valpSection = document.getElementById('valproateCalcSection'); if(drug === 'Sodium Valproate') { valpSection.style.display = 'block'; calcCss(); } else { valpSection.style.display = 'none'; document.getElementById('hadCssValue').value = ''; } }
+    function calcCss() { let drug = document.getElementById('hadDrugName').value; if(drug !== 'Sodium Valproate') return; let dose = parseFloat(document.getElementById('hadDose').value) || 0; let weight = parseFloat(document.getElementById('hadWeight').value) || 0; let cssDisplay = document.getElementById('hadCssDisplay'); let alertMsg = document.getElementById('hadCssAlert'); if(dose > 0 && weight > 0) { let css = (dose * 1000) / (192 * weight); let cssStr = css.toFixed(2); cssDisplay.innerText = cssStr + ' mcg/ml'; document.getElementById('hadCssValue').value = cssStr; if(css < 50) { cssDisplay.className = 'fs-2 fw-bold text-warning'; alertMsg.innerText = '* ระดับยาต่ำกว่าเกณฑ์การรักษา (50-100 mcg/ml)'; } else if(css > 125) { cssDisplay.className = 'fs-2 fw-bold text-danger'; alertMsg.innerText = '* ระดับยาเสี่ยงต่อภาวะเป็นพิษ (>125 mcg/ml)'; } else { cssDisplay.className = 'fs-2 fw-bold text-success'; alertMsg.innerText = ''; } } else { cssDisplay.innerText = '0.00'; document.getElementById('hadCssValue').value = ''; alertMsg.innerText = ''; } }
+    function submitHAD() { const drug = document.getElementById('hadDrugName').value; const dose = document.getElementById('hadDose').value; if(!drug || !dose) return Swal.fire('ข้อมูลไม่ครบ', 'กรุณาเลือกยาและระบุ Dose', 'warning'); const btn = document.getElementById('btnSubmitHad'); const orig = btn.innerHTML; btn.innerHTML = 'กำลังบันทึก...'; btn.disabled = true; let hadData = { patientId: document.getElementById('profilePatientId').value, drugName: drug, dose: dose, css: document.getElementById('hadCssValue').value || '-', note: document.getElementById('hadNote').value, pharmacistName: currentPharmacist }; fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'submitHAD', hadData: hadData })}).then(r => r.json()).then(data => { if(data.status === 'success') { Swal.fire('สำเร็จ', 'บันทึกข้อมูล HAD เรียบร้อย', 'success'); openPatientProfile(hadData.patientId); } else Swal.fire('Error', data.message, 'error'); }).finally(() => { btn.innerHTML = orig; btn.disabled = false; }); }
 
     // --- Follow Up Logic ---
     function openFollowUpForm(id, name) { document.getElementById('fuPatientId').innerText = id; document.getElementById('fuPatientName').innerText = name; document.getElementById('fuForm').reset(); document.getElementById('fuDate').valueAsDate = new Date(); toggleSymptoms(document.getElementById('symp0')); toggleDateSymptom(''); switchView('followUp'); }
     function toggleSymptoms(mainCb) { const allCbs = document.querySelectorAll('.symp-cb'); if(mainCb.id === 'symp0' && mainCb.checked) { allCbs.forEach(cb => { if(cb !== mainCb) { cb.checked = false; cb.disabled = true; }}); } else if(mainCb.id === 'symp0' && !mainCb.checked) { allCbs.forEach(cb => { cb.disabled = false; }); } }
     function toggleDateSymptom(val) { const div = document.getElementById('divDateSymptom'); if(val === 'ผิดปกติ') div.style.display = 'block'; else { div.style.display = 'none'; document.getElementById('fuDateSymptom').value = ''; } }
-    function submitFollowUp() {
-      const date = document.getElementById('fuDate').value, res = document.getElementById('fuResult').value;
-      if(!date || !res) return Swal.fire('ข้อมูลไม่ครบ', 'กรุณาระบุวันที่และผลการประเมิน', 'warning');
-      let symps = []; document.querySelectorAll('.symp-cb:checked').forEach(c => symps.push(c.value)); let mngs = []; document.querySelectorAll('.mng-cb:checked').forEach(c => mngs.push(c.value));
-      const btn = document.getElementById('btnSubmitFu'); const orig = btn.innerHTML; btn.innerHTML = 'กำลังบันทึก...'; btn.disabled = true;
-      fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'submitFollowUp', followUpData: { patientId: document.getElementById('fuPatientId').innerText, date: date, symptoms: symps, assessmentResult: res, dateSymptom: document.getElementById('fuDateSymptom').value, management: mngs, status: document.getElementById('fuStatus').value, pharmacistName: document.getElementById('fuPharmacist').value }})})
-      .then(r => r.json()).then(data => { if(data.status === 'success') { Swal.fire('สำเร็จ', 'บันทึกติดตามอาการเรียบร้อย', 'success'); switchView('patients'); loadDashboardStats(); } else Swal.fire('Error', data.message, 'error'); }).finally(() => { btn.innerHTML = orig; btn.disabled = false; });
-    }
+    function submitFollowUp() { const date = document.getElementById('fuDate').value, res = document.getElementById('fuResult').value; if(!date || !res) return Swal.fire('ข้อมูลไม่ครบ', 'กรุณาระบุวันที่และผลการประเมิน', 'warning'); let symps = []; document.querySelectorAll('.symp-cb:checked').forEach(c => symps.push(c.value)); let mngs = []; document.querySelectorAll('.mng-cb:checked').forEach(c => mngs.push(c.value)); const btn = document.getElementById('btnSubmitFu'); const orig = btn.innerHTML; btn.innerHTML = 'กำลังบันทึก...'; btn.disabled = true; fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'submitFollowUp', followUpData: { patientId: document.getElementById('fuPatientId').innerText, date: date, symptoms: symps, assessmentResult: res, dateSymptom: document.getElementById('fuDateSymptom').value, management: mngs, status: document.getElementById('fuStatus').value, pharmacistName: document.getElementById('fuPharmacist').value }})}).then(r => r.json()).then(data => { if(data.status === 'success') { Swal.fire('สำเร็จ', 'บันทึกติดตามอาการเรียบร้อย', 'success'); openPatientProfile(document.getElementById('fuPatientId').innerText); } else Swal.fire('Error', data.message, 'error'); }).finally(() => { btn.innerHTML = orig; btn.disabled = false; }); }
 
     // --- Calculation & Registration ---
     const calcBmi = (wId, hId, resId) => { let w = parseFloat(document.getElementById(wId).value), h = parseFloat(document.getElementById(hId).value)/100; if(w>0&&h>0) document.getElementById(resId).value=(w/(h*h)).toFixed(2); else document.getElementById(resId).value=''; };
     document.getElementById('regWeight').addEventListener('input', () => calcBmi('regWeight', 'regHeight', 'regBmi')); document.getElementById('regHeight').addEventListener('input', () => calcBmi('regWeight', 'regHeight', 'regBmi'));
     document.getElementById('editWeight').addEventListener('input', () => calcBmi('editWeight', 'editHeight', 'editBmi')); document.getElementById('editHeight').addEventListener('input', () => calcBmi('editWeight', 'editHeight', 'editBmi'));
 
-    function submitRegistration() {
-      const hn = document.getElementById('regHn').value, name = document.getElementById('regName').value, dateAdmit = document.getElementById('regDateAdmit').value, ward = document.getElementById('regWard').value;
-      if(!hn || !name || !dateAdmit || !ward) return Swal.fire('ข้อมูลไม่ครบ', 'กรุณากรอกช่องที่มี *', 'warning');
-      const payload = { action: 'registerPatient', patientData: { hn: hn, an: document.getElementById('regAn').value, name: name, gender: document.getElementById('regGender').value, age: document.getElementById('regAge').value, weight: document.getElementById('regWeight').value, height: document.getElementById('regHeight').value, bmi: document.getElementById('regBmi').value, imageUrl: document.getElementById('regImageUrl').value, dateAdmit: dateAdmit, ward: ward, physician: document.getElementById('regPhysician').value, diagnosis: document.getElementById('regDiagnosis').value }};
-      const btn = document.getElementById('btnRegister'); const orig = btn.innerHTML; btn.innerHTML = 'กำลังบันทึก...'; btn.disabled = true;
-      fetch(scriptURL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(data => { if(data.status === 'success') { Swal.fire({ title: 'สำเร็จ', text: `ID: ${data.patientId}`, icon: 'success', timer: 2000, showConfirmButton: false }); document.getElementById('registerForm').reset(); loadPatients(); loadDashboardStats(); switchView('patients'); } }).finally(() => { btn.innerHTML = orig; btn.disabled = false; });
-    }
+    function submitRegistration() { const hn = document.getElementById('regHn').value, name = document.getElementById('regName').value, dateAdmit = document.getElementById('regDateAdmit').value, ward = document.getElementById('regWard').value; if(!hn || !name || !dateAdmit || !ward) return Swal.fire('ข้อมูลไม่ครบ', 'กรุณากรอกช่องที่มี *', 'warning'); const payload = { action: 'registerPatient', patientData: { hn: hn, an: document.getElementById('regAn').value, name: name, gender: document.getElementById('regGender').value, age: document.getElementById('regAge').value, weight: document.getElementById('regWeight').value, height: document.getElementById('regHeight').value, bmi: document.getElementById('regBmi').value, imageUrl: document.getElementById('regImageUrl').value, dateAdmit: dateAdmit, ward: ward, physician: document.getElementById('regPhysician').value, diagnosis: document.getElementById('regDiagnosis').value }}; const btn = document.getElementById('btnRegister'); const orig = btn.innerHTML; btn.innerHTML = 'กำลังบันทึก...'; btn.disabled = true; fetch(scriptURL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(data => { if(data.status === 'success') { Swal.fire({ title: 'สำเร็จ', text: `ID: ${data.patientId}`, icon: 'success', timer: 2000, showConfirmButton: false }); document.getElementById('registerForm').reset(); loadPatients(); loadDashboardStats(); switchView('patients'); } }).finally(() => { btn.innerHTML = orig; btn.disabled = false; }); }
 
-    // --- Dashboard Data & Charts (Filtered) ---
+    // --- Dashboard Data & Charts ---
     let myChart = null; let mngChartObj = null;
-    function applyDashboardFilter() {
-      const btn = document.getElementById('btnFilter'); const text = btn.innerHTML;
-      btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>...'; btn.disabled = true;
-      loadDashboardStats(() => { btn.innerHTML = text; btn.disabled = false; Swal.fire({ title: 'กรองข้อมูลสำเร็จ', icon: 'success', timer: 1000, showConfirmButton: false }); });
-    }
+    function applyDashboardFilter() { const btn = document.getElementById('btnFilter'); const text = btn.innerHTML; btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>...'; btn.disabled = true; loadDashboardStats(() => { btn.innerHTML = text; btn.disabled = false; Swal.fire({ title: 'กรองข้อมูลสำเร็จ', icon: 'success', timer: 1000, showConfirmButton: false }); }); }
 
     function loadDashboardStats(callback = null) {
       const filters = { startDate: document.getElementById('filterStartDate').value, endDate: document.getElementById('filterEndDate').value, ward: document.getElementById('filterWard').value, gender: document.getElementById('filterGender').value };
