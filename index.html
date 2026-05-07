@@ -56,10 +56,8 @@
     .bg-green { background: linear-gradient(135deg, #10b981, #059669); }
     .bg-purple { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
     .bg-teal { background: linear-gradient(135deg, #14b8a6, #0f766e); }
-    .sas-select { font-size: 0.9rem; white-space: normal; }
-    .sas-select option { white-space: normal; }
-
-    /* Timeline CSS */
+    .bg-dark-purple { background-color: #5b21b6; }
+    
     .timeline { position: relative; padding-left: 2rem; margin-top: 1rem; }
     .timeline::before { content: ''; position: absolute; left: 0.5rem; top: 0; bottom: 0; width: 2px; background: #cbd5e0; }
     .timeline-item { position: relative; margin-bottom: 1.5rem; cursor: pointer; transition: transform 0.2s; }
@@ -73,12 +71,6 @@
     .btn-action { padding: 1rem; border-radius: 12px; font-weight: 600; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; border: none; color: white; text-align: center; line-height: 1.2; font-size: 0.85rem; }
     .btn-action:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); color: white; }
     .btn-action i { font-size: 1.5rem; }
-    .bg-dark-purple { background-color: #5b21b6; }
-
-    .had-radio-group { display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px dashed #e2e8f0; }
-    .had-label { font-size: 0.9rem; color: #4a5568; margin-bottom: 0; flex: 1; padding-right: 1rem; }
-    .had-options { display: flex; gap: 1rem; min-width: 150px; justify-content: flex-end; }
-    .had-title { font-size: 1rem; font-weight: 600; color: #2b6cb0; margin-top: 1.5rem; margin-bottom: 0.5rem; }
 
     @media (max-width: 992px) { 
       .sidebar { left: -260px; } .sidebar.show { left: 0; } 
@@ -118,10 +110,11 @@
       <nav class="sidebar" id="sidebar">
         <div class="sidebar-header"><img src="https://www.rploei.go.th/ec2/wp-content/uploads/2017/08/cropped-cropped-cropped-3.png" alt="Logo"><h6 class="mb-0 mt-2">JVL<br>Pharmacotherapy</h6></div>
         <ul class="sidebar-menu">
-          <li><a href="#" class="active" onclick="switchView('dashboard', this)"><i class="fas fa-chart-pie"></i> ภาพรวมสถิติ</a></li>
-          <li class="restricted-menu"><a href="#" onclick="switchView('patients', this)"><i class="fas fa-users"></i> ทะเบียนผู้ป่วย</a></li>
-          <li class="restricted-menu"><a href="#" onclick="switchView('continuous', this)"><i class="fas fa-user-clock"></i> ติดตามต่อเนื่อง <span class="badge bg-danger ms-1">New</span></a></li>
-          <li class="restricted-menu"><a href="#" onclick="switchView('register', this)"><i class="fas fa-user-plus"></i> ลงทะเบียนผู้ป่วยใหม่</a></li>
+          <li><a href="#" data-view="dashboard" class="active" onclick="switchView('dashboard')"><i class="fas fa-chart-pie"></i> Dashboard</a></li>
+          <li class="restricted-menu"><a href="#" data-view="register" onclick="switchView('register')"><i class="fas fa-user-plus"></i> ลงทะเบียนผู้ป่วยใหม่</a></li>
+          <li class="restricted-menu"><a href="#" data-view="patients" onclick="switchView('patients')"><i class="fas fa-users"></i> ผู้ป่วยปัจจุบัน</a></li>
+          <li class="restricted-menu"><a href="#" data-view="continuous" onclick="switchView('continuous')"><i class="fas fa-user-clock"></i> ติดตามต่อเนื่อง</a></li>
+          <li class="restricted-menu"><a href="#" data-view="reports" onclick="switchView('reports')"><i class="fas fa-file-alt"></i> รายงาน <span class="badge bg-success ms-1">New</span></a></li>
           <li style="margin-top: 1rem;"><a href="#" onclick="logout()" style="color:#dc2626;"><i class="fas fa-sign-out-alt"></i> ออกจากระบบ</a></li>
         </ul>
       </nav>
@@ -149,11 +142,6 @@
             <div class="col-12 col-md-4"><div class="stat-card bg-blue shadow-sm"><p class="mb-0">ผู้ป่วยในทะเบียน (Active)</p><h3 id="statActive"><span class="spinner-grow spinner-grow-sm"></span></h3><i class="fas fa-procedures"></i></div></div>
             <div class="col-12 col-md-4"><div class="stat-card bg-orange shadow-sm"><p class="mb-0">เข้าเกณฑ์ความเสี่ยงสูง</p><h3 id="statHighRisk"><span class="spinner-grow spinner-grow-sm"></span></h3><i class="fas fa-exclamation-triangle"></i></div></div>
             <div class="col-12 col-md-4"><div class="stat-card bg-green shadow-sm"><p class="mb-0">จำนวนการประเมินแรกรับ</p><h3 id="statAssessed"><span class="spinner-grow spinner-grow-sm"></span></h3><i class="fas fa-clipboard-check"></i></div></div>
-          </div>
-          <h6 class="fw-bold text-secondary mb-3 mt-4"><i class="fas fa-chart-bar"></i> ข้อมูลเชิงคุณภาพ (Quality Metrics)</h6>
-          <div class="row g-3 mb-4">
-            <div class="col-12 col-md-6"><div class="stat-card bg-purple shadow-sm"><p class="mb-0">อัตราการติดตามสำเร็จ (ของกลุ่มเสี่ยง)</p><h3 id="statFuRate"><span class="spinner-grow spinner-grow-sm"></span></h3><i class="fas fa-chart-line"></i></div></div>
-            <div class="col-12 col-md-6"><div class="stat-card bg-teal shadow-sm"><p class="mb-0">ระยะเวลาเฉลี่ยก่อนติดตาม</p><h3 id="statAvgDays"><span class="spinner-grow spinner-grow-sm"></span></h3><i class="fas fa-clock"></i></div></div>
           </div>
           <div class="row g-3">
             <div class="col-12 col-md-6"><div class="border rounded p-3 h-100 bg-white shadow-sm"><h6 class="text-center mb-3 text-muted">จำนวนผู้มีปัจจัยเสี่ยงทางยา (เปรียบเทียบ)</h6><div style="position: relative; height: 250px; width: 100%;"><canvas id="riskChart"></canvas></div></div></div>
@@ -191,13 +179,67 @@
           </div>
         </div>
 
+        <div id="reportsView" class="view-section">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 border-bottom pb-3 gap-3">
+            <h4 class="text-success m-0"><i class="fas fa-file-alt"></i> รายงานสรุปผลการปฏิบัติงาน</h4>
+            <button class="btn btn-outline-success btn-sm" onclick="loadReports()"><i class="fas fa-sync-alt"></i> รีเฟรช</button>
+          </div>
+          
+          <div class="row g-3 mb-4">
+            <div class="col-6 col-md-3">
+              <div class="card bg-primary text-white p-3 text-center border-0 shadow-sm h-100">
+                <i class="fas fa-hospital-user fa-2x mb-2 opacity-50"></i>
+                <h3 id="repTotal" class="mb-0 fw-bold">...</h3><small>ผู้ป่วยรับเข้าระบบสะสม</small>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="card bg-success text-white p-3 text-center border-0 shadow-sm h-100">
+                <i class="fas fa-door-open fa-2x mb-2 opacity-50"></i>
+                <h3 id="repDischarged" class="mb-0 fw-bold">...</h3><small>จำหน่ายแล้วทั้งหมด</small>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="card bg-warning text-dark p-3 text-center border-0 shadow-sm h-100">
+                <i class="fas fa-user-clock fa-2x mb-2 opacity-50"></i>
+                <h3 id="repNeedFu" class="mb-0 fw-bold">...</h3><small>กำลังติดตามต่อเนื่อง</small>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="card bg-secondary text-white p-3 text-center border-0 shadow-sm h-100">
+                <i class="fas fa-check-circle fa-2x mb-2 opacity-50"></i>
+                <h3 id="repEndedFu" class="mb-0 fw-bold">...</h3><small>สิ้นสุดการติดตามแล้ว</small>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <h6 class="fw-bold text-danger mb-3"><i class="fas fa-exclamation-circle"></i> อุบัติการณ์ความเสี่ยงสะสม</h6>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item d-flex justify-content-between align-items-center">ผู้ป่วยเข้าเกณฑ์เสี่ยง EPS <span class="badge bg-danger rounded-pill fs-6" id="repEpsRisk">0</span></li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center">ผู้ป่วยเสี่ยง NMS Early Detection <span class="badge bg-purple rounded-pill fs-6" id="repNmsRisk">0</span></li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <h6 class="fw-bold text-info mb-3"><i class="fas fa-chart-pie"></i> สัดส่วนการประเมิน High Alert Drug</h6>
+                <div style="position: relative; height: 200px; width: 100%;"><canvas id="repHadChart"></canvas></div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4 text-end">
+            <button class="btn btn-success" onclick="Swal.fire('Coming Soon', 'ฟังก์ชันการดึงรายงานเป็นไฟล์ Excel สรุปยอดรายเดือนจะเปิดให้บริการในเฟสถัดไปครับ', 'info')"><i class="fas fa-file-excel"></i> ดาวน์โหลดรายงาน Excel รายเดือน</button>
+          </div>
+        </div>
+
         <div id="profileView" class="view-section">
           <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 border-bottom pb-3 gap-3">
             <h4 class="text-primary m-0"><i class="fas fa-id-badge"></i> Patient Profile & Timeline</h4>
             <div class="d-flex gap-2">
               <button class="btn btn-outline-dark btn-sm" onclick="editPatient(document.getElementById('profilePatientId').value)"><i class="fas fa-edit"></i> แก้ไขข้อมูล</button>
               <button class="btn btn-outline-danger btn-sm" id="btnDischargeProfile" onclick="dischargePatientData(document.getElementById('profilePatientId').value, document.getElementById('profileName').innerText)"><i class="fas fa-sign-out-alt"></i> จำหน่าย</button>
-              <button class="btn btn-outline-secondary btn-sm" onclick="switchView('patients')"><i class="fas fa-arrow-left"></i> กลับตาราง</button>
             </div>
           </div>
           
@@ -218,24 +260,28 @@
                 </div>
               </div>
               
-              <h6 class="fw-bold text-secondary mt-4 mb-2"><i class="fas fa-plus-circle"></i> แบบประเมินทางเภสัชกรรม</h6>
+              <h6 class="fw-bold text-secondary mt-4 mb-2"><i class="fas fa-plus-circle"></i> การจัดการ / แบบประเมิน</h6>
               <div class="action-grid">
-                <button class="btn-action bg-primary" onclick="openAssessmentForm(document.getElementById('profilePatientId').value, document.getElementById('profileName').innerText)">
+                <button class="btn-action w-100" id="btnCfuProfile" style="display:none; background-color: #d97706; grid-column: 1 / -1;" onclick="switchView('cfuAction')">
+                  <i class="fas fa-notes-medical"></i><span>บันทึกติดตามต่อเนื่องหลังจำหน่าย<br>(สรุปปัญหา)</span>
+                </button>
+
+                <button class="btn-action bg-primary assess-btn" onclick="openAssessmentForm(document.getElementById('profilePatientId').value, document.getElementById('profileName').innerText)">
                   <i class="fas fa-stethoscope"></i><span>EPS/NMS<br>(แรกรับ)</span>
                 </button>
-                <button class="btn-action bg-dark-purple" onclick="openNMSForm(document.getElementById('profilePatientId').value, document.getElementById('profileName').innerText)">
+                <button class="btn-action bg-dark-purple assess-btn" onclick="openNMSForm(document.getElementById('profilePatientId').value, document.getElementById('profileName').innerText)">
                   <i class="fas fa-brain"></i><span>Early Detect<br>NMS</span>
                 </button>
-                <button class="btn-action bg-info" onclick="openSASForm(document.getElementById('profilePatientId').value, document.getElementById('profileName').innerText)">
+                <button class="btn-action bg-info assess-btn" onclick="openSASForm(document.getElementById('profilePatientId').value, document.getElementById('profileName').innerText)">
                   <i class="fas fa-walking"></i><span>Mod-SAS<br>(ประเมิน EPS)</span>
                 </button>
-                <button class="btn-action bg-warning text-dark" onclick="openFollowUpForm(document.getElementById('profilePatientId').value, document.getElementById('profileName').innerText)">
+                <button class="btn-action bg-warning text-dark assess-btn" onclick="openFollowUpForm(document.getElementById('profilePatientId').value, document.getElementById('profileName').innerText)">
                   <i class="fas fa-heartbeat"></i><span>Follow-up<br>ติดตามอาการ</span>
                 </button>
-                <button class="btn-action bg-danger" onclick="openHADForm()">
+                <button class="btn-action bg-danger assess-btn" onclick="openHADForm()">
                   <i class="fas fa-pills"></i><span>High Alert<br>Drug (HAD)</span>
                 </button>
-                <button class="btn-action bg-secondary" onclick="openOtherAssessments(document.getElementById('profilePatientId').value, document.getElementById('profileName').innerText)">
+                <button class="btn-action bg-secondary assess-btn" onclick="openOtherAssessments()">
                   <i class="fas fa-clipboard-list"></i><span>แบบประเมิน<br>อื่นๆ...</span>
                 </button>
               </div>
@@ -256,6 +302,42 @@
               </div>
             </div>
           </div>
+        </div>
+
+        <div id="cfuActionView" class="view-section">
+          <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3"><h4 class="text-warning m-0"><i class="fas fa-user-clock"></i> บันทึกติดตามต่อเนื่องหลังจำหน่าย</h4><button class="btn btn-outline-secondary btn-sm" onclick="switchView('profile')"><i class="fas fa-arrow-left"></i> กลับ</button></div>
+          <form id="cfuForm">
+            <div class="row g-3 mb-3">
+              <div class="col-12 col-md-6"><label class="form-label fw-bold">วันที่ติดตาม <span class="text-danger">*</span></label><input type="date" class="form-control" id="cfuDate" required></div>
+              <div class="col-12 col-md-6"><label class="form-label fw-bold">เภสัชกรผู้บันทึก</label><input type="text" class="form-control bg-light" id="cfuPharmacist" readonly></div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-bold">อาการ/ปัญหาเดิมที่พบ (Summary)</label>
+              <textarea class="form-control" id="cfuProblem" rows="3" placeholder="ระบุอาการหรือปัญหาที่นำมาสู่การติดตามต่อเนื่อง..."></textarea>
+            </div>
+            <div class="row g-3 mb-4">
+              <div class="col-12 col-md-6">
+                <label class="form-label fw-bold">สถานะของปัญหาปัจจุบัน</label>
+                <select class="form-select border-primary" id="cfuStatus">
+                  <option value="ยังคงอยู่">ยังคงอยู่</option>
+                  <option value="ทุเลาลง">ทุเลาลง (ดีขึ้น)</option>
+                  <option value="หายเป็นปกติ">หายเป็นปกติ</option>
+                </select>
+              </div>
+              <div class="col-12 col-md-6">
+                <label class="form-label fw-bold">การดำเนินการขั้นต่อไป <span class="text-danger">*</span></label>
+                <select class="form-select border-warning" id="cfuAction">
+                  <option value="ติดตามต่อเนื่อง">ติดตามต่อเนื่องไปก่อน</option>
+                  <option value="สิ้นสุดการติดตาม">สิ้นสุดการติดตาม (Close Case)</option>
+                </select>
+              </div>
+            </div>
+            <div class="mb-4">
+              <label class="form-label fw-bold">คำแนะนำเพิ่มเติม (Note)</label>
+              <input type="text" class="form-control" id="cfuNote" placeholder="รายละเอียดอื่นๆ...">
+            </div>
+            <button type="button" class="btn btn-warning w-100 py-3 shadow-sm fs-5" id="btnSubmitCfu" onclick="submitContinuousFollowUp()"><i class="fas fa-save"></i> บันทึกข้อมูล</button>
+          </form>
         </div>
 
         <div id="registerView" class="view-section">
@@ -285,7 +367,7 @@
         </div>
 
         <div id="editPatientView" class="view-section">
-          <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3"><h4 class="text-warning m-0"><i class="fas fa-user-edit"></i> แก้ไขข้อมูล</h4><button class="btn btn-outline-secondary btn-sm" onclick="switchView('profile')"><i class="fas fa-arrow-left"></i> ยกเลิก</button></div>
+          <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3"><h4 class="text-warning m-0"><i class="fas fa-user-edit"></i> แก้ไขข้อมูล</h4><button class="btn btn-outline-secondary btn-sm" onclick="switchView('profile')"><i class="fas fa-arrow-left"></i> ยกเลิก/กลับ</button></div>
           <form id="editForm">
             <input type="hidden" id="editPatientId">
             <h6 class="text-secondary fw-bold mb-3"><i class="fas fa-id-card"></i> ข้อมูลทั่วไป</h6>
@@ -366,7 +448,11 @@
                   <tr><td rowspan="7" class="text-center fw-bold bg-light">ปัจจัย<br>รอง</td><td class="text-center">1</td><td>มีอัตราการเพิ่มขนาดยารักษาโรคจิตจำนวนมาก (Loading) อย่างรวดเร็ว</td><td class="text-center"><div class="form-check form-check-inline"><input class="form-check-input nms-minor" type="radio" name="nms_min1" value="ไม่มี" checked><label class="form-check-label">ไม่มี</label></div><div class="form-check form-check-inline"><input class="form-check-input nms-minor" type="radio" name="nms_min1" value="มี"><label class="form-check-label text-warning">มี</label></div></td></tr>
                   <tr><td class="text-center">2</td><td>มีไข้ต่ำๆ ตั้งแต่ 37.6 องศาเซลเซียสขึ้นไป</td><td class="text-center"><div class="form-check form-check-inline"><input class="form-check-input nms-minor" type="radio" name="nms_min2" value="ไม่มี" checked><label class="form-check-label">ไม่มี</label></div><div class="form-check form-check-inline"><input class="form-check-input nms-minor" type="radio" name="nms_min2" value="มี"><label class="form-check-label text-warning">มี</label></div></td></tr>
                   <tr><td class="text-center">3</td><td>ได้รับยารักษาโรคจิตในขนาดสูง แบบยาฉีดเข้ากล้ามเนื้อ ทั้ง Short/Long Acting</td><td class="text-center"><div class="form-check form-check-inline"><input class="form-check-input nms-minor" type="radio" name="nms_min3" value="ไม่มี" checked><label class="form-check-label">ไม่มี</label></div><div class="form-check form-check-inline"><input class="form-check-input nms-minor" type="radio" name="nms_min3" value="มี"><label class="form-check-label text-warning">มี</label></div></td></tr>
-                  <tr><td class="text-center">4</td><td>ขณะนี้มีอาการไม่พึงประสงค์กลุ่ม EPS รุนแรง (นับรวมเป็น 1 ปัจจัยรอง)<div class="ps-3 mt-1"><div class="form-check"><input class="form-check-input nms-minor-sub" type="checkbox" id="nms_m4_1" value="Acute dystonia"><label class="form-check-label small">Acute dystonia</label></div><div class="form-check"><input class="form-check-input nms-minor-sub" type="checkbox" id="nms_m4_2" value="Pseudoparkinsonism"><label class="form-check-label small">Pseudoparkinsonism</label></div><div class="form-check"><input class="form-check-input nms-minor-sub" type="checkbox" id="nms_m4_3" value="Akathisia"><label class="form-check-label small">Akathisia</label></div><div class="form-check"><input class="form-check-input nms-minor-sub" type="checkbox" id="nms_m4_4" value="ประวัติ Cogentin"><label class="form-check-label small">เคยมีประวัติการรักษาด้วย Cogentin</label></div></div></td><td class="text-center align-middle"><span class="badge bg-secondary" id="nmsM4Status">ไม่มี</span></td></tr>
+                  <tr>
+                    <td class="text-center">4</td>
+                    <td>ขณะนี้มีอาการไม่พึงประสงค์กลุ่ม EPS รุนแรง (นับรวมเป็น 1 ปัจจัยรอง)<div class="ps-3 mt-1"><div class="form-check"><input class="form-check-input nms-minor-sub" type="checkbox" id="nms_m4_1" value="Acute dystonia"><label class="form-check-label small">Acute dystonia</label></div><div class="form-check"><input class="form-check-input nms-minor-sub" type="checkbox" id="nms_m4_2" value="Pseudoparkinsonism"><label class="form-check-label small">Pseudoparkinsonism</label></div><div class="form-check"><input class="form-check-input nms-minor-sub" type="checkbox" id="nms_m4_3" value="Akathisia"><label class="form-check-label small">Akathisia</label></div><div class="form-check"><input class="form-check-input nms-minor-sub" type="checkbox" id="nms_m4_4" value="ประวัติ Cogentin"><label class="form-check-label small">เคยมีประวัติการรักษาด้วย Cogentin</label></div></div></td>
+                    <td class="text-center align-middle"><span class="badge bg-secondary" id="nmsM4Status">ไม่มี</span></td>
+                  </tr>
                   <tr><td class="text-center">5</td><td>มีการจำกัดพฤติกรรมผู้ป่วย (Restrain) ระยะยาว ตั้งแต่ 1 ชั่วโมงขึ้น</td><td class="text-center"><div class="form-check form-check-inline"><input class="form-check-input nms-minor" type="radio" name="nms_min5" value="ไม่มี" checked><label class="form-check-label">ไม่มี</label></div><div class="form-check form-check-inline"><input class="form-check-input nms-minor" type="radio" name="nms_min5" value="มี"><label class="form-check-label text-warning">มี</label></div></td></tr>
                   <tr><td class="text-center">6</td><td>มีประวัติเคยเป็น NMS มาก่อน</td><td class="text-center"><div class="form-check form-check-inline"><input class="form-check-input nms-minor" type="radio" name="nms_min6" value="ไม่มี" checked><label class="form-check-label">ไม่มี</label></div><div class="form-check form-check-inline"><input class="form-check-input nms-minor" type="radio" name="nms_min6" value="มี"><label class="form-check-label text-warning">มี</label></div></td></tr>
                   <tr><td class="text-center">7</td><td>มีโรคทางกายและการใช้ยาขนานอื่นๆ ร่วมกับยารักษาโรคจิต</td><td class="text-center"><div class="form-check form-check-inline"><input class="form-check-input nms-minor" type="radio" name="nms_min7" value="ไม่มี" checked><label class="form-check-label">ไม่มี</label></div><div class="form-check form-check-inline"><input class="form-check-input nms-minor" type="radio" name="nms_min7" value="มี"><label class="form-check-label text-warning">มี</label></div></td></tr>
@@ -389,7 +475,10 @@
         </div>
 
         <div id="sasView" class="view-section">
-          <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3"><h4 class="text-info m-0"><i class="fas fa-walking"></i> ประเมิน Mod-SAS</h4><button class="btn btn-outline-secondary btn-sm" onclick="switchView('profile')"><i class="fas fa-arrow-left"></i> กลับ</button></div>
+          <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3"><h4 class="text-info m-0"><i class="fas fa-walking"></i> ประเมิน Mod-SAS</h4><button class="btn btn-outline-secondary btn-sm" onclick="switchView('profile')"><i class="fas fa-arrow-left"></i> กลับหน้า Profile</button></div>
+          <div class="alert alert-info border-0 shadow-sm d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3 mb-4">
+            <div class="d-flex align-items-center gap-3"><i class="fas fa-user-circle fa-2x text-info"></i><div><div class="small text-muted">ID: <span id="sasPatientId" class="fw-bold text-dark">-</span></div><div class="fw-bold fs-5" id="sasPatientName">-</div></div></div>
+          </div>
           <form id="sasForm">
             <div class="card border-0 bg-light p-3 p-md-4 mb-4">
               <h6 class="fw-bold text-info mb-3"><i class="fas fa-list-ol"></i> Modified Simpson-Angus Rating Scale</h6>
@@ -409,7 +498,7 @@
                   <span id="sasMaxScore" class="d-block fs-1 fw-bold text-success mb-2">0</span>
                   <span id="sasResultText" class="badge bg-success fs-6 mb-3">ปกติ (Normal)</span>
                   <div class="text-start bg-light p-3 rounded mt-2 border"><strong class="text-secondary"><i class="fas fa-lightbulb"></i> คำแนะนำจากระบบ:</strong><p id="sasRecommendation" class="mb-2 mt-1 fw-bold">-</p>
-                    <label class="form-label fw-bold mt-2"><i class="fas fa-pencil-alt"></i> บันทึก Progress / การดำเนินการของเภสัชกร</label>
+                    <label class="form-label fw-bold mt-2"><i class="fas fa-pencil-alt"></i> บันทึก Progress / การดำเนินการ</label>
                     <textarea class="form-control border-info" id="sasProgress" rows="2" placeholder="เช่น Consult แพทย์เวร, ปรับลด Dose..."></textarea>
                   </div>
                   <input type="hidden" id="sasFinalSeverity" value="Normal"><input type="hidden" id="sasFinalRec" value="-">
@@ -422,6 +511,9 @@
 
         <div id="followUpView" class="view-section">
           <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3"><h4 class="text-warning m-0"><i class="fas fa-heartbeat"></i> บันทึกติดตามอาการ (Follow-up)</h4><button class="btn btn-outline-secondary btn-sm" onclick="switchView('profile')"><i class="fas fa-arrow-left"></i> กลับหน้า Profile</button></div>
+          <div class="alert alert-warning border-0 shadow-sm d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
+            <div class="d-flex align-items-center gap-3"><i class="fas fa-exclamation-triangle fa-2x"></i><div><div class="small text-muted">ID: <span id="fuPatientId" class="fw-bold text-dark">-</span></div><div class="fw-bold fs-5 text-dark" id="fuPatientName">-</div></div></div>
+          </div>
           <form id="fuForm">
             <div class="row g-3 mb-3">
               <div class="col-12 col-md-4"><label class="form-label fw-bold">วันที่ติดตาม <span class="text-danger">*</span></label><input type="date" class="form-control" id="fuDate" required></div>
@@ -457,129 +549,36 @@
           </form>
         </div>
 
-        <div id="hadView" class="view-section">
-          <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3"><h4 class="text-danger m-0"><i class="fas fa-pills"></i> ประเมิน High Alert Drug</h4><button class="btn btn-outline-secondary btn-sm" onclick="switchView('profile')"><i class="fas fa-arrow-left"></i> กลับ</button></div>
-          <form id="hadForm">
-            <div class="row g-3 mb-4">
-              <div class="col-md-6"><label class="form-label fw-bold">เลือกกลุ่มยา High Alert</label><select class="form-select border-danger" id="hadDrugName" onchange="checkHADType()"><option value="">-- เลือกยา --</option><option value="Sodium Valproate">Sodium Valproate</option><option value="Lithium Carbonate">Lithium Carbonate</option><option value="Clozapine">Clozapine</option><option value="Carbamazepine">Carbamazepine</option></select></div>
-              <div class="col-md-6"><label class="form-label fw-bold">Dose ที่ได้รับ (mg/day) <span class="text-danger">*</span></label><input type="number" class="form-control" id="hadDose" required oninput="calcCss()"></div>
-            </div>
-            <div id="valproateCalcSection" class="card bg-light border-0 p-3 mb-4" style="display: none;">
-              <h6 class="text-success fw-bold"><i class="fas fa-calculator"></i> คำนวณระดับยา Sodium Valproate</h6>
-              <div class="row align-items-center g-3">
-                <div class="col-12 col-md-4"><small class="text-muted">น้ำหนักผู้ป่วย</small><div class="input-group"><input type="text" class="form-control" id="hadWeight" readonly><span class="input-group-text">kg</span></div></div>
-                <div class="col-12 col-md-8 text-md-end text-start mt-3 mt-md-0"><small class="text-muted d-block mb-1">สูตร: {Dose x 1000} / {192 x น้ำหนัก}</small><span class="fs-5 fw-bold text-dark">Calculated Css = </span><span id="hadCssDisplay" class="fs-2 fw-bold text-success">0.00</span><input type="hidden" id="hadCssValue"></div>
+        <div class="modal fade" id="timelineDetailModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header bg-light">
+                <h5 class="modal-title text-primary fw-bold" id="tdModalTitle"><i class="fas fa-file-medical"></i> รายละเอียดบันทึก</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-              <p class="text-danger small mt-2 mb-0" id="hadCssAlert"></p>
-            </div>
-            <div id="hadAssessmentContainer">
-              <div id="formValproate" class="had-specific-form mb-4" style="display: none;">
-                <h6 class="had-title"><i class="fas fa-clipboard-check"></i> ประเมินความเสี่ยง Sodium Valproate</h6>
-                <div class="had-radio-group"><label class="had-label">ผู้ป่วยใช้เครื่องดื่มที่มีแอลกอฮอล์ประจำ / ได้รับวินิจฉัย F10.xx</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input val-trigger1" type="radio" name="val_alc" value="ไม่" checked><label class="form-check-label">ไม่</label></div><div class="form-check form-check-inline"><input class="form-check-input val-trigger1" type="radio" name="val_alc" value="ใช่"><label class="form-check-label text-danger">ใช่</label></div></div></div>
-                <div id="valproateLftBlock1" class="card border border-warning mt-2 p-3 bg-white" style="display: none;">
-                  <h6 class="text-warning fw-bold"><i class="fas fa-exclamation-triangle"></i> ผู้ป่วยเข้าเกณฑ์ต้องเฝ้าระวัง LFT (กรณีแอลกอฮอล์)</h6>
-                  <div class="had-radio-group bg-light p-2 rounded"><label class="had-label fw-bold">การตรวจ Liver Function Test ทุก 1 ปี</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="val_lft1_done" value="ไม่เจาะ" checked><label class="form-check-label">ไม่เจาะ</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="val_lft1_done" value="สั่งเจาะ"><label class="form-check-label text-primary">สั่งเจาะ</label></div></div></div>
-                  <div class="had-radio-group"><label class="had-label">AST (M<37 / F<31)</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="val_lft1_ast" value="ปกติ" checked><label class="form-check-label">ปกติ</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="val_lft1_ast" value="ผิดปกติ"><label class="form-check-label">ผิดปกติ</label></div></div></div>
-                  <div class="had-radio-group"><label class="had-label">ALT (M<41 / F<31)</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="val_lft1_alt" value="ปกติ" checked><label class="form-check-label">ปกติ</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="val_lft1_alt" value="ผิดปกติ"><label class="form-check-label">ผิดปกติ</label></div></div></div>
-                </div>
-
-                <div class="had-radio-group mt-3"><label class="had-label">Sodium Valproate ≥ 1500 mg/day</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input val-trigger2" type="radio" name="val_dose_high" value="ไม่" checked><label class="form-check-label">ไม่</label></div><div class="form-check form-check-inline"><input class="form-check-input val-trigger2" type="radio" name="val_dose_high" value="ใช่"><label class="form-check-label text-danger">ใช่</label></div></div></div>
-                <div id="valproateLftBlock2" class="card border border-warning mt-2 p-3 bg-white" style="display: none;">
-                  <h6 class="text-warning fw-bold"><i class="fas fa-exclamation-triangle"></i> ผู้ป่วยเข้าเกณฑ์ต้องเฝ้าระวัง LFT (กรณี High Dose)</h6>
-                  <div class="had-radio-group bg-light p-2 rounded"><label class="had-label fw-bold">การตรวจ Liver Function Test ทุก 1 ปี</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="val_lft2_done" value="ไม่เจาะ" checked><label class="form-check-label">ไม่เจาะ</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="val_lft2_done" value="สั่งเจาะ"><label class="form-check-label text-primary">สั่งเจาะ</label></div></div></div>
-                  <div class="had-radio-group"><label class="had-label">AST (M<37 / F<31)</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="val_lft2_ast" value="ปกติ" checked><label class="form-check-label">ปกติ</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="val_lft2_ast" value="ผิดปกติ"><label class="form-check-label">ผิดปกติ</label></div></div></div>
-                  <div class="had-radio-group"><label class="had-label">ALT (M<41 / F<31)</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="val_lft2_alt" value="ปกติ" checked><label class="form-check-label">ปกติ</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="val_lft2_alt" value="ผิดปกติ"><label class="form-check-label">ผิดปกติ</label></div></div></div>
-                </div>
-
-                <div class="had-radio-group mt-3"><label class="had-label">ใช้ยาร่วมกับยาที่มีพิษต่อตับ: carbamazepine, phenytoin, phenobarbital</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input val-trigger3" type="radio" name="val_hepatotox" value="ไม่" checked><label class="form-check-label">ไม่</label></div><div class="form-check form-check-inline"><input class="form-check-input val-trigger3" type="radio" name="val_hepatotox" value="ใช่"><label class="form-check-label text-danger">ใช่</label></div></div></div>
-                <div id="valproateLftBlock3" class="card border border-warning mt-2 p-3 bg-white" style="display: none;">
-                  <h6 class="text-warning fw-bold"><i class="fas fa-exclamation-triangle"></i> ผู้ป่วยเข้าเกณฑ์ต้องเฝ้าระวัง LFT (กรณีใช้ยาร่วม)</h6>
-                  <div class="had-radio-group bg-light p-2 rounded"><label class="had-label fw-bold">การตรวจ Liver Function Test ทุก 1 ปี</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="val_lft3_done" value="ไม่เจาะ" checked><label class="form-check-label">ไม่เจาะ</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="val_lft3_done" value="สั่งเจาะ"><label class="form-check-label text-primary">สั่งเจาะ</label></div></div></div>
-                  <div class="had-radio-group"><label class="had-label">AST (M<37 / F<31)</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="val_lft3_ast" value="ปกติ" checked><label class="form-check-label">ปกติ</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="val_lft3_ast" value="ผิดปกติ"><label class="form-check-label">ผิดปกติ</label></div></div></div>
-                  <div class="had-radio-group"><label class="had-label">ALT (M<41 / F<31)</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="val_lft3_alt" value="ปกติ" checked><label class="form-check-label">ปกติ</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="val_lft3_alt" value="ผิดปกติ"><label class="form-check-label">ผิดปกติ</label></div></div></div>
-                </div>
-              </div>
-              <div id="formClozapine" class="had-specific-form mb-4" style="display: none;">
-                <h6 class="had-title"><i class="fas fa-clipboard-check"></i> ประเมินความเสี่ยง Clozapine</h6>
-                <div class="had-radio-group bg-light p-2 rounded mb-2"><label class="had-label fw-bold">WBC < 3,000/mm³ <span class="text-danger">*ต้องแจ้งแพทย์ทันที*</span></label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="clz_wbc" value="ปกติ" checked><label class="form-check-label">ปกติ</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="clz_wbc" value="ผิดปกติ"><label class="form-check-label text-danger">ผิดปกติ</label></div></div></div>
-                <div class="had-radio-group bg-light p-2 rounded mb-2"><label class="had-label fw-bold">ANC < 1,500/mm³ <span class="text-danger">*ต้องหยุดยาทันที*</span></label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="clz_anc" value="ปกติ" checked><label class="form-check-label">ปกติ</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="clz_anc" value="ผิดปกติ"><label class="form-check-label text-danger">ผิดปกติ</label></div></div></div>
-                <div class="had-radio-group bg-light p-2 rounded mb-3"><label class="had-label fw-bold">Platelet (กรณี < 80,000/mm³) <span class="text-danger">*ต้องหยุดยาทันที*</span></label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="clz_plt" value="ปกติ" checked><label class="form-check-label">ปกติ</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="clz_plt" value="ผิดปกติ"><label class="form-check-label text-danger">ผิดปกติ</label></div></div></div>
-                <div class="had-radio-group"><label class="had-label">การตรวจ CBC ล่าสุด > 6 เดือน</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="clz_cbc_6m" value="ไม่เจาะ" checked><label class="form-check-label">ไม่เจาะ</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="clz_cbc_6m" value="สั่งเจาะ"><label class="form-check-label">สั่งเจาะ</label></div></div></div>
-                <div class="had-radio-group"><label class="had-label">clozapine ≥400 mg/day (EKG Baseline และทุก 1 ปี)</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="clz_ekg" value="ปกติ" checked><label class="form-check-label">ปกติ</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="clz_ekg" value="ผิดปกติ"><label class="form-check-label">ผิดปกติ</label></div></div></div>
-                <div class="had-radio-group"><label class="had-label">มีไข้หนาวสั่น</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="clz_fever" value="ไม่เป็น" checked><label class="form-check-label">ไม่เป็น</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="clz_fever" value="เป็น"><label class="form-check-label">เป็น</label></div></div></div>
-                <div class="had-radio-group"><label class="had-label">เจ็บคอปวดเมื่อยตามร่างกาย</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="clz_sorethroat" value="ไม่เป็น" checked><label class="form-check-label">ไม่เป็น</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="clz_sorethroat" value="เป็น"><label class="form-check-label">เป็น</label></div></div></div>
-                <div class="had-radio-group"><label class="had-label">เฉื่อยชา เชื่องช้า / อ่อนเพลียมากกว่าปกติ</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="clz_fatigue" value="ไม่เป็น" checked><label class="form-check-label">ไม่เป็น</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="clz_fatigue" value="เป็น"><label class="form-check-label">เป็น</label></div></div></div>
-                <div class="had-radio-group"><label class="had-label">หน้ามืด วิงเวียน</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="clz_dizzy" value="ไม่เป็น" checked><label class="form-check-label">ไม่เป็น</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="clz_dizzy" value="เป็น"><label class="form-check-label">เป็น</label></div></div></div>
-                <div class="had-radio-group"><label class="had-label">ชัก</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="clz_seizure" value="ไม่เป็น" checked><label class="form-check-label">ไม่เป็น</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="clz_seizure" value="เป็น"><label class="form-check-label">เป็น</label></div></div></div>
-                <div class="had-radio-group"><label class="had-label">U/D : DM, HT, Dyslipidemia, Cardiovascular</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="clz_ud" value="ไม่มี" checked><label class="form-check-label">ไม่มี</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="clz_ud" value="มี"><label class="form-check-label">มี</label></div></div></div>
-              </div>
-              <div id="formLithium" class="had-specific-form mb-4" style="display: none;">
-                <h6 class="had-title"><i class="fas fa-clipboard-check"></i> ประเมินความเสี่ยง Lithium Carbonate</h6>
-                <div class="had-radio-group bg-light p-2 rounded"><label class="had-label fw-bold">Lithium Level ล่าสุด (อย่างน้อยปีละ 1 ครั้ง)</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="lit_level" value="ไม่เจาะ" checked><label class="form-check-label">ไม่เจาะ</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="lit_level" value="สั่งเจาะ"><label class="form-check-label text-danger">สั่งเจาะ</label></div></div></div>
-                <div class="had-radio-group bg-light p-2 rounded"><label class="had-label fw-bold">BUN ปีละ 1 ครั้ง</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="lit_bun" value="ไม่เจาะ" checked><label class="form-check-label">ไม่เจาะ</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="lit_bun" value="สั่งเจาะ"><label class="form-check-label text-danger">สั่งเจาะ</label></div></div></div>
-                <div class="had-radio-group bg-light p-2 rounded"><label class="had-label fw-bold">Creatinine ปีละ 1 ครั้ง</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="lit_cr" value="ไม่เจาะ" checked><label class="form-check-label">ไม่เจาะ</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="lit_cr" value="สั่งเจาะ"><label class="form-check-label text-danger">สั่งเจาะ</label></div></div></div>
-                <div class="had-radio-group bg-light p-2 rounded mb-3"><label class="had-label fw-bold">Thyroid Function ปีละ 1 ครั้ง</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="lit_thyroid" value="ไม่เจาะ" checked><label class="form-check-label">ไม่เจาะ</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="lit_thyroid" value="สั่งเจาะ"><label class="form-check-label text-danger">สั่งเจาะ</label></div></div></div>
-                <div class="had-radio-group"><label class="had-label">อาเจียน / ท้องเสีย / ปวดท้อง</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="lit_gi" value="ไม่เป็น" checked><label class="form-check-label">ไม่เป็น</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="lit_gi" value="เป็น"><label class="form-check-label">เป็น</label></div></div></div>
-                <div class="had-radio-group"><label class="had-label">เดินเซ กล้ามเนื้ออ่อนแรงมาก / พูดไม่ชัด</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="lit_motor" value="ไม่เป็น" checked><label class="form-check-label">ไม่เป็น</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="lit_motor" value="เป็น"><label class="form-check-label">เป็น</label></div></div></div>
-                <div class="had-radio-group"><label class="had-label">สั่นมาก ชัก กระตุก</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="lit_tremor" value="ไม่เป็น" checked><label class="form-check-label">ไม่เป็น</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="lit_tremor" value="เป็น"><label class="form-check-label">เป็น</label></div></div></div>
-                <div class="had-radio-group"><label class="had-label">งง สับสนมาก</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="lit_confuse" value="ไม่เป็น" checked><label class="form-check-label">ไม่เป็น</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="lit_confuse" value="เป็น"><label class="form-check-label">เป็น</label></div></div></div>
-                <div class="had-radio-group"><label class="had-label">อ่อนเพลียมาก</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="lit_fatigue" value="ไม่เป็น" checked><label class="form-check-label">ไม่เป็น</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="lit_fatigue" value="เป็น"><label class="form-check-label">เป็น</label></div></div></div>
-                <h6 class="mt-3 text-secondary">ประวัติยาที่ใช้ร่วม (Drug Interactions)</h6>
-                <div class="had-radio-group"><label class="had-label">ยาแก้ปวด NSAIDs (diclofenac, ibuprofen ฯลฯ)</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="lit_di_nsaid" value="ไม่มี" checked><label class="form-check-label">ไม่มี</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="lit_di_nsaid" value="มี"><label class="form-check-label">มี</label></div></div></div>
-                <div class="had-radio-group"><label class="had-label">ยาขับปัสสาวะ: HCTZ</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="lit_di_hctz" value="ไม่มี" checked><label class="form-check-label">ไม่มี</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="lit_di_hctz" value="มี"><label class="form-check-label">มี</label></div></div></div>
-                <div class="had-radio-group"><label class="had-label">ยาลดความดัน ACEIs (Enalapril, captopril ฯลฯ)</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="lit_di_acei" value="ไม่มี" checked><label class="form-check-label">ไม่มี</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="lit_di_acei" value="มี"><label class="form-check-label">มี</label></div></div></div>
-                <div class="had-radio-group"><label class="had-label">ยาลดความดัน ARBs (losartan, valsartan ฯลฯ)</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="lit_di_arb" value="ไม่มี" checked><label class="form-check-label">ไม่มี</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="lit_di_arb" value="มี"><label class="form-check-label">มี</label></div></div></div>
-                <div class="had-radio-group"><label class="had-label">ชา กาแฟ เครื่องดื่มที่มีคาเฟอีน</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="lit_di_cafe" value="ไม่มี" checked><label class="form-check-label">ไม่มี</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="lit_di_cafe" value="มี"><label class="form-check-label">มี</label></div></div></div>
-              </div>
-              <div id="formCarbamazepine" class="had-specific-form mb-4" style="display: none;">
-                <h6 class="had-title"><i class="fas fa-clipboard-check"></i> ประเมินความเสี่ยง Carbamazepine</h6>
-                <div class="had-radio-group bg-light p-2 rounded mb-2"><label class="had-label fw-bold">การตรวจ CBC ล่าสุด > 6 เดือน</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="cbz_cbc_6m" value="ไม่เจาะ" checked><label class="form-check-label">ไม่เจาะ</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="cbz_cbc_6m" value="สั่งเจาะ"><label class="form-check-label text-primary">สั่งเจาะ</label></div></div></div>
-                <div class="had-radio-group bg-light p-2 rounded mb-3"><label class="had-label fw-bold">CBC baseline ก่อนเริ่มยา (5000-10000) <span class="text-danger">*แจ้งแพทย์ทันทีถ้าผิดปกติ*</span></label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="cbz_cbc_base" value="ปกติ" checked><label class="form-check-label">ปกติ</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="cbz_cbc_base" value="ผิดปกติ"><label class="form-check-label text-danger">ผิดปกติ</label></div></div></div>
-                <div class="had-radio-group"><label class="had-label">ง่วงซึมมากผิดปกติ</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="cbz_drowsy" value="ไม่เป็น" checked><label class="form-check-label">ไม่เป็น</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="cbz_drowsy" value="เป็น"><label class="form-check-label">เป็น</label></div></div></div>
-                <div class="had-radio-group"><label class="had-label">ตัวเหลือง ตาเหลือง</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="cbz_jaundice" value="ไม่เป็น" checked><label class="form-check-label">ไม่เป็น</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="cbz_jaundice" value="เป็น"><label class="form-check-label">เป็น</label></div></div></div>
-                <div class="had-radio-group"><label class="had-label">ตาลาย เห็นภาพซ้อน</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="cbz_blur" value="ไม่เป็น" checked><label class="form-check-label">ไม่เป็น</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="cbz_blur" value="เป็น"><label class="form-check-label">เป็น</label></div></div></div>
-                <div class="had-radio-group"><label class="had-label">จ้ำเลือดตามตัว ผื่น / แผลในปาก</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="cbz_rash" value="ไม่เป็น" checked><label class="form-check-label">ไม่เป็น</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="cbz_rash" value="เป็น"><label class="form-check-label text-danger">เป็น</label></div></div></div>
-                <div class="had-radio-group"><label class="had-label">ไข้ / เจ็บคอ / ปวดเมื่อยตามตัว</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="cbz_fever" value="ไม่เป็น" checked><label class="form-check-label">ไม่เป็น</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="cbz_fever" value="เป็น"><label class="form-check-label">เป็น</label></div></div></div>
-                <div class="had-radio-group"><label class="had-label">สับสนมาก มึนงง</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="cbz_confuse" value="ไม่มี" checked><label class="form-check-label">ไม่มี</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="cbz_confuse" value="มี"><label class="form-check-label">มี</label></div></div></div>
-                <div class="had-radio-group"><label class="had-label">ปวดท้อง</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="cbz_abd" value="ไม่มี" checked><label class="form-check-label">ไม่มี</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="cbz_abd" value="มี"><label class="form-check-label">มี</label></div></div></div>
-                <div class="had-radio-group"><label class="had-label">เดินเซ กล้ามเนื้ออ่อนแรงมาก / พูดไม่ชัด</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="cbz_motor" value="ไม่มี" checked><label class="form-check-label">ไม่มี</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="cbz_motor" value="มี"><label class="form-check-label">มี</label></div></div></div>
+              <div class="modal-body" id="timelineDetailModalContent"></div>
+              <div class="modal-footer bg-light no-print">
+                <button type="button" class="btn btn-warning me-auto text-dark fw-bold" onclick="openFollowUpFromModal()"><i class="fas fa-heartbeat"></i> บันทึกติดตามอาการเพิ่ม</button>
+                <button type="button" class="btn btn-outline-danger" id="btnDeleteRecord" style="display:none;"><i class="fas fa-trash"></i> ลบข้อมูลนี้</button>
+                <button type="button" class="btn btn-success" onclick="window.print()"><i class="fas fa-print"></i> Print PDF</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
               </div>
             </div>
-
-            <div class="mb-3"><label class="form-label fw-bold">บันทึกเพิ่มเติม / Note</label><textarea class="form-control" id="hadNote" rows="2" placeholder="ระบุอาการไม่พึงประสงค์..."></textarea></div>
-            <button type="button" class="btn btn-danger w-100 py-3 shadow-sm fs-5" id="btnSubmitHad" onclick="submitHAD()"><i class="fas fa-save"></i> บันทึกข้อมูล HAD</button>
-          </form>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <div class="modal fade" id="timelineDetailModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header bg-light">
-          <h5 class="modal-title text-primary fw-bold" id="tdModalTitle"><i class="fas fa-file-medical"></i> รายละเอียดบันทึก</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" id="timelineDetailModalContent">
           </div>
-        <div class="modal-footer bg-light no-print">
-          <button type="button" class="btn btn-warning me-auto text-dark fw-bold" onclick="openFollowUpFromModal()"><i class="fas fa-heartbeat"></i> ติดตามอาการต่อ</button>
-          <button type="button" class="btn btn-outline-danger" id="btnDeleteRecord" style="display:none;"><i class="fas fa-trash"></i> ลบข้อมูลนี้</button>
-          <button type="button" class="btn btn-success" onclick="window.print()"><i class="fas fa-print"></i> Print PDF</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
         </div>
+
       </div>
     </div>
   </div>
 
   <script>
+    // --- ตั้งค่า Script URL ---
     const scriptURL = 'https://script.google.com/macros/s/AKfycby7n2BWeH0Lv7-bNRXjA_-oYhSMoPIbkdA3PmAd7QV_FfA8VGyUf_gud8-3tdnRTz4/exec'; 
     let currentPharmacist = ''; let pharmacistList = [];
     let currentTimelineData = []; let isTimelineAscending = false; 
+    let currentParentView = 'dashboard';
 
-    // --- Auto-Login (LocalStorage) ---
+    // --- Auto-Login ---
     window.onload = () => {
       const savedUser = localStorage.getItem('jvlPharmacistAuth');
       if(savedUser) {
@@ -588,8 +587,7 @@
         document.getElementById('displayUserName').innerText = currentPharmacist;
         document.getElementById('roleBadge').innerText = u.role;
         document.querySelectorAll('.restricted-menu').forEach(el => el.style.display = 'block');
-        fetchPharmacists();
-        showApp('dashboard'); loadDashboardStats(); loadPatients();
+        fetchPharmacists(); switchView('dashboard'); loadDashboardStats();
       }
     };
 
@@ -601,7 +599,7 @@
       if(type === 'guest') {
         document.getElementById('displayUserName').innerText = "บุคคลทั่วไป (Guest)"; document.getElementById('roleBadge').innerText = "Guest Mode"; document.getElementById('roleBadge').className = "badge bg-secondary text-white border p-2";
         document.querySelectorAll('.restricted-menu').forEach(el => el.style.display = 'none'); currentPharmacist = "Guest";
-        showApp('dashboard'); loadDashboardStats(); return;
+        switchView('dashboard'); loadDashboardStats(); return;
       }
       const user = document.getElementById('username').value.trim(), pass = document.getElementById('password').value;
       if(!user || !pass) return Swal.fire('แจ้งเตือน', 'กรุณากรอกข้อมูล', 'warning');
@@ -611,26 +609,39 @@
       .then(res => res.json()).then(data => {
         if(data.status === 'success') {
           currentPharmacist = data.user.name; 
-          localStorage.setItem('jvlPharmacistAuth', JSON.stringify({name: data.user.name, role: data.user.role})); // Save login
+          localStorage.setItem('jvlPharmacistAuth', JSON.stringify({name: data.user.name, role: data.user.role})); 
           document.getElementById('displayUserName').innerText = currentPharmacist; document.getElementById('roleBadge').innerText = data.user.role; document.getElementById('roleBadge').className = "badge bg-primary text-white border p-2";
           document.querySelectorAll('.restricted-menu').forEach(el => el.style.display = 'block');
-          fetchPharmacists(); showApp('dashboard'); loadDashboardStats(); loadPatients();
+          fetchPharmacists(); switchView('dashboard'); loadDashboardStats(); 
         } else { Swal.fire('ข้อผิดพลาด', data.message, 'error'); }
       }).finally(() => { btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ (เภสัชกร)'; btn.disabled = false; });
     }
 
     function fetchPharmacists() { fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'getPharmacists' }) }).then(res => res.json()).then(data => { if(data.status === 'success') { pharmacistList = data.data; let sel = document.getElementById('fuPharmacist'); sel.innerHTML = ''; pharmacistList.forEach(ph => { let opt = document.createElement('option'); opt.value = ph; opt.text = ph; if(ph === currentPharmacist) opt.selected = true; sel.appendChild(opt); }); } }); }
-    function showApp(view) { document.getElementById('login-section').style.display = 'none'; document.getElementById('app-section').style.display = 'block'; switchView(view); }
     function logout() { localStorage.removeItem('jvlPharmacistAuth'); location.reload(); }
     
-    function switchView(viewId, el = null) {
-      document.querySelectorAll('.view-section').forEach(e => e.classList.remove('active')); document.getElementById(viewId + 'View').classList.add('active');
-      if (el) { document.querySelectorAll('.sidebar-menu a').forEach(e => e.classList.remove('active')); el.classList.add('active'); }
+    // --- View Navigation & Highlight ---
+    function switchView(viewId) {
+      document.querySelectorAll('.view-section').forEach(e => e.classList.remove('active')); 
+      let targetView = document.getElementById(viewId + 'View');
+      if (targetView) targetView.classList.add('active');
+
+      let menuItem = document.querySelector(`.sidebar-menu a[data-view="${viewId}"]`);
+      if(menuItem) {
+        document.querySelectorAll('.sidebar-menu a').forEach(e => e.classList.remove('active'));
+        menuItem.classList.add('active');
+        currentParentView = viewId;
+      } else {
+        document.querySelectorAll('.sidebar-menu a').forEach(e => e.classList.remove('active'));
+        let parentItem = document.querySelector(`.sidebar-menu a[data-view="${currentParentView}"]`);
+        if(parentItem) parentItem.classList.add('active');
+      }
+
       if(window.innerWidth <= 992) { document.getElementById('sidebar').classList.remove('show'); document.getElementById('sidebarBackdrop').classList.remove('show'); }
       
-      // Load specific view data
       if(viewId === 'continuous') loadContinuousPatients();
       if(viewId === 'patients') loadPatients();
+      if(viewId === 'reports') loadReports();
     }
     
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('show'); document.getElementById('sidebarBackdrop').classList.toggle('show'); }
@@ -675,6 +686,27 @@
       });
     }
 
+    function loadReports() {
+      document.getElementById('repTotal').innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+      document.getElementById('repDischarged').innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+      document.getElementById('repNeedFu').innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+      document.getElementById('repEndedFu').innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+      fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'getReportsData' }) }).then(res => res.json()).then(res => {
+        if(res.status === 'success') {
+          document.getElementById('repTotal').innerText = res.data.totalPatients;
+          document.getElementById('repDischarged').innerText = res.data.dischargedPatients;
+          document.getElementById('repNeedFu').innerText = res.data.continuingFollowUp;
+          document.getElementById('repEndedFu').innerText = res.data.endedFollowUp;
+          document.getElementById('repEpsRisk').innerText = res.data.epsRiskTotal;
+          document.getElementById('repNmsRisk').innerText = res.data.nmsRiskTotal;
+          
+          let ctx = document.getElementById('repHadChart').getContext('2d');
+          if(window.repHadChartObj) window.repHadChartObj.destroy();
+          window.repHadChartObj = new Chart(ctx, { type: 'pie', data: { labels: res.data.hadDistributionLabels, datasets: [{ data: res.data.hadDistributionData, backgroundColor: ['#1e3a8a', '#2563eb', '#14b8a6', '#d97706'] }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } } });
+        }
+      });
+    }
+
     // --- Profile & Timeline Rendering ---
     function openPatientProfile(patientId) {
       document.getElementById('profilePatientId').value = patientId;
@@ -689,12 +721,22 @@
           document.getElementById('profileWeight').value = data.data.weight || 0;
           document.getElementById('profileWeightDisplay').innerText = data.data.weight || '-';
           document.getElementById('profileHeightDisplay').innerText = data.data.height || '-';
+          document.getElementById('cfuPharmacist').value = currentPharmacist;
           
           let badgeHtml = data.data.status === 'Discharged' ? '<span class="badge bg-secondary">สถานะ: จำหน่ายแล้ว</span>' : '<span class="badge bg-success">สถานะ: Active</span>';
           document.getElementById('profileStatusBadge').innerHTML = badgeHtml;
           
           let btnDc = document.getElementById('btnDischargeProfile');
-          if(data.data.status === 'Discharged') btnDc.style.display = 'none'; else btnDc.style.display = 'block';
+          let btnCfu = document.getElementById('btnCfuProfile');
+          
+          if(data.data.status === 'Discharged') {
+            btnDc.style.display = 'none';
+            document.querySelectorAll('.assess-btn').forEach(b => b.style.opacity = '0.5'); // หรี่ปุ่มประเมินปกติ
+            if(data.data.needFollowUp === 'Yes') { btnCfu.style.display = 'flex'; } else { btnCfu.style.display = 'none'; }
+          } else {
+            btnDc.style.display = 'inline-block'; btnCfu.style.display = 'none';
+            document.querySelectorAll('.assess-btn').forEach(b => b.style.opacity = '1');
+          }
 
           currentTimelineData = data.data.timeline;
           renderTimeline(); 
@@ -712,20 +754,11 @@
 
     function renderTimeline() {
       let tlHtml = '';
-      if(currentTimelineData.length === 0) {
-        document.getElementById('timelineContainer').innerHTML = '<p class="text-muted text-center py-3">ยังไม่มีประวัติการบริบาล</p>';
-        return;
-      }
-      
+      if(currentTimelineData.length === 0) { document.getElementById('timelineContainer').innerHTML = '<p class="text-muted text-center py-3">ยังไม่มีประวัติการบริบาล</p>'; return; }
       let sortedData = [...currentTimelineData].sort((a, b) => { return isTimelineAscending ? a.timestamp - b.timestamp : b.timestamp - a.timestamp; });
-
       sortedData.forEach((t) => {
         let badgeColor = 'text-primary';
-        if(t.typeCode === 'EPS') badgeColor = 'text-primary';
-        else if(t.typeCode === 'SAS') badgeColor = 'text-info';
-        else if(t.typeCode === 'FU') badgeColor = 'text-warning';
-        else if(t.typeCode === 'HAD') badgeColor = 'text-danger';
-        else if(t.typeCode === 'NMS') badgeColor = 'text-purple'; 
+        if(t.typeCode === 'EPS') badgeColor = 'text-primary'; else if(t.typeCode === 'SAS') badgeColor = 'text-info'; else if(t.typeCode === 'FU') badgeColor = 'text-warning'; else if(t.typeCode === 'HAD') badgeColor = 'text-danger'; else if(t.typeCode === 'NMS') badgeColor = 'text-purple'; else if(t.typeCode === 'CFU') badgeColor = 'text-success';
 
         tlHtml += `
           <div class="timeline-item" onclick="viewTimelineDetail('${t.id}')" title="คลิกเพื่อดูรายละเอียด">
@@ -735,7 +768,7 @@
               <p class="mb-1 small">${t.detail}</p>
               <div class="d-flex justify-content-between align-items-center mt-2">
                 <small class="text-muted"><i class="fas fa-user-md"></i> ผู้บันทึก: ${t.pharmacist}</small>
-                <span class="badge bg-light text-dark border"><i class="fas fa-search"></i> ดูรายละเอียด</span>
+                <span class="badge bg-light text-dark border"><i class="fas fa-search"></i> รายละเอียดเต็ม</span>
               </div>
             </div>
           </div>`;
@@ -745,49 +778,27 @@
 
     function exportTimelineCSV() {
       if(!currentTimelineData || currentTimelineData.length === 0) return Swal.fire('ไม่พบข้อมูล', 'ไม่มีประวัติสำหรับการ Export', 'info');
-      let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; 
-      csvContent += "วันที่และเวลา,ประเภทกิจกรรม,รายละเอียด,ผู้บันทึก\r\n";
-      
+      let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; csvContent += "วันที่และเวลา,ประเภทกิจกรรม,รายละเอียด,ผู้บันทึก\r\n";
       let sortedData = [...currentTimelineData].sort((a, b) => b.timestamp - a.timestamp);
-      sortedData.forEach(t => {
-        let detailClean = t.fullDetail.replace(/<br>/g, " | ").replace(/<[^>]*>?/gm, "").replace(/"/g, '""');
-        csvContent += `"${t.date}","${t.type}","${detailClean}","${t.pharmacist}"\r\n`;
-      });
-
-      var encodedUri = encodeURI(csvContent);
-      var link = document.createElement("a"); link.setAttribute("href", encodedUri); link.setAttribute("download", `Timeline_${document.getElementById('profilePatientId').value}.csv`);
-      document.body.appendChild(link); link.click(); document.body.removeChild(link);
+      sortedData.forEach(t => { let detailClean = t.fullDetail.replace(/<br>/g, " | ").replace(/<[^>]*>?/gm, "").replace(/"/g, '""'); csvContent += `"${t.date}","${t.type}","${detailClean}","${t.pharmacist}"\r\n`; });
+      var encodedUri = encodeURI(csvContent); var link = document.createElement("a"); link.setAttribute("href", encodedUri); link.setAttribute("download", `Timeline_${document.getElementById('profilePatientId').value}.csv`); document.body.appendChild(link); link.click(); document.body.removeChild(link);
     }
 
     function viewTimelineDetail(recordId) {
       let record = currentTimelineData.find(t => t.id === recordId);
       if(!record) return;
-
       let html = `
-        <div class="mb-4">
-          <h5 class="fw-bold mb-0">${record.type}</h5>
-          <small class="text-muted">รหัสอ้างอิง: ${record.id} | บันทึกเมื่อ: ${record.date}</small>
-        </div>
-        <div class="card bg-light border-0 p-3 mb-3">
-          <div class="fs-6 lh-lg">${record.fullDetail}</div>
-        </div>
-        <div class="text-end text-muted small"><i class="fas fa-user-edit"></i> ผู้ประเมิน/บันทึก: <b>${record.pharmacist}</b></div>
+        <div class="mb-4"><h5 class="fw-bold mb-0">${record.type}</h5><small class="text-muted">รหัสอ้างอิง: ${record.id} | บันทึกเมื่อ: ${record.date}</small></div>
+        <div class="card bg-light border-0 p-3 mb-3"><div class="fs-6 lh-lg">${record.fullDetail}</div></div>
+        <div class="text-end text-muted small"><i class="fas fa-user-edit"></i> ผู้บันทึก: <b>${record.pharmacist}</b></div>
       `;
-
       document.getElementById('timelineDetailModalContent').innerHTML = html;
-      
       let btnDel = document.getElementById('btnDeleteRecord');
-      if(record.pharmacist === currentPharmacist || currentPharmacist.includes('Admin')) {
-        btnDel.style.display = 'block'; btnDel.onclick = () => deleteTimelineRecord(record.id, record.typeCode);
-      } else { btnDel.style.display = 'none'; }
-
+      if(record.pharmacist === currentPharmacist || currentPharmacist.includes('Admin')) { btnDel.style.display = 'block'; btnDel.onclick = () => deleteTimelineRecord(record.id, record.typeCode); } else { btnDel.style.display = 'none'; }
       let modal = new bootstrap.Modal(document.getElementById('timelineDetailModal')); modal.show();
     }
 
-    function openFollowUpFromModal() {
-       bootstrap.Modal.getInstance(document.getElementById('timelineDetailModal')).hide();
-       openFollowUpForm(document.getElementById('profilePatientId').value, document.getElementById('profileName').innerText);
-    }
+    function openFollowUpFromModal() { bootstrap.Modal.getInstance(document.getElementById('timelineDetailModal')).hide(); openFollowUpForm(document.getElementById('profilePatientId').value, document.getElementById('profileName').innerText); }
 
     function deleteTimelineRecord(recordId, typeCode) {
       Swal.fire({ title: 'ยืนยันการลบ?', text: `ต้องการลบข้อมูลกิจกรรมนี้ใช่หรือไม่? การลบไม่สามารถกู้คืนได้`, icon: 'warning', showCancelButton: true, confirmButtonColor: '#d33', confirmButtonText: 'ใช่, ลบเลย', cancelButtonText: 'ยกเลิก' }).then((result) => { 
@@ -795,48 +806,22 @@
           Swal.fire({title: 'กำลังลบ...', allowOutsideClick: false, didOpen: () => Swal.showLoading()}); 
           fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'deleteTimelineRecord', recordId: recordId, recordType: typeCode }) })
           .then(res => res.json()).then(data => { 
-            if(data.status === 'success') { 
-              bootstrap.Modal.getInstance(document.getElementById('timelineDetailModal')).hide();
-              Swal.fire('สำเร็จ', 'ลบข้อมูลเรียบร้อย', 'success'); openPatientProfile(document.getElementById('profilePatientId').value); 
-            } else { Swal.fire('Error', data.message, 'error'); }
+            if(data.status === 'success') { bootstrap.Modal.getInstance(document.getElementById('timelineDetailModal')).hide(); Swal.fire('สำเร็จ', 'ลบข้อมูลเรียบร้อย', 'success'); openPatientProfile(document.getElementById('profilePatientId').value); } else { Swal.fire('Error', data.message, 'error'); }
           }); 
         } 
       });
     }
 
-    // --- Other Assessments Submenu ---
-    function openOtherAssessments(id, name) {
-      Swal.fire({
-        title: 'แบบประเมินอื่นๆ',
-        html: `
-          <div class="d-grid gap-2 mt-3">
-            <button class="btn btn-outline-primary" onclick="Swal.fire('Coming Soon', 'Preventable ADE (Schumock & Thornton) จะอัปเดตเร็วๆนี้', 'info')">1. Preventable ADE (Schumock & Thornton)</button>
-            <button class="btn btn-outline-primary" onclick="Swal.fire('Coming Soon', 'ADR Type A / Naranjo จะอัปเดตเร็วๆนี้', 'info')">2. ADR Type A / Naranjo</button>
-            <button class="btn btn-outline-primary" onclick="Swal.fire('Coming Soon', 'Mod-BARS จะอัปเดตเร็วๆนี้', 'info')">3. Mod-BARS (Akathisia)</button>
-            <button class="btn btn-outline-primary" onclick="Swal.fire('Coming Soon', 'Mod-AIMS จะอัปเดตเร็วๆนี้', 'info')">4. Mod-AIMS (Tardive Dyskinesia)</button>
-          </div>
-        `,
-        showConfirmButton: false,
-        showCloseButton: true
-      });
-    }
+    function openOtherAssessments() { Swal.fire({ title: 'แบบประเมินอื่นๆ', html: `<div class="d-grid gap-2 mt-3"><button class="btn btn-outline-primary">1. Preventable ADE (Schumock & Thornton)</button><button class="btn btn-outline-primary">2. ADR Type A / Naranjo</button><button class="btn btn-outline-primary">3. Mod-BARS (Akathisia)</button><button class="btn btn-outline-primary">4. Mod-AIMS (Tardive Dyskinesia)</button></div><p class="text-muted small mt-3">ฟังก์ชันเหล่านี้จะเปิดให้บริการในเฟสถัดไป</p>`, showConfirmButton: false, showCloseButton: true }); }
 
     // --- EPS Assessment Logic ---
     function openAssessmentForm(id, name) { document.getElementById('assessPatientId').innerText = id; document.getElementById('assessPatientName').innerText = name; document.getElementById('epsForm').reset(); calculateRisk(); switchView('assessment'); }
-    
     function calculateRisk() { 
       let score = Array.from(document.querySelectorAll('.risk-factor')).filter(cb=>cb.checked).length; 
       if(document.getElementById('laiMed').value !== "") score++; 
       let historyEps = document.getElementById('historyEps').value;
-      
-      const box = document.getElementById('autoCalculateBox'), finalStatus = document.getElementById('finalStatus'); 
-      document.getElementById('scoreText').innerText = `พบปัจจัยเสี่ยง ${score} ข้อ`; 
-      
-      if(score >= 2 || historyEps === "มี") { 
-        document.getElementById('statusText').innerText = "เข้าเกณฑ์ Monitor"; document.getElementById('statusText').className = "badge bg-danger mt-1 fs-6"; document.getElementById('scoreText').className = "d-block fs-3 fw-bold text-danger"; box.className = "p-3 rounded border border-danger text-center bg-white shadow-sm"; finalStatus.value = "เข้าเกณฑ์"; 
-      } else { 
-        document.getElementById('statusText').innerText = "ยังไม่เข้าเกณฑ์"; document.getElementById('statusText').className = "badge bg-success mt-1 fs-6"; document.getElementById('scoreText').className = "d-block fs-3 fw-bold text-success"; box.className = "p-3 rounded border border-success text-center bg-white"; finalStatus.value = "ไม่เข้าเกณฑ์"; 
-      } 
+      const box = document.getElementById('autoCalculateBox'), finalStatus = document.getElementById('finalStatus'); document.getElementById('scoreText').innerText = `พบปัจจัยเสี่ยง ${score} ข้อ`; 
+      if(score >= 2 || historyEps === "มี") { document.getElementById('statusText').innerText = "เข้าเกณฑ์ Monitor"; document.getElementById('statusText').className = "badge bg-danger mt-1 fs-6"; document.getElementById('scoreText').className = "d-block fs-3 fw-bold text-danger"; box.className = "p-3 rounded border border-danger text-center bg-white shadow-sm"; finalStatus.value = "เข้าเกณฑ์"; } else { document.getElementById('statusText').innerText = "ยังไม่เข้าเกณฑ์"; document.getElementById('statusText').className = "badge bg-success mt-1 fs-6"; document.getElementById('scoreText').className = "d-block fs-3 fw-bold text-success"; box.className = "p-3 rounded border border-success text-center bg-white"; finalStatus.value = "ไม่เข้าเกณฑ์"; } 
     }
     document.querySelectorAll('.risk-factor, .risk-factor-select').forEach(el => el.addEventListener('change', calculateRisk));
     function submitAssessment() { const btn = document.getElementById('btnSubmitAssess'); const orig = btn.innerHTML; btn.innerHTML = 'กำลังบันทึก...'; btn.disabled = true; fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'submitAssessment', assessmentData: { patientId: document.getElementById('assessPatientId').innerText, rf1: document.getElementById('rf1').checked, rf2: document.getElementById('rf2').checked, rf3: document.getElementById('rf3').checked, rf4: document.getElementById('rf4').checked, rf5: document.getElementById('rf5').checked, laiMed: document.getElementById('laiMed').value, laiDose: document.getElementById('laiDose').value, laiTiming: document.getElementById('laiTiming').value, historyEps: document.getElementById('historyEps').value, comorbidities: document.getElementById('comorbidities').value, monitorStatus: document.getElementById('finalStatus').value, pharmacistName: currentPharmacist }})}).then(res => res.json()).then(data => { if(data.status === 'success') { Swal.fire({ title: 'บันทึกสำเร็จ', icon: 'success', timer: 1500, showConfirmButton: false }); openPatientProfile(document.getElementById('assessPatientId').innerText); } }).finally(() => { btn.innerHTML = orig; btn.disabled = false; }); }
@@ -847,59 +832,61 @@
       let scores = [ parseInt(document.getElementById('sasQ1').value || 0), parseInt(document.getElementById('sasQ2').value || 0), parseInt(document.getElementById('sasQ3').value || 0), parseInt(document.getElementById('sasQ4').value || 0), parseInt(document.getElementById('sasQ5').value || 0), parseInt(document.getElementById('sasQ6').value || 0) ]; 
       let maxScore = Math.max(...scores); document.getElementById('sasMaxScore').innerText = maxScore; 
       let resText = document.getElementById('sasResultText'); let recText = document.getElementById('sasRecommendation'); let finalSev = document.getElementById('sasFinalSeverity'); let finalRec = document.getElementById('sasFinalRec'); let scoreElement = document.getElementById('sasMaxScore'); 
-      if(maxScore === 0) { scoreElement.className = "d-block fs-1 fw-bold text-success mb-2"; resText.innerText = "ปกติ (Normal)"; resText.className = "badge bg-success fs-6 mb-3"; recText.innerText = "-"; finalSev.value = "Normal"; finalRec.value = "-"; } 
-      else if (maxScore === 1) { scoreElement.className = "d-block fs-1 fw-bold text-info mb-2"; resText.innerText = "ระดับ Mild"; resText.className = "badge bg-info text-dark fs-6 mb-3"; recText.innerText = "สังเกตอาการต่ออีก 1-2 สัปดาห์ หากมีอาการเพิ่มขึ้น ควร consult แพทย์"; finalSev.value = "Mild"; finalRec.value = "สังเกตอาการต่อ 1-2 สัปดาห์ / consult แพทย์หากกังวล"; } 
-      else if (maxScore === 2) { scoreElement.className = "d-block fs-1 fw-bold text-warning mb-2"; resText.innerText = "ระดับ Moderate"; resText.className = "badge bg-warning text-dark fs-6 mb-3"; recText.innerText = "ควร consult แพทย์เพื่อปรับแผนการรักษา"; finalSev.value = "Moderate"; finalRec.value = "ควร consult แพทย์เพื่อปรับแผนการรักษา"; } 
-      else if (maxScore >= 3) { scoreElement.className = "d-block fs-1 fw-bold text-danger mb-2"; resText.innerText = "ระดับ Severe"; resText.className = "badge bg-danger fs-6 mb-3"; recText.innerText = "ควร consult แพทย์เพื่อปรับแผนการรักษาทันที"; finalSev.value = "Severe"; finalRec.value = "ควร consult แพทย์เพื่อปรับแผนการรักษาทันที"; } 
+      if(maxScore === 0) { scoreElement.className = "d-block fs-1 fw-bold text-success mb-2"; resText.innerText = "ปกติ (Normal)"; resText.className = "badge bg-success fs-6 mb-3"; recText.innerText = "-"; finalSev.value = "Normal"; finalRec.value = "-"; } else if (maxScore === 1) { scoreElement.className = "d-block fs-1 fw-bold text-info mb-2"; resText.innerText = "ระดับ Mild"; resText.className = "badge bg-info text-dark fs-6 mb-3"; recText.innerText = "สังเกตอาการต่ออีก 1-2 สัปดาห์ หากมีอาการเพิ่มขึ้น ควร consult แพทย์"; finalSev.value = "Mild"; finalRec.value = "สังเกตอาการต่อ 1-2 สัปดาห์ / consult แพทย์หากกังวล"; } else if (maxScore === 2) { scoreElement.className = "d-block fs-1 fw-bold text-warning mb-2"; resText.innerText = "ระดับ Moderate"; resText.className = "badge bg-warning text-dark fs-6 mb-3"; recText.innerText = "ควร consult แพทย์เพื่อปรับแผนการรักษา"; finalSev.value = "Moderate"; finalRec.value = "ควร consult แพทย์เพื่อปรับแผนการรักษา"; } else if (maxScore >= 3) { scoreElement.className = "d-block fs-1 fw-bold text-danger mb-2"; resText.innerText = "ระดับ Severe"; resText.className = "badge bg-danger fs-6 mb-3"; recText.innerText = "ควร consult แพทย์เพื่อปรับแผนการรักษาทันที"; finalSev.value = "Severe"; finalRec.value = "ควร consult แพทย์เพื่อปรับแผนการรักษาทันที"; } 
     }
-    function submitModSAS() { 
-      const btn = document.getElementById('btnSubmitSas'); const orig = btn.innerHTML; btn.innerHTML = 'กำลังบันทึก...'; btn.disabled = true; 
-      let sasData = { patientId: document.getElementById('sasPatientId').innerText, q1: document.getElementById('sasQ1').value, q2: document.getElementById('sasQ2').value, q3: document.getElementById('sasQ3').value, q4: document.getElementById('sasQ4').value, q5: document.getElementById('sasQ5').value, q6: document.getElementById('sasQ6').value, maxScore: document.getElementById('sasMaxScore').innerText, severity: document.getElementById('sasFinalSeverity').value, recommendation: document.getElementById('sasFinalRec').value, pharmacistName: currentPharmacist, progressNote: document.getElementById('sasProgress').value }; 
-      fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'submitModSAS', sasData: sasData })}).then(r => r.json()).then(data => { if(data.status === 'success') { Swal.fire('สำเร็จ', 'บันทึกประเมิน Mod-SAS เรียบร้อย', 'success'); openPatientProfile(sasData.patientId); } else Swal.fire('Error', data.message, 'error'); }).finally(() => { btn.innerHTML = orig; btn.disabled = false; }); 
-    }
+    function submitModSAS() { const btn = document.getElementById('btnSubmitSas'); const orig = btn.innerHTML; btn.innerHTML = 'กำลังบันทึก...'; btn.disabled = true; let sasData = { patientId: document.getElementById('sasPatientId').innerText, q1: document.getElementById('sasQ1').value, q2: document.getElementById('sasQ2').value, q3: document.getElementById('sasQ3').value, q4: document.getElementById('sasQ4').value, q5: document.getElementById('sasQ5').value, q6: document.getElementById('sasQ6').value, maxScore: document.getElementById('sasMaxScore').innerText, severity: document.getElementById('sasFinalSeverity').value, recommendation: document.getElementById('sasFinalRec').value, pharmacistName: currentPharmacist, progressNote: document.getElementById('sasProgress').value }; fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'submitModSAS', sasData: sasData })}).then(r => r.json()).then(data => { if(data.status === 'success') { Swal.fire('สำเร็จ', 'บันทึกประเมิน Mod-SAS เรียบร้อย', 'success'); openPatientProfile(sasData.patientId); } else Swal.fire('Error', data.message, 'error'); }).finally(() => { btn.innerHTML = orig; btn.disabled = false; }); }
 
     // --- NMS Early Detection Logic ---
     function openNMSForm(id, name) { document.getElementById('nmsPatientId').innerText = id; document.getElementById('nmsPatientName').innerText = name; document.getElementById('nmsForm').reset(); document.getElementById('nmsDate').valueAsDate = new Date(); calcNMS(); switchView('nms'); }
-    function calcNMS() {
-      let majorCount = 0; let minorCount = 0;
-      document.querySelectorAll('.nms-major:checked').forEach(r => { if(r.value === 'มี') majorCount++; });
-      document.querySelectorAll('.nms-minor:checked').forEach(r => { if(r.value === 'มี') minorCount++; });
-      let m4Checked = document.querySelectorAll('.nms-minor-sub:checked').length;
-      if(m4Checked > 0) { minorCount++; document.getElementById('nmsM4Status').innerText = 'นับเป็น 1 ปัจจัย'; document.getElementById('nmsM4Status').className = 'badge bg-warning text-dark'; } else { document.getElementById('nmsM4Status').innerText = 'ไม่มี'; document.getElementById('nmsM4Status').className = 'badge bg-secondary'; }
-      document.getElementById('nmsMajorScore').innerText = majorCount; document.getElementById('nmsMinorScore').innerText = minorCount;
-      let resText = document.getElementById('nmsResultText'); let recText = document.getElementById('nmsRecommendation'); let finalRes = document.getElementById('nmsFinalResult');
-      if(majorCount >= 1 && minorCount >= 3) { resText.innerText = "เข้าเกณฑ์ความเสี่ยงต่อ NMS"; resText.className = "badge bg-danger fs-6 mb-2"; recText.innerHTML = "<strong class='text-danger'>แจ้งเภสัชกร</strong> เพื่อติดตามอาการไม่พึงประสงค์จากยาใน Day7 และ Day14 ต่อไป"; finalRes.value = "เสี่ยง NMS"; } else { resText.innerText = "ไม่เข้าเกณฑ์ความเสี่ยง"; resText.className = "badge bg-success fs-6 mb-2"; recText.innerHTML = "-"; finalRes.value = "ไม่เสี่ยง"; }
-    }
+    function calcNMS() { let majorCount = 0; let minorCount = 0; document.querySelectorAll('.nms-major:checked').forEach(r => { if(r.value === 'มี') majorCount++; }); document.querySelectorAll('.nms-minor:checked').forEach(r => { if(r.value === 'มี') minorCount++; }); let m4Checked = document.querySelectorAll('.nms-minor-sub:checked').length; if(m4Checked > 0) { minorCount++; document.getElementById('nmsM4Status').innerText = 'นับเป็น 1 ปัจจัย'; document.getElementById('nmsM4Status').className = 'badge bg-warning text-dark'; } else { document.getElementById('nmsM4Status').innerText = 'ไม่มี'; document.getElementById('nmsM4Status').className = 'badge bg-secondary'; } document.getElementById('nmsMajorScore').innerText = majorCount; document.getElementById('nmsMinorScore').innerText = minorCount; let resText = document.getElementById('nmsResultText'); let recText = document.getElementById('nmsRecommendation'); let finalRes = document.getElementById('nmsFinalResult'); if(majorCount >= 1 && minorCount >= 3) { resText.innerText = "เข้าเกณฑ์ความเสี่ยงต่อ NMS"; resText.className = "badge bg-danger fs-6 mb-2"; recText.innerHTML = "<strong class='text-danger'>แจ้งเภสัชกร</strong> เพื่อติดตามอาการไม่พึงประสงค์จากยาใน Day7 และ Day14 ต่อไป"; finalRes.value = "เสี่ยง NMS"; } else { resText.innerText = "ไม่เข้าเกณฑ์ความเสี่ยง"; resText.className = "badge bg-success fs-6 mb-2"; recText.innerHTML = "-"; finalRes.value = "ไม่เสี่ยง"; } }
     document.querySelectorAll('.nms-major, .nms-minor, .nms-minor-sub').forEach(el => el.addEventListener('change', calcNMS));
-    function submitNMS() {
-      if(!document.getElementById('nmsDate').value || !document.getElementById('nmsNurseName').value) return Swal.fire('ข้อมูลไม่ครบ', 'กรุณาระบุวันที่และชื่อพยาบาลผู้ประเมิน', 'warning');
-      const btn = document.getElementById('btnSubmitNms'); const orig = btn.innerHTML; btn.innerHTML = 'กำลังบันทึก...'; btn.disabled = true;
-      let m4Details = []; document.querySelectorAll('.nms-minor-sub:checked').forEach(cb => m4Details.push(cb.value)); let detailsJSON = { m4_symptoms: m4Details };
-      let nmsData = { patientId: document.getElementById('nmsPatientId').innerText, date: document.getElementById('nmsDate').value, nurseName: document.getElementById('nmsNurseName').value, majorCount: document.getElementById('nmsMajorScore').innerText, minorCount: document.getElementById('nmsMinorScore').innerText, result: document.getElementById('nmsFinalResult').value, details: JSON.stringify(detailsJSON), recommendation: document.getElementById('nmsRecommendation').innerText, pharmacistName: currentPharmacist }; 
-      fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'submitNMS', nmsData: nmsData })}).then(r => r.json()).then(data => { if(data.status === 'success') { Swal.fire('สำเร็จ', 'บันทึกประเมิน NMS เรียบร้อย', 'success'); openPatientProfile(nmsData.patientId); } else Swal.fire('Error', data.message, 'error'); }).finally(() => { btn.innerHTML = orig; btn.disabled = false; }); 
-    }
+    function submitNMS() { if(!document.getElementById('nmsDate').value || !document.getElementById('nmsNurseName').value) return Swal.fire('ข้อมูลไม่ครบ', 'กรุณาระบุวันที่และชื่อพยาบาลผู้ประเมิน', 'warning'); const btn = document.getElementById('btnSubmitNms'); const orig = btn.innerHTML; btn.innerHTML = 'กำลังบันทึก...'; btn.disabled = true; let m4Details = []; document.querySelectorAll('.nms-minor-sub:checked').forEach(cb => m4Details.push(cb.value)); let detailsJSON = { m4_symptoms: m4Details }; let nmsData = { patientId: document.getElementById('nmsPatientId').innerText, date: document.getElementById('nmsDate').value, nurseName: document.getElementById('nmsNurseName').value, majorCount: document.getElementById('nmsMajorScore').innerText, minorCount: document.getElementById('nmsMinorScore').innerText, result: document.getElementById('nmsFinalResult').value, details: JSON.stringify(detailsJSON), recommendation: document.getElementById('nmsRecommendation').innerText, pharmacistName: currentPharmacist }; fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'submitNMS', nmsData: nmsData })}).then(r => r.json()).then(data => { if(data.status === 'success') { Swal.fire('สำเร็จ', 'บันทึกประเมิน NMS เรียบร้อย', 'success'); openPatientProfile(nmsData.patientId); } else Swal.fire('Error', data.message, 'error'); }).finally(() => { btn.innerHTML = orig; btn.disabled = false; }); }
 
     // --- HAD Logic ---
     function openHADForm() { document.getElementById('hadForm').reset(); document.getElementById('hadWeight').value = document.getElementById('profileWeight').value; checkHADType(); switchView('had'); }
     function checkHADType() { let drug = document.getElementById('hadDrugName').value; let valpSection = document.getElementById('valproateCalcSection'); if(drug === 'Sodium Valproate') { valpSection.style.display = 'block'; calcCss(); } else { valpSection.style.display = 'none'; document.getElementById('hadCssValue').value = ''; } document.querySelectorAll('.had-specific-form').forEach(el => el.style.display = 'none'); if(drug === 'Sodium Valproate') document.getElementById('formValproate').style.display = 'block'; else if(drug === 'Clozapine') document.getElementById('formClozapine').style.display = 'block'; else if(drug === 'Lithium Carbonate') document.getElementById('formLithium').style.display = 'block'; else if(drug === 'Carbamazepine') document.getElementById('formCarbamazepine').style.display = 'block'; }
-    document.querySelectorAll('.val-trigger1').forEach(rb => rb.addEventListener('change', () => document.getElementById('valproateLftBlock1').style.display = document.querySelector('input[name="val_alc"]:checked')?.value === 'ใช่' ? 'block' : 'none'));
-    document.querySelectorAll('.val-trigger2').forEach(rb => rb.addEventListener('change', () => document.getElementById('valproateLftBlock2').style.display = document.querySelector('input[name="val_dose_high"]:checked')?.value === 'ใช่' ? 'block' : 'none'));
-    document.querySelectorAll('.val-trigger3').forEach(rb => rb.addEventListener('change', () => document.getElementById('valproateLftBlock3').style.display = document.querySelector('input[name="val_hepatotox"]:checked')?.value === 'ใช่' ? 'block' : 'none'));
+    document.querySelectorAll('.val-trigger1').forEach(rb => rb.addEventListener('change', () => document.getElementById('valproateLftBlock1').style.display = document.querySelector('input[name="val_alc"]:checked')?.value === 'ใช่' ? 'block' : 'none')); document.querySelectorAll('.val-trigger2').forEach(rb => rb.addEventListener('change', () => document.getElementById('valproateLftBlock2').style.display = document.querySelector('input[name="val_dose_high"]:checked')?.value === 'ใช่' ? 'block' : 'none')); document.querySelectorAll('.val-trigger3').forEach(rb => rb.addEventListener('change', () => document.getElementById('valproateLftBlock3').style.display = document.querySelector('input[name="val_hepatotox"]:checked')?.value === 'ใช่' ? 'block' : 'none'));
     function calcCss() { let drug = document.getElementById('hadDrugName').value; if(drug !== 'Sodium Valproate') return; let dose = parseFloat(document.getElementById('hadDose').value) || 0; let weight = parseFloat(document.getElementById('hadWeight').value) || 0; let cssDisplay = document.getElementById('hadCssDisplay'); let alertMsg = document.getElementById('hadCssAlert'); if(dose > 0 && weight > 0) { let css = (dose * 1000) / (192 * weight); let cssStr = css.toFixed(2); cssDisplay.innerText = cssStr + ' mcg/ml'; document.getElementById('hadCssValue').value = cssStr; if(css < 50) { cssDisplay.className = 'fs-2 fw-bold text-warning'; alertMsg.innerText = '* ระดับยาต่ำกว่าเกณฑ์การรักษา (50-100 mcg/ml)'; } else if(css > 125) { cssDisplay.className = 'fs-2 fw-bold text-danger'; alertMsg.innerText = '* ระดับยาเสี่ยงต่อภาวะเป็นพิษ (>125 mcg/ml)'; } else { cssDisplay.className = 'fs-2 fw-bold text-success'; alertMsg.innerText = ''; } } else { cssDisplay.innerText = '0.00'; document.getElementById('hadCssValue').value = ''; alertMsg.innerText = ''; } }
     function submitHAD() { const drug = document.getElementById('hadDrugName').value; const dose = document.getElementById('hadDose').value; if(!drug || !dose) return Swal.fire('ข้อมูลไม่ครบ', 'กรุณาเลือกยาและระบุ Dose', 'warning'); let assessDetailsObj = {}; let activeFormId = ''; if(drug === 'Sodium Valproate') activeFormId = 'formValproate'; else if(drug === 'Clozapine') activeFormId = 'formClozapine'; else if(drug === 'Lithium Carbonate') activeFormId = 'formLithium'; else if(drug === 'Carbamazepine') activeFormId = 'formCarbamazepine'; if(activeFormId) { let activeForm = document.getElementById(activeFormId); let radios = activeForm.querySelectorAll('input[type="radio"]:checked'); radios.forEach(r => { let niceKey = r.name.split('_').slice(1).join('_'); assessDetailsObj[niceKey] = r.value; }); } const btn = document.getElementById('btnSubmitHad'); const orig = btn.innerHTML; btn.innerHTML = 'กำลังบันทึก...'; btn.disabled = true; let hadData = { patientId: document.getElementById('profilePatientId').value, drugName: drug, dose: dose, css: document.getElementById('hadCssValue').value || '-', note: document.getElementById('hadNote').value, pharmacistName: currentPharmacist, assessmentDetails: JSON.stringify(assessDetailsObj) }; fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'submitHAD', hadData: hadData })}).then(r => r.json()).then(data => { if(data.status === 'success') { Swal.fire('สำเร็จ', 'บันทึกข้อมูล HAD เรียบร้อย', 'success'); openPatientProfile(hadData.patientId); } else Swal.fire('Error', data.message, 'error'); }).finally(() => { btn.innerHTML = orig; btn.disabled = false; }); }
 
-    // --- Follow Up Logic ---
+    // --- Follow Up & CFU Logic ---
     function openFollowUpForm(id, name) { document.getElementById('fuPatientId').innerText = id; document.getElementById('fuPatientName').innerText = name; document.getElementById('fuForm').reset(); document.getElementById('fuDate').valueAsDate = new Date(); toggleSymptoms(document.getElementById('symp0')); toggleDateSymptom(''); switchView('followUp'); }
     function toggleSymptoms(mainCb) { const allCbs = document.querySelectorAll('.symp-cb'); if(mainCb.id === 'symp0' && mainCb.checked) { allCbs.forEach(cb => { if(cb !== mainCb) { cb.checked = false; cb.disabled = true; }}); } else if(mainCb.id === 'symp0' && !mainCb.checked) { allCbs.forEach(cb => { cb.disabled = false; }); } }
     function toggleDateSymptom(val) { const div = document.getElementById('divDateSymptom'); if(val === 'ผิดปกติ') div.style.display = 'block'; else { div.style.display = 'none'; document.getElementById('fuDateSymptom').value = ''; } }
     function submitFollowUp() { const date = document.getElementById('fuDate').value, res = document.getElementById('fuResult').value; if(!date || !res) return Swal.fire('ข้อมูลไม่ครบ', 'กรุณาระบุวันที่และผลการประเมิน', 'warning'); let symps = []; document.querySelectorAll('.symp-cb:checked').forEach(c => symps.push(c.value)); let mngs = []; document.querySelectorAll('.mng-cb:checked').forEach(c => mngs.push(c.value)); const btn = document.getElementById('btnSubmitFu'); const orig = btn.innerHTML; btn.innerHTML = 'กำลังบันทึก...'; btn.disabled = true; fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'submitFollowUp', followUpData: { patientId: document.getElementById('fuPatientId').innerText, date: date, symptoms: symps, assessmentResult: res, dateSymptom: document.getElementById('fuDateSymptom').value, management: mngs, status: document.getElementById('fuStatus').value, pharmacistName: document.getElementById('fuPharmacist').value }})}).then(r => r.json()).then(data => { if(data.status === 'success') { Swal.fire('สำเร็จ', 'บันทึกติดตามอาการเรียบร้อย', 'success'); openPatientProfile(document.getElementById('fuPatientId').innerText); } else Swal.fire('Error', data.message, 'error'); }).finally(() => { btn.innerHTML = orig; btn.disabled = false; }); }
 
-    // --- Dashboard Data & Charts (Filtered) ---
-    let myChart = null; let mngChartObj = null;
-    function applyDashboardFilter() { const btn = document.getElementById('btnFilter'); const text = btn.innerHTML; btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>...'; btn.disabled = true; loadDashboardStats(() => { btn.innerHTML = text; btn.disabled = false; Swal.fire({ title: 'กรองข้อมูลสำเร็จ', icon: 'success', timer: 1000, showConfirmButton: false }); }); }
-    function loadDashboardStats(callback = null) { const filters = { startDate: document.getElementById('filterStartDate').value, endDate: document.getElementById('filterEndDate').value, ward: document.getElementById('filterWard').value, gender: document.getElementById('filterGender').value }; fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'getDashboardStats', filters: filters }) }).then(res => res.json()).then(data => { if(data.status === 'success') { document.getElementById('statActive').innerText = data.stats.active; document.getElementById('statHighRisk').innerText = data.stats.highRisk; document.getElementById('statAssessed').innerText = data.stats.assessed; document.getElementById('statFuRate').innerText = data.stats.fuRate + ' %'; document.getElementById('statAvgDays').innerText = data.stats.avgDays + ' วัน'; if(myChart) myChart.destroy(); myChart = new Chart(document.getElementById('riskChart').getContext('2d'), { type: 'bar', data: { labels: ['Haloperidol', 'Risperidone', 'Perphenazine', 'No Anticholinergic', 'LAI'], datasets: [{ label: 'จำนวน (เคส)', data: data.stats.chartData, backgroundColor: ['#1e3a8a', '#2563eb', '#3b82f6', '#14b8a6', '#d97706'], borderRadius: 4 }] }, options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } } } }); if(mngChartObj) mngChartObj.destroy(); mngChartObj = new Chart(document.getElementById('mngChart').getContext('2d'), { type: 'bar', data: { labels: data.stats.mngLabels, datasets: [{ label: 'จำนวนครั้ง (การจัดการ)', data: data.stats.mngData, backgroundColor: '#14b8a6', borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } } }); } else { document.getElementById('statActive').innerText = "Error"; Swal.fire('ข้อผิดพลาด Dashboard', data.message, 'error'); } if(callback) callback(); }).catch(err => { console.error("Fetch Error:", err); if(callback) callback(); }); }
+    function submitContinuousFollowUp() {
+      const date = document.getElementById('cfuDate').value;
+      if(!date) return Swal.fire('ข้อมูลไม่ครบ', 'กรุณาระบุวันที่ติดตาม', 'warning');
+      const payload = {
+        action: 'submitContinuousFollowUp',
+        cfuData: {
+          patientId: document.getElementById('profilePatientId').value,
+          date: date,
+          problem: document.getElementById('cfuProblem').value,
+          status: document.getElementById('cfuStatus').value,
+          action: document.getElementById('cfuAction').value,
+          note: document.getElementById('cfuNote').value,
+          pharmacistName: document.getElementById('cfuPharmacist').value
+        }
+      };
+      const btn = document.getElementById('btnSubmitCfu'); const orig = btn.innerHTML; btn.innerHTML = 'กำลังบันทึก...'; btn.disabled = true;
+      fetch(scriptURL, { method: 'POST', body: JSON.stringify(payload) })
+      .then(res => res.json()).then(data => {
+        if(data.status === 'success') {
+          Swal.fire('สำเร็จ', 'บันทึกการติดตามต่อเนื่องเรียบร้อย', 'success');
+          openPatientProfile(payload.cfuData.patientId); // รีโหลด Profile เพื่อดูอัปเดต
+        }
+      }).finally(() => { btn.innerHTML = orig; btn.disabled = false; });
+    }
 
-    // --- Discharge Patient UI ---
+    // --- Calculation, Registration, Discharge & Filter ---
+    const calcBmi = (wId, hId, resId) => { let w = parseFloat(document.getElementById(wId).value), h = parseFloat(document.getElementById(hId).value)/100; if(w>0&&h>0) document.getElementById(resId).value=(w/(h*h)).toFixed(2); else document.getElementById(resId).value=''; };
+    document.getElementById('regWeight').addEventListener('input', () => calcBmi('regWeight', 'regHeight', 'regBmi')); document.getElementById('regHeight').addEventListener('input', () => calcBmi('regWeight', 'regHeight', 'regBmi'));
+    document.getElementById('editWeight').addEventListener('input', () => calcBmi('editWeight', 'editHeight', 'editBmi')); document.getElementById('editHeight').addEventListener('input', () => calcBmi('editWeight', 'editHeight', 'editBmi'));
+
+    function submitRegistration() { const hn = document.getElementById('regHn').value, name = document.getElementById('regName').value, dateAdmit = document.getElementById('regDateAdmit').value, ward = document.getElementById('regWard').value; if(!hn || !name || !dateAdmit || !ward) return Swal.fire('ข้อมูลไม่ครบ', 'กรุณากรอกช่องที่มี *', 'warning'); const payload = { action: 'registerPatient', patientData: { hn: hn, an: document.getElementById('regAn').value, name: name, gender: document.getElementById('regGender').value, age: document.getElementById('regAge').value, weight: document.getElementById('regWeight').value, height: document.getElementById('regHeight').value, bmi: document.getElementById('regBmi').value, imageUrl: document.getElementById('regImageUrl').value, dateAdmit: dateAdmit, ward: ward, physician: document.getElementById('regPhysician').value, diagnosis: document.getElementById('regDiagnosis').value }}; const btn = document.getElementById('btnRegister'); const orig = btn.innerHTML; btn.innerHTML = 'กำลังบันทึก...'; btn.disabled = true; fetch(scriptURL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(data => { if(data.status === 'success') { Swal.fire({ title: 'สำเร็จ', text: `ID: ${data.patientId}`, icon: 'success', timer: 2000, showConfirmButton: false }); document.getElementById('registerForm').reset(); switchView('patients'); } }).finally(() => { btn.innerHTML = orig; btn.disabled = false; }); }
+
     function dischargePatientData(id, name) {
       Swal.fire({
         title: 'จำหน่ายผู้ป่วย',
@@ -912,38 +899,23 @@
               <input class="form-check-input" type="checkbox" id="swal-dc-followup" checked>
               <label class="form-check-label text-danger fw-bold">ต้องการติดตามอาการต่อเนื่องหลังจำหน่าย</label>
             </div>
-            <small class="text-muted d-block mt-2">* หากติ๊กเลือก ผู้ป่วยจะย้ายไปอยู่ในเมนู "ติดตามต่อเนื่อง"</small>
           </div>
         `,
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        confirmButtonText: 'บันทึกการจำหน่าย',
-        cancelButtonText: 'ยกเลิก',
-        preConfirm: () => {
-          return {
-            date: document.getElementById('swal-dc-date').value,
-            needFollowUp: document.getElementById('swal-dc-followup').checked
-          }
-        }
+        showCancelButton: true, confirmButtonColor: '#d33', confirmButtonText: 'บันทึกการจำหน่าย', cancelButtonText: 'ยกเลิก',
+        preConfirm: () => { return { date: document.getElementById('swal-dc-date').value, needFollowUp: document.getElementById('swal-dc-followup').checked } }
       }).then((result) => {
         if(result.isConfirmed) {
           Swal.fire({title: 'กำลังบันทึก...', allowOutsideClick: false, didOpen: () => Swal.showLoading()});
-          const payload = {
-            action: 'dischargePatient',
-            dischargeData: { patientId: id, date: result.value.date, needFollowUp: result.value.needFollowUp }
-          };
-          fetch(scriptURL, { method: 'POST', body: JSON.stringify(payload) })
-          .then(res => res.json()).then(data => {
-            if(data.status === 'success') {
-              Swal.fire('สำเร็จ', 'จำหน่ายผู้ป่วยเรียบร้อย', 'success');
-              if(result.value.needFollowUp) switchView('continuous');
-              else switchView('patients');
-            }
+          const payload = { action: 'dischargePatient', dischargeData: { patientId: id, date: result.value.date, needFollowUp: result.value.needFollowUp } };
+          fetch(scriptURL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json()).then(data => {
+            if(data.status === 'success') { Swal.fire('สำเร็จ', 'จำหน่ายผู้ป่วยเรียบร้อย', 'success'); if(result.value.needFollowUp) switchView('continuous'); else switchView('patients'); }
           });
         }
       });
     }
 
+    function applyDashboardFilter() { const btn = document.getElementById('btnFilter'); const text = btn.innerHTML; btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>...'; btn.disabled = true; loadDashboardStats(() => { btn.innerHTML = text; btn.disabled = false; Swal.fire({ title: 'กรองข้อมูลสำเร็จ', icon: 'success', timer: 1000, showConfirmButton: false }); }); }
+    function loadDashboardStats(callback = null) { const filters = { startDate: document.getElementById('filterStartDate').value, endDate: document.getElementById('filterEndDate').value, ward: document.getElementById('filterWard').value, gender: document.getElementById('filterGender').value }; fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'getDashboardStats', filters: filters }) }).then(res => res.json()).then(data => { if(data.status === 'success') { document.getElementById('statActive').innerText = data.stats.active; document.getElementById('statHighRisk').innerText = data.stats.highRisk; document.getElementById('statAssessed').innerText = data.stats.assessed; document.getElementById('statFuRate').innerText = data.stats.fuRate + ' %'; document.getElementById('statAvgDays').innerText = data.stats.avgDays + ' วัน'; if(window.myChart) window.myChart.destroy(); window.myChart = new Chart(document.getElementById('riskChart').getContext('2d'), { type: 'bar', data: { labels: ['Haloperidol', 'Risperidone', 'Perphenazine', 'No Anticholinergic', 'LAI'], datasets: [{ label: 'จำนวน (เคส)', data: data.stats.chartData, backgroundColor: ['#1e3a8a', '#2563eb', '#3b82f6', '#14b8a6', '#d97706'], borderRadius: 4 }] }, options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } } } }); if(window.mngChartObj) window.mngChartObj.destroy(); window.mngChartObj = new Chart(document.getElementById('mngChart').getContext('2d'), { type: 'bar', data: { labels: data.stats.mngLabels, datasets: [{ label: 'จำนวนครั้ง (การจัดการ)', data: data.stats.mngData, backgroundColor: '#14b8a6', borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } } }); } else { document.getElementById('statActive').innerText = "Error"; Swal.fire('ข้อผิดพลาด Dashboard', data.message, 'error'); } if(callback) callback(); }).catch(err => { console.error("Fetch Error:", err); if(callback) callback(); }); }
   </script>
 </body>
 </html>
