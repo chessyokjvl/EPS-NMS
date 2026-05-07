@@ -787,24 +787,61 @@
 
     function login(type) {
       if(type === 'guest') {
-        document.getElementById('displayUserName').innerText = "บุคคลทั่วไป (Guest)"; document.getElementById('roleBadge').innerText = "Guest Mode"; document.getElementById('roleBadge').className = "badge bg-secondary text-white border p-2";
-        document.querySelectorAll('.restricted-menu').forEach(el => el.style.display = 'none'); currentPharmacist = "Guest";
-        switchView('dashboard'); loadDashboardStats(); return;
+        document.getElementById('displayUserName').innerText = "บุคคลทั่วไป (Guest)"; 
+        document.getElementById('roleBadge').innerText = "Guest Mode"; 
+        document.getElementById('roleBadge').className = "badge bg-secondary text-white border p-2";
+        document.querySelectorAll('.restricted-menu').forEach(el => el.style.display = 'none'); 
+        currentPharmacist = "Guest";
+        switchView('dashboard'); 
+        loadDashboardStats(); 
+        return;
       }
-      const user = document.getElementById('username').value.trim(), pass = document.getElementById('password').value;
-      if(!user || !pass) return Swal.fire('แจ้งเตือน', 'กรุณากรอกข้อมูล', 'warning');
-      const btn = document.getElementById('btnLogin'); btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>...'; btn.disabled = true;
+      
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value.trim();
+      if(!user || !pass) return Swal.fire('แจ้งเตือน', 'กรุณากรอก Username และ Password', 'warning');
+      
+      const btn = document.getElementById('btnLogin'); 
+      btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> กำลังตรวจสอบ...'; 
+      btn.disabled = true;
 
-      fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'login', username: user, password: pass }) })
-      .then(res => res.json()).then(data => {
+      fetch(scriptURL, { 
+        method: 'POST', 
+        body: JSON.stringify({ action: 'login', username: user, password: pass }) 
+      })
+      .then(res => {
+        if (!res.ok) throw new Error('Network response was not ok');
+        return res.json();
+      })
+      .then(data => {
         if(data.status === 'success') {
           currentPharmacist = data.user.name; 
           localStorage.setItem('jvlPharmacistAuth', JSON.stringify({name: data.user.name, role: data.user.role})); 
-          document.getElementById('displayUserName').innerText = currentPharmacist; document.getElementById('roleBadge').innerText = data.user.role; document.getElementById('roleBadge').className = "badge bg-primary text-white border p-2";
+          document.getElementById('displayUserName').innerText = currentPharmacist; 
+          document.getElementById('roleBadge').innerText = data.user.role; 
+          document.getElementById('roleBadge').className = "badge bg-primary text-white border p-2";
           document.querySelectorAll('.restricted-menu').forEach(el => el.style.display = 'block');
-          fetchPharmacists(); switchView('dashboard'); loadDashboardStats(); 
-        } else { Swal.fire('ข้อผิดพลาด', data.message || 'รหัสผ่านไม่ถูกต้อง หรือคุณไม่ได้ Deploy Web App เป็นเวอร์ชันใหม่', 'error'); }
-      }).finally(() => { btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ (เภสัชกร)'; btn.disabled = false; });
+          fetchPharmacists(); 
+          switchView('dashboard'); 
+          loadDashboardStats(); 
+        } else { 
+          // แสดงข้อความ Error ที่ส่งมาจาก Google Sheets
+          Swal.fire('เข้าสู่ระบบไม่สำเร็จ', data.message, 'error'); 
+        }
+      })
+      .catch(err => {
+        console.error("Fetch Error:", err);
+        // แสดง Error เชิงลึกหากเชื่อมต่อ Web App ไม่ได้
+        Swal.fire({
+          title: 'การเชื่อมต่อล้มเหลว',
+          html: `ไม่สามารถเชื่อมต่อกับฐานข้อมูลได้<br><br><small class="text-danger">สาเหตุที่เป็นไปได้:<br>1. ลืมกด Deploy เป็น New version<br>2. ลิงก์ scriptURL ไม่ถูกต้อง<br>3. สิทธิ์เข้าถึง Web App ไม่ใช่ Anyone</small>`,
+          icon: 'error'
+        });
+      })
+      .finally(() => { 
+        btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ (เภสัชกร)'; 
+        btn.disabled = false; 
+      });
     }
 
     function fetchPharmacists() { fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'getPharmacists' }) }).then(res => res.json()).then(data => { if(data.status === 'success') { pharmacistList = data.data; let sel = document.getElementById('fuPharmacist'); sel.innerHTML = ''; pharmacistList.forEach(ph => { let opt = document.createElement('option'); opt.value = ph; opt.text = ph; if(ph === currentPharmacist) opt.selected = true; sel.appendChild(opt); }); } }); }
