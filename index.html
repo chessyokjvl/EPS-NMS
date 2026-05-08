@@ -14,6 +14,7 @@
     :root { --primary-color: #1e3a8a; --secondary-color: #2563eb; --accent-color: #d97706; --bg-light: #f3f4f6; --text-dark: #1f2937; }
     body { font-family: 'Sarabun', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-light); margin: 0; padding: 0; overflow-x: hidden; color: var(--text-dark); }
     
+    /* --- Login Area --- */
     #login-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(rgba(30,58,138,0.8), rgba(30,58,138,0.9)), url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2053&auto=format&fit=crop') center/cover; padding: 1rem; }
     .login-card { background: white; padding: 2.5rem 2rem; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); width: 100%; max-width: 400px; text-align: center; }
     .login-logo { width: 90px; height: auto; margin-bottom: 1.2rem; }
@@ -25,9 +26,11 @@
     .btn-guest { background-color: transparent; border: 2px solid #cbd5e1; color: #64748b; }
     .btn-guest:hover { background-color: #f1f5f9; color: var(--primary-color); border-color: #94a3b8; }
 
+    /* --- Main App Layout --- */
     #app-section { display: none; min-height: 100vh; position: relative; }
     .wrapper { display: flex; width: 100%; }
     
+    /* Sidebar */
     .sidebar { width: 260px; background: white; min-height: 100vh; box-shadow: 4px 0 15px rgba(0,0,0,0.05); transition: all 0.3s ease-in-out; z-index: 1000; display: flex; flex-direction: column; position: fixed; height: 100%; overflow-y: auto; left: 0; }
     .sidebar-header { padding: 1.5rem 1rem; background: var(--primary-color); color: white; text-align: center; position: sticky; top: 0; z-index: 10; }
     .sidebar-header img { width: 45px; margin-bottom: 8px; }
@@ -37,9 +40,11 @@
     .sidebar-menu li a:hover, .sidebar-menu li a.active { background: #eff6ff; color: var(--secondary-color); border-left: 4px solid var(--secondary-color); }
     .sidebar-menu li a i { width: 30px; text-align: center; font-size: 1.1rem; }
     
+    /* Mobile Overlay Backdrop */
     .sidebar-backdrop { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; opacity: 0; transition: opacity 0.3s; }
     .sidebar-backdrop.show { display: block; opacity: 1; }
 
+    /* Main Content */
     .main-content { flex: 1; padding: 1.5rem; width: calc(100% - 260px); margin-left: 260px; transition: all 0.3s ease-in-out; min-height: 100vh; display: flex; flex-direction: column; }
     .top-navbar { display: flex; justify-content: space-between; align-items: center; background: white; padding: 1rem 1.5rem; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); margin-bottom: 1.5rem; position: sticky; top: 1rem; z-index: 100; }
     .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--primary-color); cursor: pointer; padding: 0.5rem; }
@@ -47,6 +52,7 @@
     .view-section.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+    /* Dashboard Cards */
     .stat-card { border-radius: 12px; padding: 1.2rem; color: white; position: relative; overflow: hidden; height: 100%; display: flex; flex-direction: column; justify-content: center; }
     .stat-card p { font-size: 0.9rem; opacity: 0.9; }
     .stat-card h3 { font-size: 2rem; font-weight: 700; margin: 5px 0 0 0; }
@@ -56,7 +62,12 @@
     .bg-green { background: linear-gradient(135deg, #059669, #064e3b); }
     .bg-purple { background: linear-gradient(135deg, #7c3aed, #4c1d95); }
     .bg-teal { background: linear-gradient(135deg, #0d9488, #115e59); }
+    .bg-dark-purple { background-color: #5b21b6; }
     
+    .sas-select { font-size: 0.9rem; white-space: normal; }
+    .sas-select option { white-space: normal; }
+
+    /* Timeline CSS */
     .timeline { position: relative; padding-left: 2rem; margin-top: 1rem; }
     .timeline::before { content: ''; position: absolute; left: 0.5rem; top: 0; bottom: 0; width: 2px; background: #cbd5e0; }
     .timeline-item { position: relative; margin-bottom: 1.5rem; cursor: pointer; transition: transform 0.2s; }
@@ -64,6 +75,7 @@
     .timeline-item::before { content: ''; position: absolute; left: -1.85rem; top: 0.2rem; width: 12px; height: 12px; border-radius: 50%; background: var(--secondary-color); border: 2px solid white; box-shadow: 0 0 0 2px var(--secondary-color); }
     .timeline-date { font-size: 0.85rem; color: #64748b; font-weight: 600; margin-bottom: 0.2rem; }
     .timeline-card { background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+    .timeline-card:hover { border-color: var(--secondary-color); }
     
     .action-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-top: 1rem; }
     .btn-action { padding: 1rem; border-radius: 12px; font-weight: 600; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; border: none; color: white; text-align: center; line-height: 1.2; font-size: 0.85rem; }
@@ -73,6 +85,7 @@
     .had-radio-group { display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px dashed #e2e8f0; }
     .had-label { font-size: 0.9rem; color: #4a5568; margin-bottom: 0; flex: 1; padding-right: 1rem; }
     .had-options { display: flex; gap: 1rem; min-width: 150px; justify-content: flex-end; }
+    .had-title { font-size: 1rem; font-weight: 600; color: #2b6cb0; margin-top: 1.5rem; margin-bottom: 0.5rem; }
 
     @media (max-width: 992px) { 
       .sidebar { left: -260px; } .sidebar.show { left: 0; } 
@@ -133,8 +146,8 @@
         <div id="dashboardView" class="view-section active">
           <h4 class="mb-4 text-primary"><i class="fas fa-chart-line"></i> Dashboard เชิงปริมาณและคุณภาพ</h4>
           <div class="row g-2 mb-4 align-items-end bg-light p-3 rounded mx-0">
-            <div class="col-12 col-md-2 mb-2"><label class="form-label small text-muted">จากวันที่</label><input type="date" class="form-control border-0 shadow-sm" id="filterStartDate"></div>
-            <div class="col-12 col-md-2 mb-2"><label class="form-label small text-muted">ถึงวันที่</label><input type="date" class="form-control border-0 shadow-sm" id="filterEndDate"></div>
+            <div class="col-12 col-md-2 mb-2"><label class="form-label small text-muted">จากวันที่ (ประเมิน)</label><input type="date" class="form-control border-0 shadow-sm" id="filterStartDate"></div>
+            <div class="col-12 col-md-2 mb-2"><label class="form-label small text-muted">ถึงวันที่ (ประเมิน)</label><input type="date" class="form-control border-0 shadow-sm" id="filterEndDate"></div>
             <div class="col-12 col-md-3 mb-2"><label class="form-label small text-muted">หอผู้ป่วย</label><select class="form-select border-0 shadow-sm" id="filterWard"><option value="">ทั้งหมด</option><option value="พุทธรักษา (ชาย1)">พุทธรักษา (ชาย1)</option><option value="จำปาทอง (ชาย2)">จำปาทอง (ชาย2)</option><option value="ราชาวดี (ชาย3)">ราชาวดี (ชาย3)</option><option value="ลีลาวดี (หญิง)">ลีลาวดี (หญิง)</option><option value="ฉัตรชบา (พิเศษ)">ฉัตรชบา (พิเศษ)</option></select></div>
             <div class="col-12 col-md-2 mb-2"><label class="form-label small text-muted">เพศ</label><select class="form-select border-0 shadow-sm" id="filterGender"><option value="">ทั้งหมด</option><option value="ชาย">ชาย</option><option value="หญิง">หญิง</option><option value="LGBTQ">LGBTQ</option></select></div>
             <div class="col-12 col-md-3 mb-2"><button class="btn btn-primary w-100 shadow-sm" id="btnFilter" onclick="applyDashboardFilter()"><i class="fas fa-filter"></i> นำไปใช้</button></div>
@@ -237,7 +250,7 @@
             </div>
           </div>
           <div class="mt-4 text-end">
-            <button class="btn btn-success" onclick="Swal.fire('Coming Soon', 'ฟังก์ชันดาวน์โหลด Excel จะเปิดให้บริการในเฟสถัดไป', 'info')"><i class="fas fa-file-excel"></i> ดาวน์โหลดรายงาน Excel</button>
+            <button class="btn btn-success" onclick="Swal.fire('Coming Soon', 'ฟังก์ชันการดึงรายงานเป็นไฟล์ Excel สรุปยอดรายเดือนจะเปิดให้บริการในเฟสถัดไปครับ', 'info')"><i class="fas fa-file-excel"></i> ดาวน์โหลดรายงาน Excel รายเดือน</button>
           </div>
         </div>
 
@@ -270,14 +283,30 @@
               
               <h6 class="fw-bold text-secondary mt-4 mb-2"><i class="fas fa-plus-circle"></i> การจัดการ / แบบประเมิน</h6>
               <div class="action-grid">
-                <button class="btn-action w-100" id="btnCfuProfile" style="display:none; background-color: #d97706; grid-column: 1 / -1;" onclick="switchView('cfuAction')"><i class="fas fa-notes-medical"></i><span>บันทึกติดตามต่อเนื่องหลังจำหน่าย<br>(สรุปปัญหา)</span></button>
-                <button class="btn-action bg-primary assess-btn" onclick="openAssessmentForm()"><i class="fas fa-stethoscope"></i><span>EPS/NMS<br>(แรกรับ)</span></button>
-                <button class="btn-action bg-dark-purple assess-btn" onclick="openNMSForm()"><i class="fas fa-brain"></i><span>Early Detect<br>NMS</span></button>
-                <button class="btn-action bg-info assess-btn" onclick="openSASForm()"><i class="fas fa-walking"></i><span>Mod-SAS<br>(ประเมิน EPS)</span></button>
-                <button class="btn-action bg-warning text-dark assess-btn" onclick="openFollowUpForm()"><i class="fas fa-heartbeat"></i><span>Follow-up<br>ติดตามอาการ</span></button>
-                <button class="btn-action assess-btn" style="background-color:#0ea5e9;" onclick="openDZPForm()"><i class="fas fa-syringe"></i><span>เฝ้าระวัง<br>DZP inj.</span></button>
-                <button class="btn-action bg-danger assess-btn" onclick="openHADForm()"><i class="fas fa-pills"></i><span>High Alert<br>Drug (HAD)</span></button>
-                <button class="btn-action bg-secondary assess-btn" onclick="openOtherAssessments()"><i class="fas fa-clipboard-list"></i><span>แบบประเมิน<br>อื่นๆ...</span></button>
+                <button class="btn-action w-100" id="btnCfuProfile" style="display:none; background-color: #d97706; grid-column: 1 / -1;" onclick="switchView('cfuAction')">
+                  <i class="fas fa-notes-medical"></i><span>บันทึกติดตามต่อเนื่องหลังจำหน่าย<br>(สรุปปัญหา)</span>
+                </button>
+                <button class="btn-action bg-primary assess-btn" onclick="openAssessmentForm()">
+                  <i class="fas fa-stethoscope"></i><span>EPS/NMS<br>(แรกรับ)</span>
+                </button>
+                <button class="btn-action bg-dark-purple assess-btn" onclick="openNMSForm()">
+                  <i class="fas fa-brain"></i><span>Early Detect<br>NMS</span>
+                </button>
+                <button class="btn-action bg-info assess-btn" onclick="openSASForm()">
+                  <i class="fas fa-walking"></i><span>Mod-SAS<br>(ประเมิน EPS)</span>
+                </button>
+                <button class="btn-action bg-warning text-dark assess-btn" onclick="openFollowUpForm()">
+                  <i class="fas fa-heartbeat"></i><span>Follow-up<br>ติดตามอาการ</span>
+                </button>
+                <button class="btn-action assess-btn" style="background-color:#0ea5e9;" onclick="openDZPForm()">
+                  <i class="fas fa-syringe"></i><span>เฝ้าระวัง<br>DZP inj.</span>
+                </button>
+                <button class="btn-action bg-danger assess-btn" onclick="openHADForm()">
+                  <i class="fas fa-pills"></i><span>High Alert<br>Drug (HAD)</span>
+                </button>
+                <button class="btn-action bg-secondary assess-btn" onclick="openOtherAssessments()">
+                  <i class="fas fa-clipboard-list"></i><span>แบบประเมิน<br>อื่นๆ...</span>
+                </button>
               </div>
             </div>
             
@@ -328,7 +357,7 @@
               <div class="col-12 col-md-6">
                 <label class="form-label fw-bold">ชื่อ-สกุล <span class="text-danger">*</span></label>
                 <input type="text" class="form-control" id="regName" placeholder="เช่น สมชาย ส." required>
-                <small class="text-danger mt-1 d-block" style="font-size: 0.75rem;"><i class="fas fa-shield-alt"></i> ใส่เฉพาะชื่อหรือนามแฝง ส่วนนามสกุลให้ใช้อักษรย่อ</small>
+                <small class="text-danger mt-1 d-block" style="font-size: 0.75rem;"><i class="fas fa-shield-alt"></i> ใส่เฉพาะชื่อหรือนามแฝง ส่วนนามสกุลให้ใช้อักษรย่อ เพื่อป้องกันข้อมูลผู้ป่วยรั่วไหลตามหลัก PDPA</small>
               </div>
               <div class="col-6 col-md-3"><label class="form-label fw-bold">เพศ</label><select class="form-select" id="regGender"><option value="">-- เลือก --</option><option value="ชาย">ชาย</option><option value="หญิง">หญิง</option><option value="LGBTQ">LGBTQ</option></select></div>
               <div class="col-6 col-md-3"><label class="form-label fw-bold">อายุ (ปี)</label><input type="number" class="form-control" id="regAge"></div>
@@ -399,7 +428,7 @@
                    <label class="form-label small fw-bold text-muted">ยา LAI</label>
                    <select class="form-select mb-2 risk-factor-select" id="laiMed"><option value="">-- เลือกยา LAI --</option><option value="Fluphenazine Decanoate 25 mg">Fluphenazine Decanoate 25 mg</option><option value="Fluphenazine Decanoate 50 mg">Fluphenazine Decanoate 50 mg</option><option value="Haloperidol Decanoate 50 mg">Haloperidol Decanoate 50 mg</option><option value="Haloperidol Decanoate 100 mg">Haloperidol Decanoate 100 mg</option></select>
                    <div class="row g-2 mb-2"><div class="col-6"><select class="form-select" id="laiDose"><option value="">-- ปริมาณ (Amp) --</option><option value="0.5">0.5 Amp</option><option value="1">1 Amp</option><option value="1.5">1.5 Amp</option><option value="2">2 Amp</option></select></div><div class="col-6"><select class="form-select" id="laiTiming"><option value="">-- ช่วงเวลา --</option><option value="7 days PTA">ภายใน 7 วัน PTA</option><option value="3 days Admit">ภายใน 3 วันหลัง Admit</option></select></div></div>
-                   <label class="form-label small fw-bold text-muted mt-3">ประวัติการเกิด EPS/NMS</label>
+                   <label class="form-label small fw-bold text-muted mt-3">ประวัติการเกิด EPS/NMS <span class="text-danger">* (ถ้าเคยมี = เข้าเกณฑ์ทันที)</span></label>
                    <select class="form-select border-danger risk-factor-select" id="historyEps"><option value="ไม่มี">ไม่มีประวัติ</option><option value="มี">เคยมีประวัติ</option></select>
                 </div>
               </div>
@@ -496,8 +525,8 @@
 
         <div id="followUpView" class="view-section">
           <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3"><h4 class="text-warning m-0"><i class="fas fa-heartbeat"></i> บันทึกติดตามอาการ (Follow-up)</h4><button class="btn btn-outline-secondary btn-sm" onclick="switchView('profile')"><i class="fas fa-arrow-left"></i> กลับ</button></div>
-          <div class="alert alert-warning border-0 shadow-sm d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
-            <div class="d-flex align-items-center gap-3"><i class="fas fa-exclamation-triangle fa-2x"></i><div><div class="fw-bold fs-5 disp-patient-name">-</div><div class="small text-muted">ID: <span class="disp-patient-id">-</span> | HN: <span class="disp-patient-hn">-</span> | แพทย์: <span class="disp-patient-physician">-</span></div></div></div>
+          <div class="alert alert-warning border-0 shadow-sm d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3 mb-4">
+            <div class="d-flex align-items-center gap-3"><i class="fas fa-user-circle fa-2x text-warning"></i><div><div class="fw-bold fs-5 disp-patient-name">-</div><div class="small text-muted">ID: <span class="disp-patient-id">-</span> | HN: <span class="disp-patient-hn">-</span> | แพทย์: <span class="disp-patient-physician">-</span></div></div></div>
           </div>
           <form id="fuForm">
             <div class="row g-3 mb-3">
@@ -569,31 +598,11 @@
 
             <h6 class="text-primary fw-bold mb-3"><i class="fas fa-heartbeat"></i> สัญญาณชีพ (Vital Signs)</h6>
             <div class="row g-3 mb-4 bg-light p-3 rounded">
-              <div class="col-6 col-md-2">
-                <label class="form-label small fw-bold">BP (mmHg)</label>
-                <input type="text" class="form-control form-control-sm" id="dzpBp" placeholder="120/80" oninput="calcDZP()">
-                <small class="text-danger" style="font-size: 0.7rem;">&lt; 90/60</small>
-              </div>
-              <div class="col-6 col-md-2">
-                <label class="form-label small fw-bold">HR (/min)</label>
-                <input type="number" class="form-control form-control-sm" id="dzpHr" placeholder="80" oninput="calcDZP()">
-                <small class="text-danger" style="font-size: 0.7rem;">&lt; 60</small>
-              </div>
-              <div class="col-6 col-md-2">
-                <label class="form-label small fw-bold">RR (/min)</label>
-                <input type="number" class="form-control form-control-sm" id="dzpRr" placeholder="20" oninput="calcDZP()">
-                <small class="text-danger" style="font-size: 0.7rem;">&lt; 12</small>
-              </div>
-              <div class="col-6 col-md-2">
-                <label class="form-label small fw-bold">SpO2 (%)</label>
-                <input type="number" class="form-control form-control-sm" id="dzpSpo2" placeholder="98" oninput="calcDZP()">
-                <small class="text-danger" style="font-size: 0.7rem;">&lt; 94%</small>
-              </div>
-              <div class="col-6 col-md-3">
-                <label class="form-label small fw-bold">Pupil Size (mm)</label>
-                <input type="number" step="0.1" class="form-control form-control-sm" id="dzpPupil" placeholder="2.0" oninput="calcDZP()">
-                <small class="text-danger" style="font-size: 0.7rem;">&gt; 4 mm</small>
-              </div>
+              <div class="col-6 col-md-2"><label class="form-label small fw-bold">BP (mmHg)</label><input type="text" class="form-control form-control-sm" id="dzpBp" placeholder="120/80" oninput="calcDZP()"><small class="text-danger" style="font-size: 0.7rem;">&lt; 90/60</small></div>
+              <div class="col-6 col-md-2"><label class="form-label small fw-bold">HR (/min)</label><input type="number" class="form-control form-control-sm" id="dzpHr" placeholder="80" oninput="calcDZP()"><small class="text-danger" style="font-size: 0.7rem;">&lt; 60</small></div>
+              <div class="col-6 col-md-2"><label class="form-label small fw-bold">RR (/min)</label><input type="number" class="form-control form-control-sm" id="dzpRr" placeholder="20" oninput="calcDZP()"><small class="text-danger" style="font-size: 0.7rem;">&lt; 12</small></div>
+              <div class="col-6 col-md-2"><label class="form-label small fw-bold">SpO2 (%)</label><input type="number" class="form-control form-control-sm" id="dzpSpo2" placeholder="98" oninput="calcDZP()"><small class="text-danger" style="font-size: 0.7rem;">&lt; 94%</small></div>
+              <div class="col-6 col-md-3"><label class="form-label small fw-bold">Pupil Size (mm)</label><input type="number" step="0.1" class="form-control form-control-sm" id="dzpPupil" placeholder="2.0" oninput="calcDZP()"><small class="text-danger" style="font-size: 0.7rem;">&gt; 4 mm</small></div>
             </div>
 
             <h6 class="text-danger fw-bold mb-3"><i class="fas fa-exclamation-triangle"></i> อาการไม่พึงประสงค์ (ADRs)</h6>
@@ -616,7 +625,6 @@
                 </div>
               </div>
             </div>
-
             <button type="button" class="btn text-white w-100 py-3 mt-2 shadow-sm fs-5" style="background-color: #0ea5e9;" id="btnSubmitDzp" onclick="submitDZP()"><i class="fas fa-save"></i> บันทึกเฝ้าระวัง DZP</button>
           </form>
         </div>
@@ -764,7 +772,9 @@
         document.getElementById('displayUserName').innerText = currentPharmacist;
         document.getElementById('roleBadge').innerText = u.role;
         document.querySelectorAll('.restricted-menu').forEach(el => el.style.display = 'block');
-        fetchPharmacists(); switchView('dashboard'); loadDashboardStats();
+        fetchPharmacists(); 
+        showApp('dashboard'); // <-- ใช้งาน showApp เพื่อให้กล่อง login หายไป
+        loadDashboardStats();
       }
     };
 
@@ -779,7 +789,8 @@
         document.getElementById('roleBadge').className = "badge bg-secondary text-white border p-2";
         document.querySelectorAll('.restricted-menu').forEach(el => el.style.display = 'none'); 
         currentPharmacist = "Guest";
-        switchView('dashboard'); loadDashboardStats(); 
+        showApp('dashboard'); 
+        loadDashboardStats(); 
         return;
       }
       
@@ -801,8 +812,10 @@
           document.getElementById('roleBadge').innerText = data.user.role; 
           document.getElementById('roleBadge').className = "badge bg-primary text-white border p-2";
           document.querySelectorAll('.restricted-menu').forEach(el => el.style.display = 'block');
-          fetchPharmacists(); switchView('dashboard'); loadDashboardStats(); 
-        } else { Swal.fire('เข้าสู่ระบบไม่สำเร็จ', data.message, 'error'); }
+          fetchPharmacists(); 
+          showApp('dashboard'); // <-- เรียก showApp ตรงนี้เพื่อให้หน้าล็อกอินหายไป
+          loadDashboardStats(); 
+        } else { Swal.fire('เข้าสู่ระบบไม่สำเร็จ', data.message || 'รหัสผ่านไม่ถูกต้อง หรือคุณไม่ได้ Deploy Web App เป็นเวอร์ชันใหม่', 'error'); }
       })
       .catch(err => {
         console.error("Fetch Error:", err);
@@ -812,6 +825,14 @@
     }
 
     function fetchPharmacists() { fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'getPharmacists' }) }).then(res => res.json()).then(data => { if(data.status === 'success') { pharmacistList = data.data; let sel = document.getElementById('fuPharmacist'); sel.innerHTML = ''; pharmacistList.forEach(ph => { let opt = document.createElement('option'); opt.value = ph; opt.text = ph; if(ph === currentPharmacist) opt.selected = true; sel.appendChild(opt); }); } }); }
+    
+    // ฟังก์ชันนี้สำคัญมาก ใช้สลับหน้ากล่อง Login ให้หายไป
+    function showApp(viewId) { 
+        document.getElementById('login-section').style.display = 'none'; 
+        document.getElementById('app-section').style.display = 'block'; 
+        switchView(viewId); 
+    }
+    
     function logout() { localStorage.removeItem('jvlPharmacistAuth'); location.reload(); }
     
     // --- View Navigation & Highlight ---
@@ -997,7 +1018,7 @@
       let modal = new bootstrap.Modal(document.getElementById('timelineDetailModal')); modal.show();
     }
 
-    function openFollowUpFromModal() { bootstrap.Modal.getInstance(document.getElementById('timelineDetailModal')).hide(); openFollowUpForm(); }
+    function openFollowUpFromModal() { bootstrap.Modal.getInstance(document.getElementById('timelineDetailModal')).hide(); openFollowUpForm(document.getElementById('profilePatientId').value, document.getElementById('profileName').innerText); }
 
     function deleteTimelineRecord(recordId, typeCode) {
       Swal.fire({ title: 'ยืนยันการลบ?', text: `ต้องการลบข้อมูลกิจกรรมนี้ใช่หรือไม่? การลบไม่สามารถกู้คืนได้`, icon: 'warning', showCancelButton: true, confirmButtonColor: '#d33', confirmButtonText: 'ใช่, ลบเลย', cancelButtonText: 'ยกเลิก' }).then((result) => { 
