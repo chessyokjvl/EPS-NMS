@@ -598,6 +598,46 @@
           </form>
         </div>
 
+        <!-- ================= View: แบบประเมิน Preventable ADE ================= -->
+        <div id="adeView" class="view-section">
+          <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3"><h4 class="text-danger m-0"><i class="fas fa-shield-alt"></i> ประเมิน Preventable ADE</h4><button class="btn btn-outline-secondary btn-sm" onclick="switchView('profile')"><i class="fas fa-arrow-left"></i> กลับ</button></div>
+          <div class="alert alert-danger border-0 shadow-sm d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3 mb-4">
+            <div class="d-flex align-items-center gap-3"><i class="fas fa-user-circle fa-2x text-danger"></i><div><div class="fw-bold fs-5 disp-patient-name">-</div><div class="small text-muted">ID: <span class="disp-patient-id">-</span> | HN: <span class="disp-patient-hn">-</span></div></div></div>
+          </div>
+          <form id="adeForm">
+            <div class="row g-3 mb-4">
+              <div class="col-12 col-md-6"><label class="form-label fw-bold">ยาที่สงสัย (Suspected Drug) <span class="text-danger">*</span></label><input type="text" class="form-control" id="adeDrugName" required></div>
+              <div class="col-12 col-md-6"><label class="form-label fw-bold">อาการไม่พึงประสงค์ที่พบ (ADR Symptom) <span class="text-danger">*</span></label><input type="text" class="form-control" id="adeSymptom" required></div>
+            </div>
+
+            <div class="card border-0 bg-light p-3 p-md-4 mb-4">
+              <h6 class="fw-bold text-danger mb-3">แบบประเมิน Schumock & Thornton (ตอบ "ใช่" อย่างน้อย 1 ข้อ = Preventable ADR)</h6>
+              
+              <div class="had-radio-group"><label class="had-label">1. ยาที่สงสัยไม่เหมาะสมกับโรคหรือภาวะของผู้ป่วยใช่หรือไม่</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input ade-q" type="radio" name="ade_q1" value="ไม่ใช่" checked><label class="form-check-label">ไม่ใช่</label></div><div class="form-check form-check-inline"><input class="form-check-input ade-q" type="radio" name="ade_q1" value="ใช่"><label class="form-check-label text-danger fw-bold">ใช่</label></div></div></div>
+              <div class="had-radio-group"><label class="had-label">2. ขนาดยา วิถี ความถี่ของการบริหารยา ไม่เหมาะสมต่ออายุ น้ำหนัก ผลแล็บ หรือสภาวะโรคใช่หรือไม่</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input ade-q" type="radio" name="ade_q2" value="ไม่ใช่" checked><label class="form-check-label">ไม่ใช่</label></div><div class="form-check form-check-inline"><input class="form-check-input ade-q" type="radio" name="ade_q2" value="ใช่"><label class="form-check-label text-danger fw-bold">ใช่</label></div></div></div>
+              <div class="had-radio-group"><label class="had-label">3. ไม่มีการตรวจวัดระดับยา/ผลแล็บที่จำเป็น หรือตรวจในความถี่ที่ไม่เพียงพอใช่หรือไม่</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input ade-q" type="radio" name="ade_q3" value="ไม่ใช่" checked><label class="form-check-label">ไม่ใช่</label></div><div class="form-check form-check-inline"><input class="form-check-input ade-q" type="radio" name="ade_q3" value="ใช่"><label class="form-check-label text-danger fw-bold">ใช่</label></div></div></div>
+              <div class="had-radio-group"><label class="had-label">4. ผู้ป่วยมีประวัติการแพ้ยา หรือเคยเกิดปฏิกิริยาต่อยาที่สงสัยมาก่อนใช่หรือไม่</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input ade-q" type="radio" name="ade_q4" value="ไม่ใช่" checked><label class="form-check-label">ไม่ใช่</label></div><div class="form-check form-check-inline"><input class="form-check-input ade-q" type="radio" name="ade_q4" value="ใช่"><label class="form-check-label text-danger fw-bold">ใช่</label></div></div></div>
+              <div class="had-radio-group"><label class="had-label">5. อาการไม่พึงประสงค์ครั้งนี้เกิดจาก Drug Interaction ใช่หรือไม่</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input ade-q" type="radio" name="ade_q5" value="ไม่ใช่" checked><label class="form-check-label">ไม่ใช่</label></div><div class="form-check form-check-inline"><input class="form-check-input ade-q" type="radio" name="ade_q5" value="ใช่"><label class="form-check-label text-danger fw-bold">ใช่</label></div></div></div>
+              <div class="had-radio-group"><label class="had-label">6. มีผลตรวจวัดระดับยาในเลือดพบว่าอยู่ในระดับที่สูงกว่าระดับรักษาใช่หรือไม่</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input ade-q" type="radio" name="ade_q6" value="ไม่ใช่" checked><label class="form-check-label">ไม่ใช่</label></div><div class="form-check form-check-inline"><input class="form-check-input ade-q" type="radio" name="ade_q6" value="ใช่"><label class="form-check-label text-danger fw-bold">ใช่</label></div></div></div>
+              <div class="had-radio-group"><label class="had-label">7. อาการไม่พึงประสงค์ที่พบเกิดจากความไม่ร่วมมือในการรักษาของผู้ป่วยใช่หรือไม่</label><div class="had-options"><div class="form-check form-check-inline"><input class="form-check-input ade-q" type="radio" name="ade_q7" value="ไม่ใช่" checked><label class="form-check-label">ไม่ใช่</label></div><div class="form-check form-check-inline"><input class="form-check-input ade-q" type="radio" name="ade_q7" value="ใช่"><label class="form-check-label text-danger fw-bold">ใช่</label></div></div></div>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-12">
+                <div class="p-3 rounded border text-center bg-white shadow-sm">
+                  <span id="adeResultText" class="badge bg-success fs-5 mb-3">Non-Preventable ADR</span>
+                  <input type="hidden" id="adeFinalResult" value="Non-Preventable ADR">
+                  <div class="text-start mt-2">
+                    <label class="form-label fw-bold"><i class="fas fa-pencil-alt"></i> บันทึก Progress / การดำเนินการของเภสัชกร</label>
+                    <textarea class="form-control border-danger" id="adeProgress" rows="2" placeholder="เช่น แจ้งแพทย์หยุดยา, ออกบัตรแพ้ยา..."></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button type="button" class="btn btn-danger text-white w-100 py-3 mt-4 shadow-sm fs-5" id="btnSubmitAde" onclick="submitADE()"><i class="fas fa-save"></i> บันทึกประเมิน Preventable ADE</button>
+          </form>
+        </div>
+        
         <!-- ================= View: แบบประเมิน Follow up ================= -->
         <div id="followUpView" class="view-section">
           <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3"><h4 class="text-warning m-0"><i class="fas fa-heartbeat"></i> บันทึกติดตามอาการ (Follow-up)</h4><button class="btn btn-outline-secondary btn-sm" onclick="switchView('profile')"><i class="fas fa-arrow-left"></i> กลับ</button></div>
@@ -1115,9 +1155,9 @@
         title: 'แบบประเมินทางเภสัชกรรมอื่นๆ', 
         html: `
           <div class="d-grid gap-2 mt-3">
+            <button class="btn btn-outline-primary" onclick="Swal.close(); openADEForm();"><i class="fas fa-shield-alt"></i> Preventable ADE (Schumock & Thornton)</button>
             <button class="btn btn-outline-primary" onclick="Swal.close(); openBARSForm();"><i class="fas fa-walking"></i> ประเมิน Mod-BARS (Akathisia)</button>
             <button class="btn btn-outline-primary" onclick="Swal.close(); openAIMSForm();"><i class="fas fa-diagnoses"></i> ประเมิน Mod-AIMS (Tardive Dyskinesia)</button>
-            <button class="btn btn-outline-secondary" onclick="Swal.fire('Coming Soon', 'จะเปิดให้ใช้งานในเฟสถัดไป', 'info')">Preventable ADE (Schumock & Thornton)</button>
             <button class="btn btn-outline-secondary" onclick="Swal.fire('Coming Soon', 'จะเปิดให้ใช้งานในเฟสถัดไป', 'info')">ADR Type A / Naranjo</button>
           </div>
         `, 
@@ -1289,7 +1329,66 @@
       let aimsData = { patientId: document.getElementById('profilePatientId').value, q1: document.getElementById('aims1').value, q2: document.getElementById('aims2').value, q3: document.getElementById('aims3').value, q4: document.getElementById('aims4').value, q5: document.getElementById('aims5').value, q6: document.getElementById('aims6').value, q7: document.getElementById('aims7').value, q8: document.getElementById('aims8').value, q9: document.getElementById('aims9').value, q10: document.getElementById('aims10').value, q11: document.getElementById('aims11').value, q12: document.getElementById('aims12').value, result: document.getElementById('aimsFinalResult').value, recommendation: document.getElementById('aimsFinalRec').value, pharmacistName: currentPharmacist, progressNote: document.getElementById('aimsProgress').value };
       fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'submitModAIMS', aimsData: aimsData })}).then(r => r.json()).then(data => { if(data.status === 'success') { Swal.fire('สำเร็จ', 'บันทึกประเมิน Mod-AIMS เรียบร้อย', 'success'); openPatientProfile(document.getElementById('profilePatientId').value); } else Swal.fire('Error', data.message, 'error'); }).finally(() => { btn.innerHTML = orig; btn.disabled = false; });
     }
-  
+
+    // --- Preventable ADE Logic ---
+    function openADEForm() { document.getElementById('adeForm').reset(); calcADE(); switchView('ade'); }
+    
+    function calcADE() {
+      let isPreventable = false;
+      document.querySelectorAll('.ade-q:checked').forEach(r => {
+        if(r.value === 'ใช่') isPreventable = true;
+      });
+
+      let resText = document.getElementById('adeResultText');
+      let finalRes = document.getElementById('adeFinalResult');
+      
+      if(isPreventable) {
+        resText.innerText = "Preventable ADR (สามารถป้องกันได้)"; 
+        resText.className = "badge bg-danger fs-5 mb-3";
+        finalRes.value = "Preventable ADR";
+      } else {
+        resText.innerText = "Non-Preventable ADR (ไม่สามารถป้องกันได้)"; 
+        resText.className = "badge bg-success fs-5 mb-3";
+        finalRes.value = "Non-Preventable ADR";
+      }
+    }
+    document.querySelectorAll('.ade-q').forEach(el => el.addEventListener('change', calcADE));
+
+    function submitADE() {
+      if(!document.getElementById('adeDrugName').value || !document.getElementById('adeSymptom').value) {
+        return Swal.fire('ข้อมูลไม่ครบ', 'กรุณาระบุยาที่สงสัยและอาการไม่พึงประสงค์ที่พบ', 'warning');
+      }
+
+      const btn = document.getElementById('btnSubmitAde'); const orig = btn.innerHTML; btn.innerHTML = 'กำลังบันทึก...'; btn.disabled = true;
+      
+      let adeData = { 
+        patientId: document.getElementById('profilePatientId').value, 
+        drugName: document.getElementById('adeDrugName').value,
+        adrSymptom: document.getElementById('adeSymptom').value,
+        q1: document.querySelector('input[name="ade_q1"]:checked').value,
+        q2: document.querySelector('input[name="ade_q2"]:checked').value,
+        q3: document.querySelector('input[name="ade_q3"]:checked').value,
+        q4: document.querySelector('input[name="ade_q4"]:checked').value,
+        q5: document.querySelector('input[name="ade_q5"]:checked').value,
+        q6: document.querySelector('input[name="ade_q6"]:checked').value,
+        q7: document.querySelector('input[name="ade_q7"]:checked').value,
+        result: document.getElementById('adeFinalResult').value, 
+        pharmacistName: currentPharmacist, 
+        progressNote: document.getElementById('adeProgress').value 
+      };
+
+      fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'submitADE', adeData: adeData })})
+      .then(r => r.json())
+      .then(data => { 
+        if(data.status === 'success') { 
+          Swal.fire('สำเร็จ', 'บันทึกประเมิน Preventable ADE เรียบร้อย', 'success'); 
+          openPatientProfile(document.getElementById('profilePatientId').value); 
+        } else {
+          Swal.fire('Error', data.message, 'error'); 
+        }
+      }).finally(() => { btn.innerHTML = orig; btn.disabled = false; });
+    }
+    
   </script>
 </body>
 </html>
