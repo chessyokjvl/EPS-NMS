@@ -488,6 +488,7 @@
           </form>
         </div>
 
+        <!-- ================= View: แบบประเมิน Mod-SAS ================= -->
         <div id="sasView" class="view-section">
           <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3"><h4 class="text-info m-0"><i class="fas fa-walking"></i> ประเมิน Mod-SAS</h4><button class="btn btn-outline-secondary btn-sm" onclick="switchView('profile')"><i class="fas fa-arrow-left"></i> กลับ</button></div>
           <div class="alert alert-info border-0 shadow-sm d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3 mb-4">
@@ -523,6 +524,81 @@
           </form>
         </div>
 
+        <!-- ================= View: แบบประเมิน Mod-BARS ================= -->
+        <div id="barsView" class="view-section">
+          <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3"><h4 class="text-primary m-0"><i class="fas fa-walking"></i> ประเมิน Mod-BARS (Akathisia)</h4><button class="btn btn-outline-secondary btn-sm" onclick="switchView('profile')"><i class="fas fa-arrow-left"></i> กลับ</button></div>
+          <div class="alert alert-primary border-0 shadow-sm d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3 mb-4">
+            <div class="d-flex align-items-center gap-3"><i class="fas fa-user-circle fa-2x text-primary"></i><div><div class="fw-bold fs-5 disp-patient-name">-</div><div class="small text-muted">ID: <span class="disp-patient-id">-</span> | HN: <span class="disp-patient-hn">-</span></div></div></div>
+          </div>
+          <form id="barsForm">
+            <div class="card border-0 bg-light p-3 p-md-4 mb-4">
+              <h6 class="fw-bold text-primary mb-3">Modified Barnes Akathisia Rating Scale</h6>
+              <div class="row g-4">
+                <div class="col-12"><label class="form-label fw-bold">1. อาการกระสับกระส่ายที่ผู้ตรวจสังเกตเห็นได้ (Objective)</label><select class="form-select border-primary" id="barsQ1" onchange="calcModBARS()"><option value="0">0 - ปกติ มีอาการแขนขาเคลื่อนที่ อยู่ไม่สุขเป็นบางครั้ง</option><option value="1">1 - เคลื่อนไหวกระสับกระส่ายเดินย่ำเท้า (<ครึ่งหนึ่งของเวลา)</option><option value="2">2 - สังเกตพบการเคลื่อนไหวเหมือนข้อ 1 (≥ครึ่งหนึ่งของเวลา)</option><option value="3">3 - กระสับกระส่ายตลอดเวลา ไม่สามารถอยู่นิ่งได้</option></select></div>
+                <div class="col-12"><label class="form-label fw-bold">2. ความรู้สึกต่ออาการกระสับกระส่าย (Awareness)</label><select class="form-select border-primary" id="barsQ2" onchange="calcModBARS()"><option value="0">0 - ปราศจากความรู้สึกกระสับกระส่ายภายในใจ</option><option value="1">1 - รู้สึกกระสับกระส่ายที่ไม่เฉพาะเจาะจง</option><option value="2">2 - รับรู้ว่าไม่สามารถทำให้เท้าหยุดนิ่งได้ ขยับขาไปมา</option><option value="3">3 - รู้สึกถึงแรงผลักดันอย่างแรงที่ต้องเคลื่อนไหวตลอดเวลา</option></select></div>
+                <div class="col-12"><label class="form-label fw-bold">3. ความทุกข์ทรมานที่เกิดจากอาการ (Distress)</label><select class="form-select border-primary" id="barsQ3" onchange="calcModBARS()"><option value="0">0 - ไม่มีความทุกข์ทรมาน</option><option value="1">1 - มีความทุกข์ทรมาน ระดับน้อย</option><option value="2">2 - มีความทุกข์ทรมาน ระดับปานกลาง</option><option value="3">3 - มีความทุกข์ทรมาน ระดับมาก</option></select></div>
+                <div class="col-12"><label class="form-label fw-bold text-danger">4. การประเมินอาการโดยรวมทั้งหมด (Global Assessment) *สำคัญที่สุด</label><select class="form-select border-danger" id="barsQ4" onchange="calcModBARS()"><option value="0">0 - Absent (ไม่มีอาการ)</option><option value="1">1 - Questionable (ไม่เฉพาะเจาะจง)</option><option value="2">2 - Mild akathisia (ทุกข์ทรมานน้อย/ไม่มี)</option><option value="3">3 - Moderate akathisia (มีความทุกข์ทรมาน)</option><option value="4">4 - Marked akathisia (ทุกข์ทรมานอย่างชัดเจน)</option><option value="5">5 - Severe akathisia (ตลอดเวลา สัมพันธ์กับการนอนไม่หลับ)</option></select></div>
+              </div>
+            </div>
+            <div class="row g-3">
+              <div class="col-12">
+                <div class="p-3 rounded border text-center bg-white shadow-sm">
+                  <span id="barsResultText" class="badge bg-success fs-6 mb-3">ไม่พบอาการ (Absent/Questionable)</span>
+                  <div class="text-start bg-light p-3 rounded mt-2 border"><strong class="text-secondary"><i class="fas fa-lightbulb"></i> แนวทางปฏิบัติ:</strong><p id="barsRecommendation" class="mb-2 mt-1 fw-bold">-</p>
+                    <label class="form-label fw-bold mt-2"><i class="fas fa-pencil-alt"></i> บันทึก Progress / การดำเนินการ</label><textarea class="form-control border-primary" id="barsProgress" rows="2"></textarea>
+                  </div>
+                  <input type="hidden" id="barsFinalSeverity" value="Normal"><input type="hidden" id="barsFinalRec" value="-">
+                </div>
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary text-white w-100 py-3 mt-4 shadow-sm fs-5" id="btnSubmitBars" onclick="submitModBARS()"><i class="fas fa-save"></i> บันทึกประเมิน Mod-BARS</button>
+          </form>
+        </div>
+
+        <!-- ================= View: แบบประเมิน Mod-AIMS ================= -->
+        <div id="aimsView" class="view-section">
+          <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3"><h4 class="text-primary m-0"><i class="fas fa-diagnoses"></i> ประเมิน Mod-AIMS (Tardive Dyskinesia)</h4><button class="btn btn-outline-secondary btn-sm" onclick="switchView('profile')"><i class="fas fa-arrow-left"></i> กลับ</button></div>
+          <div class="alert alert-primary border-0 shadow-sm d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3 mb-4">
+            <div class="d-flex align-items-center gap-3"><i class="fas fa-user-circle fa-2x text-primary"></i><div><div class="fw-bold fs-5 disp-patient-name">-</div><div class="small text-muted">ID: <span class="disp-patient-id">-</span> | HN: <span class="disp-patient-hn">-</span></div></div></div>
+          </div>
+          <form id="aimsForm">
+            <div class="card border-0 bg-light p-3 p-md-4 mb-4">
+              <h6 class="fw-bold text-primary mb-3">ส่วนที่ 1: การเคลื่อนไหวที่ผิดปกติ (0=ไม่พบ, 1=น้อยมาก, 2=เล็กน้อย, 3=ปานกลาง, 4=รุนแรง)</h6>
+              <div class="row g-3">
+                <div class="col-md-6"><label class="form-label small fw-bold">1. กล้ามเนื้อใบหน้า (หน้าผาก คิ้ว รอบตา)</label><select class="form-select aims-select" id="aims1" onchange="calcModAIMS()"><option value="0">0 - ไม่พบอาการ</option><option value="1">1 - น้อยมาก</option><option value="2">2 - เล็กน้อย</option><option value="3">3 - ปานกลาง</option><option value="4">4 - รุนแรง</option></select></div>
+                <div class="col-md-6"><label class="form-label small fw-bold">2. ริมฝีปากและรอบปาก (ย่น มุ่ย จุ๊บเสียงดัง)</label><select class="form-select aims-select" id="aims2" onchange="calcModAIMS()"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
+                <div class="col-md-6"><label class="form-label small fw-bold">3. ขากรรไกร (กัดฟัน ขบกราม อ้าปาก)</label><select class="form-select aims-select" id="aims3" onchange="calcModAIMS()"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
+                <div class="col-md-6"><label class="form-label small fw-bold">4. ลิ้น (พุ่งเข้าพุ่งออก)</label><select class="form-select aims-select" id="aims4" onchange="calcModAIMS()"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
+                <div class="col-md-6"><label class="form-label small fw-bold">5. แขนและมือ (ส่ายไปมา บิดช้าๆ)</label><select class="form-select aims-select" id="aims5" onchange="calcModAIMS()"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
+                <div class="col-md-6"><label class="form-label small fw-bold">6. ขาและเท้า (โยกเข่า เคาะส้นเท้า)</label><select class="form-select aims-select" id="aims6" onchange="calcModAIMS()"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
+                <div class="col-md-6"><label class="form-label small fw-bold">7. ลำตัว คอ ไหล่ สะโพก</label><select class="form-select aims-select" id="aims7" onchange="calcModAIMS()"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
+              </div>
+              <hr>
+              <h6 class="fw-bold text-primary mb-3">ส่วนที่ 2: ภาพรวมและสถานะฟัน</h6>
+              <div class="row g-3">
+                <div class="col-md-4"><label class="form-label small fw-bold">8. ความรุนแรงภาพรวมทั้งหมด</label><select class="form-select" id="aims8"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
+                <div class="col-md-4"><label class="form-label small fw-bold">9. การสูญเสียความสามารถ</label><select class="form-select" id="aims9"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
+                <div class="col-md-4"><label class="form-label small fw-bold">10. การรับรู้/ความทุกข์ทรมาน</label><select class="form-select" id="aims10"><option value="0">0 - ไม่รับรู้</option><option value="1">1 - ไม่มีทุกข์ทรมาน</option><option value="2">2 - ทุกข์ทรมานเล็กน้อย</option><option value="3">3 - ปานกลาง</option><option value="4">4 - มาก</option></select></div>
+                <div class="col-md-6"><label class="form-label small fw-bold">11. ปัจจุบันมีปัญหาเรื่องฟัน/ฟันปลอม?</label><select class="form-select" id="aims11"><option value="ไม่ใช่">ไม่ใช่</option><option value="ใช่">ใช่</option></select></div>
+                <div class="col-md-6"><label class="form-label small fw-bold">12. มักจะใส่ฟันปลอมใช่หรือไม่?</label><select class="form-select" id="aims12"><option value="ไม่ใช่">ไม่ใช่</option><option value="ใช่">ใช่</option></select></div>
+              </div>
+            </div>
+            <div class="row g-3">
+              <div class="col-12">
+                <div class="p-3 rounded border text-center bg-white shadow-sm">
+                  <span id="aimsResultText" class="badge bg-success fs-6 mb-3">ปกติ (ไม่เข้าเกณฑ์ TD)</span>
+                  <div class="text-start bg-light p-3 rounded mt-2 border"><strong class="text-secondary"><i class="fas fa-lightbulb"></i> แนวทางปฏิบัติ:</strong><p id="aimsRecommendation" class="mb-2 mt-1 fw-bold">-</p>
+                    <label class="form-label fw-bold mt-2"><i class="fas fa-pencil-alt"></i> บันทึก Progress / การดำเนินการ</label><textarea class="form-control border-primary" id="aimsProgress" rows="2"></textarea>
+                  </div>
+                  <input type="hidden" id="aimsFinalResult" value="Normal"><input type="hidden" id="aimsFinalRec" value="-">
+                </div>
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary text-white w-100 py-3 mt-4 shadow-sm fs-5" id="btnSubmitAims" onclick="submitModAIMS()"><i class="fas fa-save"></i> บันทึกประเมิน Mod-AIMS</button>
+          </form>
+        </div>
+
+        <!-- ================= View: แบบประเมิน Follow up ================= -->
         <div id="followUpView" class="view-section">
           <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3"><h4 class="text-warning m-0"><i class="fas fa-heartbeat"></i> บันทึกติดตามอาการ (Follow-up)</h4><button class="btn btn-outline-secondary btn-sm" onclick="switchView('profile')"><i class="fas fa-arrow-left"></i> กลับ</button></div>
           <div class="alert alert-warning border-0 shadow-sm d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3 mb-4">
@@ -563,6 +639,8 @@
           </form>
         </div>
 
+
+        <!-- ================= View: แบบประเมิน Valium ================= -->
         <div id="dzpView" class="view-section">
           <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3"><h4 class="m-0" style="color: #0ea5e9;"><i class="fas fa-syringe"></i> เฝ้าระวัง Diazepam injection</h4><button class="btn btn-outline-secondary btn-sm" onclick="switchView('profile')"><i class="fas fa-arrow-left"></i> กลับ</button></div>
           <div class="alert alert-secondary border-0 shadow-sm d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3 mb-3">
@@ -1032,7 +1110,20 @@
       });
     }
 
-    function openOtherAssessments() { Swal.fire({ title: 'แบบประเมินอื่นๆ', html: `<div class="d-grid gap-2 mt-3"><button class="btn btn-outline-primary" onclick="Swal.fire('Coming Soon', 'Preventable ADE จะเปิดให้ใช้งานในเฟสถัดไป', 'info')">1. Preventable ADE (Schumock & Thornton)</button><button class="btn btn-outline-primary" onclick="Swal.fire('Coming Soon', 'ADR Type A / Naranjo จะเปิดให้ใช้งานในเฟสถัดไป', 'info')">2. ADR Type A / Naranjo</button><button class="btn btn-outline-primary" onclick="Swal.fire('Coming Soon', 'Mod-BARS จะเปิดให้ใช้งานในเฟสถัดไป', 'info')">3. Mod-BARS (Akathisia)</button><button class="btn btn-outline-primary" onclick="Swal.fire('Coming Soon', 'Mod-AIMS จะเปิดให้ใช้งานในเฟสถัดไป', 'info')">4. Mod-AIMS (Tardive Dyskinesia)</button></div>`, showConfirmButton: false, showCloseButton: true }); }
+    function openOtherAssessments() { 
+      Swal.fire({ 
+        title: 'แบบประเมินทางเภสัชกรรมอื่นๆ', 
+        html: `
+          <div class="d-grid gap-2 mt-3">
+            <button class="btn btn-outline-primary" onclick="Swal.close(); openBARSForm();"><i class="fas fa-walking"></i> ประเมิน Mod-BARS (Akathisia)</button>
+            <button class="btn btn-outline-primary" onclick="Swal.close(); openAIMSForm();"><i class="fas fa-diagnoses"></i> ประเมิน Mod-AIMS (Tardive Dyskinesia)</button>
+            <button class="btn btn-outline-secondary" onclick="Swal.fire('Coming Soon', 'จะเปิดให้ใช้งานในเฟสถัดไป', 'info')">Preventable ADE (Schumock & Thornton)</button>
+            <button class="btn btn-outline-secondary" onclick="Swal.fire('Coming Soon', 'จะเปิดให้ใช้งานในเฟสถัดไป', 'info')">ADR Type A / Naranjo</button>
+          </div>
+        `, 
+        showConfirmButton: false, showCloseButton: true 
+      }); 
+    }
 
     // --- EPS Assessment Logic ---
     function openAssessmentForm() { document.getElementById('epsForm').reset(); calculateRisk(); switchView('assessment'); }
@@ -1130,6 +1221,75 @@
 
     function applyDashboardFilter() { const btn = document.getElementById('btnFilter'); const text = btn.innerHTML; btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>...'; btn.disabled = true; loadDashboardStats(() => { btn.innerHTML = text; btn.disabled = false; Swal.fire({ title: 'กรองข้อมูลสำเร็จ', icon: 'success', timer: 1000, showConfirmButton: false }); }); }
     function loadDashboardStats(callback = null) { const filters = { startDate: document.getElementById('filterStartDate').value, endDate: document.getElementById('filterEndDate').value, ward: document.getElementById('filterWard').value, gender: document.getElementById('filterGender').value }; fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'getDashboardStats', filters: filters }) }).then(res => res.json()).then(data => { if(data.status === 'success') { document.getElementById('statActive').innerText = data.stats.active; document.getElementById('statHighRisk').innerText = data.stats.highRisk; document.getElementById('statAssessed').innerText = data.stats.assessed; document.getElementById('statFuRate').innerText = data.stats.fuRate + ' %'; document.getElementById('statAvgDays').innerText = data.stats.avgDays + ' วัน'; if(window.myChart) window.myChart.destroy(); window.myChart = new Chart(document.getElementById('riskChart').getContext('2d'), { type: 'bar', data: { labels: ['Haloperidol', 'Risperidone', 'Perphenazine', 'No Anticholinergic', 'LAI'], datasets: [{ label: 'จำนวน (เคส)', data: data.stats.chartData, backgroundColor: ['#1e3a8a', '#2563eb', '#3b82f6', '#14b8a6', '#d97706'], borderRadius: 4 }] }, options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } } } }); if(window.mngChartObj) window.mngChartObj.destroy(); window.mngChartObj = new Chart(document.getElementById('mngChart').getContext('2d'), { type: 'bar', data: { labels: data.stats.mngLabels, datasets: [{ label: 'จำนวนครั้ง (การจัดการ)', data: data.stats.mngData, backgroundColor: '#14b8a6', borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } } }); } else { document.getElementById('statActive').innerText = "Error"; Swal.fire('ข้อผิดพลาด Dashboard', data.message, 'error'); } if(callback) callback(); }).catch(err => { console.error("Fetch Error:", err); if(callback) callback(); }); }
+
+    
+  // --- Mod-BARS Logic ---
+    function openBARSForm() { document.getElementById('barsForm').reset(); calcModBARS(); switchView('bars'); }
+    function calcModBARS() {
+      let globalScore = parseInt(document.getElementById('barsQ4').value);
+      let resText = document.getElementById('barsResultText'); let recText = document.getElementById('barsRecommendation');
+      let finalSev = document.getElementById('barsFinalSeverity'); let finalRec = document.getElementById('barsFinalRec');
+      
+      // อ้างอิงเกณฑ์จาก PDF[cite: 4]
+      if(globalScore >= 2) {
+        resText.innerText = "Indicates Akathisia (คะแนน Global ≥ 2)"; resText.className = "badge bg-danger fs-6 mb-3";
+        if(globalScore === 2) {
+          recText.innerText = "สังเกตอาการต่ออีก 1-2 สัปดาห์ หากมีอาการเพิ่มขึ้น ควร consult แพทย์เพื่อปรับแผนการรักษา";
+          finalSev.value = "Mild Akathisia"; finalRec.value = "สังเกตอาการ 1-2 สัปดาห์ / consult แพทย์";
+        } else {
+          recText.innerText = "ควร consult แพทย์เพื่อปรับแผนการรักษา";
+          finalSev.value = "Moderate to Severe Akathisia"; finalRec.value = "ควร consult แพทย์เพื่อปรับแผนการรักษา";
+        }
+      } else {
+        resText.innerText = "ไม่พบอาการชัดเจน (Absent/Questionable)"; resText.className = "badge bg-success fs-6 mb-3";
+        recText.innerText = "-"; finalSev.value = "Normal"; finalRec.value = "-";
+      }
+    }
+    function submitModBARS() {
+      const btn = document.getElementById('btnSubmitBars'); const orig = btn.innerHTML; btn.innerHTML = 'กำลังบันทึก...'; btn.disabled = true;
+      let barsData = { patientId: document.getElementById('profilePatientId').value, obj: document.getElementById('barsQ1').value, subjAware: document.getElementById('barsQ2').value, subjDistress: document.getElementById('barsQ3').value, global: document.getElementById('barsQ4').value, severity: document.getElementById('barsFinalSeverity').value, recommendation: document.getElementById('barsFinalRec').value, pharmacistName: currentPharmacist, progressNote: document.getElementById('barsProgress').value };
+      fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'submitModBARS', barsData: barsData })}).then(r => r.json()).then(data => { if(data.status === 'success') { Swal.fire('สำเร็จ', 'บันทึกประเมิน Mod-BARS เรียบร้อย', 'success'); openPatientProfile(document.getElementById('profilePatientId').value); } else Swal.fire('Error', data.message, 'error'); }).finally(() => { btn.innerHTML = orig; btn.disabled = false; });
+    }
+
+    // --- Mod-AIMS Logic ---
+    function openAIMSForm() { document.getElementById('aimsForm').reset(); calcModAIMS(); switchView('aims'); }
+    function calcModAIMS() {
+      let q1To7 = [ parseInt(document.getElementById('aims1').value), parseInt(document.getElementById('aims2').value), parseInt(document.getElementById('aims3').value), parseInt(document.getElementById('aims4').value), parseInt(document.getElementById('aims5').value), parseInt(document.getElementById('aims6').value), parseInt(document.getElementById('aims7').value) ];
+      
+      let countScore2 = 0; let countScore34 = 0; let sumScore = 0;
+      q1To7.forEach(score => {
+        sumScore += score;
+        if(score === 2) countScore2++;
+        if(score >= 3) countScore34++;
+      });
+
+      // อัปเดตข้อ 8 ให้ตรงกับค่า Max
+      document.getElementById('aims8').value = Math.max(...q1To7);
+
+      let resText = document.getElementById('aimsResultText'); let recText = document.getElementById('aimsRecommendation');
+      let finalRes = document.getElementById('aimsFinalResult'); let finalRec = document.getElementById('aimsFinalRec');
+      
+      // อ้างอิงเกณฑ์จาก PDF[cite: 4]
+      if(countScore2 >= 2 || countScore34 >= 1) {
+        resText.innerText = "เข้าเกณฑ์ Tardive Dyskinesia (TD)"; resText.className = "badge bg-danger fs-6 mb-3";
+        recText.innerText = "ควร consult แพทย์เพื่อพิจารณาปรับแผนการรักษา (เช่น เปลี่ยนเป็นยาต้านโรคจิตรุ่นที่ 2 ที่เกิด TD น้อย เช่น Clozapine, Quetiapine)";
+        finalRes.value = "Tardive Dyskinesia"; finalRec.value = "Consult แพทย์ปรับแผนการรักษา";
+      } else if (sumScore >= 1) {
+        resText.innerText = "พบอาการเคลื่อนไหวผิดปกติ (แต่ไม่เข้าเกณฑ์ TD)"; resText.className = "badge bg-warning text-dark fs-6 mb-3";
+        recText.innerText = "เมื่อประเมินได้ตั้งแต่ 1 คะแนนขึ้นไป โดยเฉพาะใบหน้าและปาก ควร consult แพทย์เพื่อปรับแผนการรักษา";
+        finalRes.value = "Mild Abnormal Movement"; finalRec.value = "Consult แพทย์ปรับแผนการรักษา";
+      } else {
+        resText.innerText = "ปกติ (ไม่เข้าเกณฑ์ TD)"; resText.className = "badge bg-success fs-6 mb-3";
+        recText.innerText = "-"; finalRes.value = "Normal"; finalRec.value = "-";
+      }
+    }
+    document.querySelectorAll('.aims-select').forEach(el => el.addEventListener('change', calcModAIMS));
+    function submitModAIMS() {
+      const btn = document.getElementById('btnSubmitAims'); const orig = btn.innerHTML; btn.innerHTML = 'กำลังบันทึก...'; btn.disabled = true;
+      let aimsData = { patientId: document.getElementById('profilePatientId').value, q1: document.getElementById('aims1').value, q2: document.getElementById('aims2').value, q3: document.getElementById('aims3').value, q4: document.getElementById('aims4').value, q5: document.getElementById('aims5').value, q6: document.getElementById('aims6').value, q7: document.getElementById('aims7').value, q8: document.getElementById('aims8').value, q9: document.getElementById('aims9').value, q10: document.getElementById('aims10').value, q11: document.getElementById('aims11').value, q12: document.getElementById('aims12').value, result: document.getElementById('aimsFinalResult').value, recommendation: document.getElementById('aimsFinalRec').value, pharmacistName: currentPharmacist, progressNote: document.getElementById('aimsProgress').value };
+      fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'submitModAIMS', aimsData: aimsData })}).then(r => r.json()).then(data => { if(data.status === 'success') { Swal.fire('สำเร็จ', 'บันทึกประเมิน Mod-AIMS เรียบร้อย', 'success'); openPatientProfile(document.getElementById('profilePatientId').value); } else Swal.fire('Error', data.message, 'error'); }).finally(() => { btn.innerHTML = orig; btn.disabled = false; });
+    }
+  
   </script>
 </body>
 </html>
